@@ -23,6 +23,8 @@ private:
 	SOCKET _hServSock, _hClntSock;
 	SOCKADDR_IN _servAdr, _clntAdr;
 
+	fd_set _reads, _cpyReads;
+
 	char* _port = nullptr;
 
 private:

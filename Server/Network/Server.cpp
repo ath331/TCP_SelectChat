@@ -3,7 +3,6 @@
 #include "Error.h"
 
 #include <iostream>
-#include <string>
 
 using namespace std;
 
@@ -46,50 +45,49 @@ void Server::_Listen()
 
 void Server::Run()
 {
-	fd_set reads, cpyReads;
+	CheckNullPtr((void*)_port);
+
 
 	char buf[BUF_SIZE];
 
-	CheckNullPtr((void*)_port);
-
-	FD_ZERO(&reads);
-	FD_SET(_hServSock, &reads);
+	FD_ZERO(&_reads);
+	FD_SET(_hServSock, &_reads);
 
 	while (true)
 	{
-		cpyReads = reads;
+		_cpyReads = _reads;
 		Timeval timeval(5, 5000);
 
-		int fdnum = select(0, &cpyReads, 0, 0, timeval.GetPtr());
+		int fdnum = select(0, &_cpyReads, 0, 0, timeval.GetPtr());
 		if (fdnum == SOCKET_ERROR)
 			break;
 
 		if (fdnum == 0)
 			continue;
 
-		for (int i = 0; i < reads.fd_count; i++)
+		for (int i = 0; i < _reads.fd_count; i++)
 		{
-			if (FD_ISSET(reads.fd_array[i], &cpyReads))
+			if (FD_ISSET(_reads.fd_array[i], &_cpyReads))
 			{
-				if (reads.fd_array[i] == _hServSock)
+				if (_reads.fd_array[i] == _hServSock)
 				{
 					int adrSz = sizeof(_clntAdr);
 					_hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
-					FD_SET(_hClntSock, &reads);
+					FD_SET(_hClntSock, &_reads);
 					cout << "connected clinet : " << _hClntSock << endl;
 				}
 				else
 				{
-					int strLen = recv(reads.fd_array[i], buf, BUF_SIZE - 1, 0);
+					int strLen = recv(_reads.fd_array[i], buf, BUF_SIZE - 1, 0);
 					if (strLen == 0)
 					{
-						FD_CLR(reads.fd_array[i], &reads);
-						closesocket(cpyReads.fd_array[i]);
-						cout << "close clinet : " << cpyReads.fd_array[i] << endl;
+						FD_CLR(_reads.fd_array[i], &_reads);
+						closesocket(_cpyReads.fd_array[i]);
+						cout << "close clinet : " << _cpyReads.fd_array[i] << endl;
 					}
 					else
 					{
-						send(reads.fd_array[i], buf, strLen, 0);
+						send(_reads.fd_array[i], buf, strLen, 0);
 					}
 				}
 			}

@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accepter.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Timeval.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Accepter.cpp" />
     <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
