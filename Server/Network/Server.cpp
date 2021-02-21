@@ -57,11 +57,11 @@ void Server::Run()
 		_cpyReads = _reads;
 		Timeval timeval(5, 5000);
 
-		int fdnum = select(0, &_cpyReads, 0, 0, timeval.GetPtr());
-		if (fdnum == SOCKET_ERROR)
+		int fdNum = select(0, &_cpyReads, 0, 0, timeval.GetPtr());
+		if (fdNum == SOCKET_ERROR)
 			break;
 
-		if (fdnum == 0)
+		if (fdNum == 0)
 			continue;
 
 		for (int i = 0; i < _reads.fd_count; i++)
