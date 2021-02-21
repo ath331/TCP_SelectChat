@@ -1,6 +1,7 @@
 #pragma once
 #include <WinSock2.h>
 
+class Accepter;
 class Server
 {
 public:
@@ -14,16 +15,20 @@ public:
 	{
 		closesocket(_hServSock);
 		WSACleanup();
+
+		delete _accepter;
 	}
 
 	void Run();
 
 private:
 	WSADATA _wsaData;
-	SOCKET _hServSock, _hClntSock;
-	SOCKADDR_IN _servAdr, _clntAdr;
+	SOCKET _hServSock;
+	SOCKADDR_IN _servAdr;
 
 	fd_set _reads, _cpyReads;
+
+	Accepter* _accepter;
 
 	char* _port = nullptr;
 

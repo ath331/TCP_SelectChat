@@ -2,9 +2,7 @@
 #include "Timeval.h"
 #include "Error.h"
 
-#include <iostream>
-
-using namespace std;
+#include "Accepter.h"
 
 #define BUF_SIZE 1024
 
@@ -17,6 +15,8 @@ void Server::_InitWSA()
 void Server::_SettingServer()
 {
 	_InitServerSock();
+
+	_accepter = new Accepter(_hServSock, &_reads);
 
 	_Bind();
 	_Listen();
@@ -47,7 +47,6 @@ void Server::Run()
 {
 	CheckNullPtr((void*)_port);
 
-
 	char buf[BUF_SIZE];
 
 	FD_ZERO(&_reads);
@@ -70,12 +69,8 @@ void Server::Run()
 			if (FD_ISSET(_reads.fd_array[i], &_cpyReads)) //이벤트가 발생한 소켓이 있다면 true
 			{
 				if (_reads.fd_array[i] == _hServSock) //해당 소켓이 서버소켓이라면 접속요청이 있다는 뜻
-				{
-					int adrSz = sizeof(_clntAdr);
-					_hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
-					FD_SET(_hClntSock, &_reads);
-					cout << "connected clinet : " << _hClntSock << endl;
-				}
+					_accepter->AcceptClient();
+
 				else //해당 소켓이 클라이언트 소켓이라면
 				{
 					int strLen = recv(_reads.fd_array[i], buf, BUF_SIZE - 1, 0);
@@ -83,7 +78,7 @@ void Server::Run()
 					{
 						FD_CLR(_reads.fd_array[i], &_reads);
 						closesocket(_cpyReads.fd_array[i]);
-						cout << "close clinet : " << _cpyReads.fd_array[i] << endl;
+						//cout << "close clinet : " << _cpyReads.fd_array[i] << endl;
 					}
 					else
 					{
