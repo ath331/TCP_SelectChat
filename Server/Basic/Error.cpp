@@ -9,3 +9,9 @@ void ErrorHandling(char *message)
 	fputc('\n', stderr);
 	exit(1);
 }
+
+void CheckNullPtr(void* ptr)
+{
+	if (ptr == nullptr)
+		ErrorHandling("Ptr is nullptr");
+}

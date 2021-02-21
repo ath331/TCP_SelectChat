@@ -39,8 +39,7 @@ void Server::Run()
 
 	char buf[BUF_SIZE];
 
-	if (_port == nullptr)
-		ErrorHandling("Port is NULL");
+	CheckNullPtr((void*)_port);
 
 	_hServSock = socket(PF_INET, SOCK_STREAM, 0);
 	memset(&_servAdr, 0, sizeof(_servAdr));
