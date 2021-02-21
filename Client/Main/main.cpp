@@ -1,81 +1,63 @@
-#include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
-#include <string>
-#include <WinSock2.h>
+#include <string.h>
+#include <winsock2.h>
 
-using namespace std;
 #define BUF_SIZE 1024
+void ErrorHandling(char *message);
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	WSADATA wsaData;
-	SOCKET hServSock, hClntSock;
+	SOCKET hSocket;
 	char message[BUF_SIZE];
-	int strLen = 0;
+	int strLen;
+	SOCKADDR_IN servAdr;
 
-	SOCKADDR_IN servAdr, clntAdr;
-	int clntAdrSize = 0;
-
-	if (argc != 2)
-	{
-		cout << "Usage : " << argv[0] << " <port>" << endl;
+	if (argc != 3) {
+		printf("Usage : %s <IP> <port>\n", argv[0]);
 		exit(1);
 	}
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-	{
-		cout << "WSAStartup() error" << endl;
-		exit(1);
-	}
+		ErrorHandling("WSAStartup() error!");
 
-	hServSock = socket(PF_INET, SOCK_STREAM, 0);
-	if (hServSock == INVALID_SOCKET)
-	{
-		cout << "socket() error" << endl;
-		exit(1);
-	}
+	hSocket = socket(PF_INET, SOCK_STREAM, 0);
+	if (hSocket == INVALID_SOCKET)
+		ErrorHandling("socket() error");
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-	servAdr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servAdr.sin_port = htons(atoi(argv[1]));
+	servAdr.sin_addr.s_addr = inet_addr(argv[1]);
+	servAdr.sin_port = htons(atoi(argv[2]));
 
-	if (bind(hServSock, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
+	if (connect(hSocket, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR)
+		ErrorHandling("connect() error!");
+	else
+		puts("Connected...........");
+
+	while (1)
 	{
-		cout << "bind() error" << endl;
-		exit(1);
+		fputs("Input message(Q to quit): ", stdout);
+		fgets(message, BUF_SIZE, stdin);
+
+		if (!strcmp(message, "q\n") || !strcmp(message, "Q\n"))
+			break;
+
+		send(hSocket, message, strlen(message), 0);
+		strLen = recv(hSocket, message, BUF_SIZE - 1, 0);
+		message[strLen] = 0;
+		printf("Message from server: %s", message);
 	}
 
-	if (listen(hServSock, 5) == SOCKET_ERROR)
-	{
-		cout << "listen() error" << endl;
-		exit(1);
-	}
-
-	clntAdrSize = sizeof(clntAdr);
-
-	for (int i = 0; i < 5; i++)
-	{
-		hClntSock = accept(hServSock, (SOCKADDR*)&clntAdr, &clntAdrSize);
-		if (hClntSock == -1)
-		{
-			cout << "accept() error" << endl;
-			exit(1);
-		}
-		else
-		{
-			cout << "connect client : " << i + 1 << endl;
-		}
-
-		while ((strLen = recv(hClntSock, message, BUF_SIZE, 0)) != 0)
-		{
-			send(hClntSock, message, strLen, 0);
-		}
-
-	}
-
-	closesocket(hServSock);
+	closesocket(hSocket);
 	WSACleanup();
-
 	return 0;
+}
+
+void ErrorHandling(char *message)
+{
+	fputs(message, stderr);
+	fputc('\n', stderr);
+	exit(1);
 }
