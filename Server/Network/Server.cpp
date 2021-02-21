@@ -47,8 +47,6 @@ void Server::Run()
 {
 	CheckNullPtr((void*)_port);
 
-	char buf[BUF_SIZE];
-
 	FD_ZERO(&_reads);
 	FD_SET(_hServSock, &_reads);
 
@@ -73,13 +71,16 @@ void Server::Run()
 
 				else //해당 소켓이 클라이언트 소켓이라면
 				{
+					char buf[BUF_SIZE];
 					int strLen = recv(_reads.fd_array[i], buf, BUF_SIZE - 1, 0);
+
 					if (strLen == 0)
 					{
 						FD_CLR(_reads.fd_array[i], &_reads);
 						closesocket(_cpyReads.fd_array[i]);
 						//cout << "close clinet : " << _cpyReads.fd_array[i] << endl;
 					}
+
 					else
 					{
 						send(_reads.fd_array[i], buf, strLen, 0);
