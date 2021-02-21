@@ -1,5 +1,6 @@
 #include "Server.h"
 #include "Timeval.h"
+#include "Error.h"
 
 #include <iostream>
 #include <string>
@@ -11,10 +12,7 @@ using namespace std;
 void Server::_InitWSA()
 {
 	if (WSAStartup(MAKEWORD(2, 2), &_wsaData) != 0)
-	{
-		cout << "WSAStartup() error" << endl;
-		exit(1);
-	}
+		ErrorHandling("WSAStartup() error");
 }
 
 void Server::_SettingServer()
@@ -26,19 +24,13 @@ void Server::_SettingServer()
 void Server::_Bind()
 {
 	if (bind(_hServSock, (SOCKADDR*)&_servAdr, sizeof(_servAdr)) == SOCKET_ERROR)
-	{
-		cout << "bind() error" << endl;
-		exit(1);
-	}
+		ErrorHandling("Bind() error");
 }
 
 void Server::_Listen()
 {
 	if (listen(_hServSock, 5) == SOCKET_ERROR)
-	{
-		cout << "listen() error" << endl;
-		exit(1);
-	}
+		ErrorHandling("Listen() error");
 }
 
 void Server::Run()
@@ -48,10 +40,7 @@ void Server::Run()
 	char buf[BUF_SIZE];
 
 	if (_port == nullptr)
-	{
-		cout << "port is NULL" << endl;
-		exit(1);
-	}
+		ErrorHandling("Port is NULL");
 
 	_hServSock = socket(PF_INET, SOCK_STREAM, 0);
 	memset(&_servAdr, 0, sizeof(_servAdr));
