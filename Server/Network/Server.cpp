@@ -17,8 +17,19 @@ void Server::_InitWSA()
 
 void Server::_SettingServer()
 {
+	_InitServerSock();
+
 	_Bind();
 	_Listen();
+}
+
+void Server::_InitServerSock()
+{
+	_hServSock = socket(PF_INET, SOCK_STREAM, 0);
+	memset(&_servAdr, 0, sizeof(_servAdr));
+	_servAdr.sin_family = AF_INET;
+	_servAdr.sin_addr.s_addr = htonl(INADDR_ANY);
+	_servAdr.sin_port = htons(atoi(_port));
 }
 
 void Server::_Bind()
@@ -40,12 +51,6 @@ void Server::Run()
 	char buf[BUF_SIZE];
 
 	CheckNullPtr((void*)_port);
-
-	_hServSock = socket(PF_INET, SOCK_STREAM, 0);
-	memset(&_servAdr, 0, sizeof(_servAdr));
-	_servAdr.sin_family = AF_INET;
-	_servAdr.sin_addr.s_addr = htonl(INADDR_ANY);
-	_servAdr.sin_port = htons(atoi(_port));
 
 	FD_ZERO(&reads);
 	FD_SET(_hServSock, &reads);

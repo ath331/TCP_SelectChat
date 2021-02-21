@@ -27,6 +27,7 @@ private:
 
 private:
 	void _InitWSA();
+	void _InitServerSock();
 
 	void _SettingServer();
 	void _Bind();
