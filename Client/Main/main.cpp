@@ -52,6 +52,8 @@ int main(int argc, char *argv[])
 
 	closesocket(hSocket);
 	WSACleanup();
+
+	system("pause");
 	return 0;
 }
 
