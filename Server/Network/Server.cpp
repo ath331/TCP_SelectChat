@@ -67,16 +67,16 @@ void Server::Run()
 
 		for (int i = 0; i < _reads.fd_count; i++)
 		{
-			if (FD_ISSET(_reads.fd_array[i], &_cpyReads))
+			if (FD_ISSET(_reads.fd_array[i], &_cpyReads)) //이벤트가 발생한 소켓이 있다면 true
 			{
-				if (_reads.fd_array[i] == _hServSock)
+				if (_reads.fd_array[i] == _hServSock) //해당 소켓이 서버소켓이라면 접속요청이 있다는 뜻
 				{
 					int adrSz = sizeof(_clntAdr);
 					_hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
 					FD_SET(_hClntSock, &_reads);
 					cout << "connected clinet : " << _hClntSock << endl;
 				}
-				else
+				else //해당 소켓이 클라이언트 소켓이라면
 				{
 					int strLen = recv(_reads.fd_array[i], buf, BUF_SIZE - 1, 0);
 					if (strLen == 0)
