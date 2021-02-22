@@ -1,26 +1,33 @@
 #pragma once
 #include <WinSock2.h>
+#include <map>
+
+using namespace std;
 
 class fd_set;
 class Accepter;
+class Receiver;
+class Sender;
 class TcpSession
 {
 public:
-	TcpSession(SOCKET sock, fd_set* reads);
+	TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set* reads);
 	~TcpSession();
 
-	void CloseClient();
+	void RecvClient();
 
 	SOCKET hClntSock;
 private:
+	map<SOCKET, TcpSession*>* _sessionMap;
 	fd_set* _reads;
 
 	Accepter* _accept;
-	//Recv¿ë °´Ã¼
-	//Send¿µ °´Ã¼
+	Receiver* _receiver;
+	Sender* _sender;
 
 
 private:
-	void accept();
+	void _Accept();
+	void _CloseClient();
 };
 

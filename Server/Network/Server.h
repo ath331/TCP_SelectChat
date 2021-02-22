@@ -18,8 +18,6 @@ public:
 	{
 		closesocket(_hServSock);
 		WSACleanup();
-
-		delete _session;
 	}
 
 	void Run();
