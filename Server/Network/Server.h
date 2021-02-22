@@ -1,6 +1,6 @@
 #pragma once
 #include <WinSock2.h>
-#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -32,7 +32,7 @@ private:
 	fd_set _reads, _cpyReads;
 
 	TcpSession* _session;
-	vector<TcpSession*> _sessionVec;
+	map<SOCKET, TcpSession*> _sessionMap;
 
 	char* _port = nullptr;
 

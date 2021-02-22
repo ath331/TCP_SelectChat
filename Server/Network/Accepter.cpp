@@ -22,18 +22,20 @@ void Accepter::_RegisterSock(SOCKET sock)
 
 void Accepter::AcceptClient()
 {
-	SOCKET hClntSock;
-	SOCKADDR_IN _clntAdr;
-
 	int adrSz = sizeof(_clntAdr);
-	hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
-	if (hClntSock == INVALID_SOCKET)
+	_hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
+	if (_hClntSock == INVALID_SOCKET)
 	{
-		cout << "SOCKET accept error" << hClntSock << endl;
+		cout << "SOCKET accept error" << _hClntSock << endl;
 		return;
 	}
 
-	_RegisterSock(hClntSock);
+	_RegisterSock(_hClntSock);
 
-	cout << "connected clinet : " << hClntSock << endl;
+	cout << "connected clinet : " << _hClntSock << endl;
+}
+
+SOCKET Accepter::_GetClntSock()
+{
+	return _hClntSock;
 }

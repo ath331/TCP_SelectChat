@@ -9,10 +9,16 @@ public:
 	TcpSession(SOCKET sock, fd_set* reads);
 	~TcpSession();
 
+	void CloseClient();
+
+	SOCKET hClntSock;
 private:
+	fd_set* _reads;
+
 	Accepter* _accept;
 	//Recv¿ë °´Ã¼
 	//Send¿µ °´Ã¼
+
 
 private:
 	void accept();
