@@ -27,6 +27,12 @@ void Accepter::AcceptClient()
 
 	int adrSz = sizeof(_clntAdr);
 	hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
+	if (hClntSock == INVALID_SOCKET)
+	{
+		cout << "SOCKET accept error" << hClntSock << endl;
+		return;
+	}
+
 	_RegisterSock(hClntSock);
 
 	cout << "connected clinet : " << hClntSock << endl;
