@@ -19,6 +19,12 @@
     <Filter Include="Session">
       <UniqueIdentifier>{59439071-5028-4198-abcf-07b32919c3cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Receiver">
+      <UniqueIdentifier>{8bcef1a4-40c7-4f36-a453-749b05b11fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sender">
+      <UniqueIdentifier>{65c5ea2b-9024-4155-a64c-80c56537971f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Timeval.h">
@@ -33,6 +39,12 @@
     <ClInclude Include="TcpSession.h">
       <Filter>Session</Filter>
     </ClInclude>
+    <ClInclude Include="Receiver.h">
+      <Filter>Receiver</Filter>
+    </ClInclude>
+    <ClInclude Include="Sender.h">
+      <Filter>Sender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -43,6 +55,12 @@
     </ClCompile>
     <ClCompile Include="TcpSession.cpp">
       <Filter>Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Receiver.cpp">
+      <Filter>Receiver</Filter>
+    </ClCompile>
+    <ClCompile Include="Sender.cpp">
+      <Filter>Sender</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

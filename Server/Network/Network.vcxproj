@@ -20,12 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Accepter.h" />
+    <ClInclude Include="Receiver.h" />
+    <ClInclude Include="Sender.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="TcpSession.h" />
     <ClInclude Include="Timeval.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Accepter.cpp" />
+    <ClCompile Include="Receiver.cpp" />
+    <ClCompile Include="Sender.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="TcpSession.cpp" />
   </ItemGroup>
