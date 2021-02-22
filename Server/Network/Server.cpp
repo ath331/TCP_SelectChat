@@ -4,7 +4,6 @@
 
 #include "TcpSession.h"
 
-#define BUF_SIZE 1024
 
 void Server::_InitWSA()
 {
@@ -64,29 +63,13 @@ void Server::Run()
 		{
 			SOCKET sock = _reads.fd_array[i];
 
-			if (FD_ISSET(sock, &_cpyReads)) //이벤트가 발생한 소켓이 있다면 true
+			if (FD_ISSET(sock, &_cpyReads))			//이벤트가 발생한 소켓이 있다면 true
 			{
-				if (sock == _hServSock) //해당 소켓이 서버소켓이라면 접속요청이 있다는 뜻
-				{
-					_session = new TcpSession(_hServSock, &_reads);
-					_sessionMap.insert(make_pair(_session->hClntSock, _session));
-				}
+				if (sock == _hServSock)				//해당 소켓이 서버소켓이라면 접속요청이 있다는 뜻
+					_session = new TcpSession(&_sessionMap, _hServSock, &_reads);
 
-				else //해당 소켓이 클라이언트 소켓이라면  ////// TODO : session에서 처리 하게 수정
-				{
-					char buf[BUF_SIZE];
-					int strLen = recv(sock, buf, BUF_SIZE - 1, 0);
-
-					if (strLen == 0)
-					{
-						_sessionMap[sock]->CloseClient();
-					}
-
-					else
-					{
-						send(sock, buf, strLen, 0);
-					}
-				}
+				else								//해당 소켓이 클라이언트 소켓이라면
+					_sessionMap[sock]->RecvClient();
 			}
 		}
 	}
