@@ -65,8 +65,8 @@ void Server::Run()
 
 			if (FD_ISSET(sock, &_cpyReads))			//이벤트가 발생한 소켓이 있다면 true
 			{
-				if (sock == _hServSock)				//해당 소켓이 서버소켓이라면 접속요청이 있다는 뜻
-					_session = new TcpSession(&_sessionMap, _hServSock, &_reads);
+				if (sock == _hServSock)				//해당 소켓이 서버소켓이라면
+					_session = new TcpSession(&_sessionMap, _hServSock, &_reads); //TODO : delete는 어디서?
 
 				else								//해당 소켓이 클라이언트 소켓이라면
 					_sessionMap[sock]->RecvClient();
