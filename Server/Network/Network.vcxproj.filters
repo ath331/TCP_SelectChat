@@ -45,6 +45,9 @@
     <ClInclude Include="Sender.h">
       <Filter>Sender</Filter>
     </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Sender</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">

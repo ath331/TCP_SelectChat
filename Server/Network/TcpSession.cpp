@@ -1,6 +1,8 @@
 #include "TcpSession.h"
+
 #include "Accepter.h"
 #include "Receiver.h"
+#include "Sender.h"
 
 #include <WinSock2.h>
 #include <iostream>
@@ -13,6 +15,8 @@ TcpSession::TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set
 
 	_receiver = new Receiver(hClntSock);
 
+	_sender = new Sender(hClntSock);
+	_sender->SendLogin();
 }
 
 
@@ -20,6 +24,7 @@ TcpSession::~TcpSession()
 {
 	delete _accept;
 	delete _receiver;
+	delete _sender;
 }
 
 void TcpSession::_Accept()

@@ -7,6 +7,7 @@ using namespace std;
 class fd_set;
 class Accepter;
 class Receiver;
+class Sender;
 class TcpSession
 {
 public:
@@ -22,7 +23,7 @@ private:
 
 	Accepter* _accept;
 	Receiver* _receiver;
-	//Send¿µ °´Ã¼
+	Sender* _sender;
 
 
 private:
