@@ -14,5 +14,8 @@ private:
 	SOCKET _hServSock;
 
 	fd_set* _reads;
+
+private:
+	void _RegisterSock(SOCKET sock);
 };
 

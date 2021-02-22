@@ -14,6 +14,12 @@ Accepter::~Accepter()
 {
 }
 
+void Accepter::_RegisterSock(SOCKET sock)
+{
+	FD_SET(sock, _reads);
+}
+
+
 void Accepter::AcceptClient()
 {
 	SOCKET hClntSock;
@@ -21,8 +27,7 @@ void Accepter::AcceptClient()
 
 	int adrSz = sizeof(_clntAdr);
 	hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
-
-	FD_SET(hClntSock, _reads);
+	_RegisterSock(hClntSock);
 
 	cout << "connected clinet : " << hClntSock << endl;
 }
