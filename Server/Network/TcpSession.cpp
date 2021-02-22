@@ -44,6 +44,7 @@ void TcpSession::RecvClient()
 
 	if (_receiver->buf[_receiver->_strLen - 1] == '\n')
 	{
+		//TODO : 개행문자로 끝나는 데이터가 들어오면 지금 까지 쌓아두었던 버퍼 파싱하기.
 	}
 }
 
