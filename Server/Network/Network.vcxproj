@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClInclude Include="Accepter.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="TcpSession.h" />
     <ClInclude Include="Timeval.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Accepter.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="TcpSession.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Basic\Basic.vcxproj">

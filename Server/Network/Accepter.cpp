@@ -14,15 +14,28 @@ Accepter::~Accepter()
 {
 }
 
+void Accepter::_RegisterSock(SOCKET sock)
+{
+	FD_SET(sock, _reads);
+}
+
+
 void Accepter::AcceptClient()
 {
-	SOCKET hClntSock;
-	SOCKADDR_IN _clntAdr;
-
 	int adrSz = sizeof(_clntAdr);
-	hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
+	_hClntSock = accept(_hServSock, (SOCKADDR*)&_clntAdr, &adrSz);
+	if (_hClntSock == INVALID_SOCKET)
+	{
+		cout << "SOCKET accept error" << _hClntSock << endl;
+		return;
+	}
 
-	FD_SET(hClntSock, _reads);
+	_RegisterSock(_hClntSock);
 
-	cout << "connected clinet : " << hClntSock << endl;
+	cout << "connected clinet : " << _hClntSock << endl;
+}
+
+SOCKET Accepter::_GetClntSock()
+{
+	return _hClntSock;
 }

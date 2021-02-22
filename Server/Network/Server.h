@@ -1,7 +1,10 @@
 #pragma once
 #include <WinSock2.h>
+#include <map>
 
-class Accepter;
+using namespace std;
+
+class TcpSession;
 class Server
 {
 public:
@@ -16,7 +19,7 @@ public:
 		closesocket(_hServSock);
 		WSACleanup();
 
-		delete _accepter;
+		delete _session;
 	}
 
 	void Run();
@@ -28,7 +31,8 @@ private:
 
 	fd_set _reads, _cpyReads;
 
-	Accepter* _accepter;
+	TcpSession* _session;
+	map<SOCKET, TcpSession*> _sessionMap;
 
 	char* _port = nullptr;
 

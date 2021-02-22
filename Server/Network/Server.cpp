@@ -2,7 +2,7 @@
 #include "Timeval.h"
 #include "Error.h"
 
-#include "Accepter.h"
+#include "TcpSession.h"
 
 #define BUF_SIZE 1024
 
@@ -15,8 +15,6 @@ void Server::_InitWSA()
 void Server::_SettingServer()
 {
 	_InitServerSock();
-
-	_accepter = new Accepter(_hServSock, &_reads);
 
 	_Bind();
 	_Listen();
@@ -67,18 +65,20 @@ void Server::Run()
 			if (FD_ISSET(_reads.fd_array[i], &_cpyReads)) //이벤트가 발생한 소켓이 있다면 true
 			{
 				if (_reads.fd_array[i] == _hServSock) //해당 소켓이 서버소켓이라면 접속요청이 있다는 뜻
-					_accepter->AcceptClient();
+				{
+					_session = new TcpSession(_hServSock, &_reads);
+					_sessionMap.insert(make_pair(_session->hClntSock, _session));
+				}
 
-				else //해당 소켓이 클라이언트 소켓이라면
+				else //해당 소켓이 클라이언트 소켓이라면  ////// TODO : session에서 처리 하게 수정
 				{
 					char buf[BUF_SIZE];
-					int strLen = recv(_reads.fd_array[i], buf, BUF_SIZE - 1, 0);
+					SOCKET sock = _reads.fd_array[i];
+					int strLen = recv(sock, buf, BUF_SIZE - 1, 0);
 
 					if (strLen == 0)
 					{
-						FD_CLR(_reads.fd_array[i], &_reads);
-						closesocket(_cpyReads.fd_array[i]);
-						//cout << "close clinet : " << _cpyReads.fd_array[i] << endl;
+						_sessionMap[sock]->CloseClient();
 					}
 
 					else
