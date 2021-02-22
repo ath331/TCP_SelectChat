@@ -49,7 +49,7 @@
       <Filter>Sender</Filter>
     </ClInclude>
     <ClInclude Include="StringSpliter.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Receiver</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +69,7 @@
       <Filter>Sender</Filter>
     </ClCompile>
     <ClCompile Include="StringSpliter.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Receiver</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
