@@ -3,4 +3,4 @@
 
 const char* ENTER = "\n";
 
-const char* LOGIN = "PleaseLogin. ( /LOGIN [ID] ) ";
+const char* LOGIN = "Please Login. ( /LOGIN [ID] ) ";
