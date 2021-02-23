@@ -28,6 +28,9 @@
     <Filter Include="Distinguisher">
       <UniqueIdentifier>{8787d99f-459f-4211-a8b1-0dfc9e7b9620}</UniqueIdentifier>
     </Filter>
+    <Filter Include="User">
+      <UniqueIdentifier>{810b5127-25ed-440a-b63d-8817dc4b9833}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Timeval.h">
@@ -57,6 +60,9 @@
     <ClInclude Include="StringDistinguisher.h">
       <Filter>Distinguisher</Filter>
     </ClInclude>
+    <ClInclude Include="UserState.h">
+      <Filter>User</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -79,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="StringDistinguisher.cpp">
       <Filter>Distinguisher</Filter>
+    </ClCompile>
+    <ClCompile Include="UserState.cpp">
+      <Filter>User</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

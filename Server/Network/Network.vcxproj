@@ -28,6 +28,7 @@
     <ClInclude Include="StringSpliter.h" />
     <ClInclude Include="TcpSession.h" />
     <ClInclude Include="Timeval.h" />
+    <ClInclude Include="UserState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Accepter.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="StringDistinguisher.cpp" />
     <ClCompile Include="StringSpliter.cpp" />
     <ClCompile Include="TcpSession.cpp" />
+    <ClCompile Include="UserState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Basic\Basic.vcxproj">

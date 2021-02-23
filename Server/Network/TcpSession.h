@@ -1,5 +1,6 @@
 #pragma once
 #include "StringDistinguisher.h"
+#include "UserState.h"
 
 #include <WinSock2.h>
 #include <map>
@@ -12,14 +13,14 @@ class Sender;
 class TcpSession
 {
 public:
-	TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set* reads);
+	TcpSession(map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads);
 	~TcpSession();
 
 	void RecvClient();
 
 	SOCKET hClntSock;
 private:
-	map<SOCKET, TcpSession*>* _sessionMap;
+	map<SOCKET, UserState>* _userMap;
 	fd_set* _reads;
 
 	Accepter* _accept;

@@ -7,8 +7,8 @@
 #include <WinSock2.h>
 #include <iostream>
 
-TcpSession::TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set* reads)
-	: _reads(reads), _sessionMap(sessionMap)
+TcpSession::TcpSession(map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads)
+	: _reads(reads), _userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
 	_Accept();
@@ -32,7 +32,8 @@ void TcpSession::_Accept()
 	_accept->AcceptClient();
 	hClntSock = _accept->_GetClntSock();
 
-	_sessionMap->insert(make_pair(hClntSock, this));
+	UserState userState(this);
+	_userMap->insert(make_pair(hClntSock, userState));
 }
 
 void TcpSession::RecvClient()
