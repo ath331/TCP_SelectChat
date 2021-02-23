@@ -42,9 +42,41 @@ void TcpSession::RecvClient()
 	if (_receiver->_strLen == 0)
 		_CloseClient();
 
-	if (_receiver->buf[_receiver->_strLen - 1] == '\n')
+	else if (_receiver->_buf[_receiver->_strLen - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
 	{
-		//TODO : 개행문자로 끝나는 데이터가 들어오면 지금 까지 쌓아두었던 버퍼 파싱하기.
+		std::string str = _receiver->split();
+		_IsCommands(str);
+	}
+}
+
+void TcpSession::_IsCommands(string str)
+{
+	bool b = _stringDistinguisher.IsCommands(str);
+
+	if (b)		//str이 명령어라면 적절한 처리
+	{
+		COMMANDS commands = _stringDistinguisher.WhatCommands(str);
+		_ProcessingCommands(commands);
+	}
+
+	else		//str이 명령어가 아니라면 (채팅이라면) 해당 클라의 방번호로 채팅 전송
+	{
+		std::cout << "[ " << hClntSock<< " ] " << str << std::endl;
+	}
+}
+
+void TcpSession::_ProcessingCommands(COMMANDS commands)
+{
+	switch (commands)
+	{
+	case COMMANDS::LOGIN:
+		std::cout << hClntSock << " is Login" << std::endl;
+
+		break;
+	case COMMANDS::ENUM_COMMANDS_MAX_COUNT:
+		break;
+	default:
+		break;
 	}
 }
 

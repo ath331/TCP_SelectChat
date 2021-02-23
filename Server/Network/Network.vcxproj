@@ -24,6 +24,8 @@
     <ClInclude Include="Receiver.h" />
     <ClInclude Include="Sender.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="StringDistinguisher.h" />
+    <ClInclude Include="StringSpliter.h" />
     <ClInclude Include="TcpSession.h" />
     <ClInclude Include="Timeval.h" />
   </ItemGroup>
@@ -32,6 +34,8 @@
     <ClCompile Include="Receiver.cpp" />
     <ClCompile Include="Sender.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="StringDistinguisher.cpp" />
+    <ClCompile Include="StringSpliter.cpp" />
     <ClCompile Include="TcpSession.cpp" />
   </ItemGroup>
   <ItemGroup>
