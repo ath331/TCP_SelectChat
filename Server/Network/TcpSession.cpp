@@ -62,7 +62,6 @@ void TcpSession::_IsCommands(string str)
 
 	else		//str이 명령어가 아니라면 (채팅이라면) 해당 클라의 방번호로 채팅 전송
 	{
-		std::cout << "[ " << hClntSock << " ] " << str << std::endl;
 	}
 }
 
@@ -70,16 +69,17 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
 	if (commands == COMMANDS::LOGIN && us.GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
 	{
+		if (_stringDistinguisher.v.size() > 1) //함수화 하기
+			us.setID(_stringDistinguisher.v[1]);
 
-
-		std::cout << us.GetID() << " is Login" << std::endl;
 		_sender->_SendLogined();
 		us.SetLoginState(true);
 
-		return;
+		std::cout << "[ " << us.GetID() << " ] " << str << endl;
+
 	}
 
-	if (strcmp(us.GetID().c_str(), ""))  //유저정보가 등록되어 있지 않다면 바로 리턴.
+	if (us.GetID() == "")  //유저정보가 등록되어 있지 않다면 바로 리턴.
 		return;
 
 	if (commands != COMMANDS::LOGIN && us.GetLoginState() == true)	//명령어가 LOGIN가 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
@@ -92,6 +92,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		default:
 			break;
 		}
+
+		std::cout << "[ " << us.GetID() << " ] " << str << endl;
+
 	}
 }
 
