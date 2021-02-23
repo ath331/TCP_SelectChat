@@ -22,6 +22,7 @@
     <ClInclude Include="Accepter.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Receiver.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Sender.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="StringDistinguisher.h" />
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ClCompile Include="Accepter.cpp" />
     <ClCompile Include="Receiver.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Sender.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="StringDistinguisher.cpp" />

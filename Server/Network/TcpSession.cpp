@@ -72,7 +72,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		if (_stringDistinguisher.v.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
 			return;
 
-		if (_stringDistinguisher.v.size() > 1) //함수화 하기
+		if (_stringDistinguisher.v.size() > 1) //TODO : 함수화 하기
 			us.setID(_stringDistinguisher.v[1]);
 
 		_sender->_SendLogined();
