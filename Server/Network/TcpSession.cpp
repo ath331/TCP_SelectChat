@@ -44,7 +44,7 @@ void TcpSession::RecvClient()
 
 	else if (_receiver->_buf[_receiver->_strLen - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
 	{
-		std::string str = _receiver->_spliter->split(_receiver->_bufStr);
+		std::string str = _receiver->split();
 		std::cout << "[ " << hClntSock<< " ] " << str << endl;
 	}
 }

@@ -12,6 +12,12 @@ Receiver::~Receiver()
 	delete _spliter;
 }
 
+string Receiver::split()
+{
+	return _spliter->split(_bufStr);
+}
+
+
 void Receiver::Recv()
 {
 	_strLen = recv(clntSock, _buf, BUF_SIZE - 1, 0);

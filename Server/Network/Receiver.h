@@ -16,6 +16,7 @@ public:
 	SOCKET clntSock;
 
 	void Recv();
+	string split();
 private:
 	StringSpliter* _spliter;					//_bufStr를 해석하는 객체.
 
