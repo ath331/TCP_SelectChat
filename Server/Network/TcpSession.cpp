@@ -92,6 +92,22 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		case COMMANDS::CL:
 			_sender->_SendCL();
 			break;
+
+		case COMMANDS::MR:
+			break;
+
+		case COMMANDS::RE:
+			break;
+
+		case COMMANDS::RL:
+			break;
+
+		case COMMANDS::TO:
+			break;
+
+		case COMMANDS::UL:
+			break;
+
 		default:
 			return;   //올바르지 않은 명령어가 들어오면 바로 리턴.
 		}

@@ -11,6 +11,11 @@ enum class COMMANDS : int
 {
 	LOGIN,					 
 	CL,						 //CommandsList. 명령어 목록
+	UL,						 //유저리스트
+	MR,						 //Make Room
+	RL,						 //Room List
+	RE,						 //Room Enter
+	TO,						 //귓속말
 	ENUM_COMMANDS_MAX_COUNT, //COMMANDS의 ENUM값이 몇 개인지 쉽게 알기위한 값
 };
 

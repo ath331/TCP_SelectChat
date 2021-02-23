@@ -53,6 +53,16 @@ COMMANDS StringDistinguisher::WhatCommands(string commands)
 		return COMMANDS::LOGIN;
 	if (strcmp(str.c_str(), "CL") == 0)
 		return COMMANDS::CL;
+	if (strcmp(str.c_str(), "MR") == 0)
+		return COMMANDS::MR;
+	if (strcmp(str.c_str(), "RE") == 0)
+		return COMMANDS::RE;
+	if (strcmp(str.c_str(), "RL") == 0)
+		return COMMANDS::RL;
+	if (strcmp(str.c_str(), "TO") == 0)
+		return COMMANDS::TO;
+	if (strcmp(str.c_str(), "UL") == 0)
+		return COMMANDS::UL;
 	else
 		return COMMANDS::ENUM_COMMANDS_MAX_COUNT;
 }
