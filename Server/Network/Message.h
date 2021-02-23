@@ -3,4 +3,10 @@
 
 const char* ENTER = "\r\n";
 
+const char* LINE = "====================";
+
 const char* LOGIN = "Please Login. ( /LOGIN [ID] ) ";
+
+const char* LOGINED = "명령어 보기 : /CL\r\n종료 : /QUIT";
+
+const char* CL = "유저조회: /UL\r\n방 생성 : /MR [방 이름] [비밀번호 (안적으면 공개방 생성)]\r\n방 조회 : /RL\r\n방 입장 : /RE [방 번호] [비밀번호]\r\n귓속말  : /TO [ID] [내용]";

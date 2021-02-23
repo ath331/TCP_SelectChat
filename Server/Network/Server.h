@@ -1,4 +1,6 @@
 #pragma once
+#include "UserState.h"
+
 #include <WinSock2.h>
 #include <map>
 
@@ -30,7 +32,7 @@ private:
 	fd_set _reads, _cpyReads;
 
 	TcpSession* _session;
-	map<SOCKET, TcpSession*> _sessionMap;
+	map<SOCKET, UserState> _userMap; //client 상태를 관리하기위한 map
 
 	char* _port = nullptr;
 

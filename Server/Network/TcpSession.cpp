@@ -7,8 +7,8 @@
 #include <WinSock2.h>
 #include <iostream>
 
-TcpSession::TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set* reads)
-	: _reads(reads), _sessionMap(sessionMap)
+TcpSession::TcpSession(map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads)
+	: _reads(reads), _userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
 	_Accept();
@@ -16,7 +16,7 @@ TcpSession::TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set
 	_receiver = new Receiver(hClntSock);
 
 	_sender = new Sender(hClntSock);
-	_sender->SendLogin();
+	_sender->_SendLogin();
 }
 
 
@@ -32,7 +32,8 @@ void TcpSession::_Accept()
 	_accept->AcceptClient();
 	hClntSock = _accept->_GetClntSock();
 
-	_sessionMap->insert(make_pair(hClntSock, this));
+	UserState userState(this);
+	_userMap->insert(make_pair(hClntSock, userState));
 }
 
 void TcpSession::RecvClient()
@@ -56,27 +57,63 @@ void TcpSession::_IsCommands(string str)
 	if (b)		//str이 명령어라면 적절한 처리
 	{
 		COMMANDS commands = _stringDistinguisher.WhatCommands(str);
-		_ProcessingCommands(commands);
+		_ProcessingCommands(commands, str);
 	}
 
 	else		//str이 명령어가 아니라면 (채팅이라면) 해당 클라의 방번호로 채팅 전송
 	{
-		std::cout << "[ " << hClntSock<< " ] " << str << std::endl;
 	}
 }
 
-void TcpSession::_ProcessingCommands(COMMANDS commands)
+void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
-	switch (commands)
+	if (commands == COMMANDS::LOGIN && us.GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
 	{
-	case COMMANDS::LOGIN:
-		std::cout << hClntSock << " is Login" << std::endl;
+		if (_stringDistinguisher.v.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
+			return;
 
-		break;
-	case COMMANDS::ENUM_COMMANDS_MAX_COUNT:
-		break;
-	default:
-		break;
+		if (_stringDistinguisher.v.size() > 1) //함수화 하기
+			us.setID(_stringDistinguisher.v[1]);
+
+		_sender->_SendLogined();
+		us.SetLoginState(true);
+
+		std::cout << "[ " << us.GetID() << " ] " << str << endl;
+
+	}
+
+	if (us.GetID() == "")  //유저정보가 등록되어 있지 않다면 바로 리턴.
+		return;
+
+	if (commands != COMMANDS::LOGIN && us.GetLoginState() == true)	//명령어가 LOGIN가 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
+	{
+		switch (commands)
+		{
+		case COMMANDS::CL:
+			_sender->_SendCL();
+			break;
+
+		case COMMANDS::MR:
+			break;
+
+		case COMMANDS::RE:
+			break;
+
+		case COMMANDS::RL:
+			break;
+
+		case COMMANDS::TO:
+			break;
+
+		case COMMANDS::UL:
+			break;
+
+		default:
+			return;   //올바르지 않은 명령어가 들어오면 바로 리턴.
+		}
+
+		std::cout << "[ " << us.GetID() << " ] " << str << endl;
+
 	}
 }
 

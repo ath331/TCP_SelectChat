@@ -11,9 +11,29 @@ Sender::~Sender()
 {
 }
 
-void Sender::SendLogin()
+void Sender::_SendLogin()
 {
 	_Send(LOGIN);
+}
+
+void Sender::_SendLogined()  //TODO : 중복되는 부분 함수화 시키기
+{
+	_Send(LINE);
+	_Send(ENTER);
+	_Send(LOGINED);
+	_Send(ENTER);
+	_Send(LINE);
+	_Send(ENTER);
+}
+
+void Sender::_SendCL()
+{
+	_Send(LINE);
+	_Send(ENTER);
+	_Send(CL);
+	_Send(ENTER);
+	_Send(LINE);
+	_Send(ENTER);
 }
 
 
