@@ -27,6 +27,8 @@ bool StringDistinguisher::IsCommands(string str)
 
 void StringDistinguisher::_splitStr(string str)
 {
+	v.clear();
+
 	int enterCount = count(str.begin(), str.end(), ' ');
 
 	for (int i = 0; i < enterCount + 1; i++)

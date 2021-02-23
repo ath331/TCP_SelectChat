@@ -69,6 +69,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
 	if (commands == COMMANDS::LOGIN && us.GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
 	{
+		if (_stringDistinguisher.v.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
+			return;
+
 		if (_stringDistinguisher.v.size() > 1) //함수화 하기
 			us.setID(_stringDistinguisher.v[1]);
 
@@ -90,7 +93,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_sender->_SendCL();
 			break;
 		default:
-			break;
+			return;   //올바르지 않은 명령어가 들어오면 바로 리턴.
 		}
 
 		std::cout << "[ " << us.GetID() << " ] " << str << endl;
