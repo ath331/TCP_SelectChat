@@ -18,7 +18,7 @@ public:
 
 	void RecvClient();
 
-	SOCKET hClntSock;
+	SOCKET hClntSock = 0;
 private:
 	map<SOCKET, UserState>* _userMap;
 	fd_set* _reads;

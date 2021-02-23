@@ -62,25 +62,42 @@ void TcpSession::_IsCommands(string str)
 
 	else		//str이 명령어가 아니라면 (채팅이라면) 해당 클라의 방번호로 채팅 전송
 	{
-		std::cout << "[ " << hClntSock<< " ] " << str << std::endl;
+		std::cout << "[ " << hClntSock << " ] " << str << std::endl;
 	}
 }
 
 void TcpSession::_ProcessingCommands(COMMANDS commands)
 {
-	switch (commands)
+	UserState* us = nullptr;
+	for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 	{
-	case COMMANDS::LOGIN:
-		std::cout << hClntSock << " is Login" << std::endl;
+		if (hClntSock == iter->first)
+			us = &iter->second;
+	}
+
+	if (us == nullptr)
+		return;
+
+	if (commands == COMMANDS::LOGIN && us->GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
+	{
+		us->setID("aaa");
+		std::cout << us->GetID() << " is Login" << std::endl;
 		_sender->_SendLogined();
-		break;
-	case COMMANDS::CL:
-		_sender->_SendCL();
-		break;
-	case COMMANDS::ENUM_COMMANDS_MAX_COUNT:
-		break;
-	default:
-		break;
+		us->SetLoginState(true);
+
+		return;
+	}
+
+	if (commands != COMMANDS::LOGIN && us->GetLoginState() == true)	//명령어가 LOGIN가 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
+	{
+		switch (commands)
+		{
+		case COMMANDS::CL:
+			_sender->_SendCL();
+			break;
+		default:
+			break;
+		}
 	}
 }
 
