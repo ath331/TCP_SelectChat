@@ -20,6 +20,8 @@ public:
 
 	SOCKET hClntSock = 0;
 private:
+	UserState us;
+
 	map<SOCKET, UserState>* _userMap;
 	fd_set* _reads;
 
@@ -34,6 +36,6 @@ private:
 	void _CloseClient();
 
 	void _IsCommands(string str);
-	void _ProcessingCommands(COMMANDS commands);
+	void _ProcessingCommands(COMMANDS commands, string str);
 };
 

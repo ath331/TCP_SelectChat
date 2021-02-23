@@ -3,6 +3,7 @@
 
 #pragma once
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -20,7 +21,10 @@ public:
 	~StringDistinguisher();
 
 	bool IsCommands(string str);				//str이 명령어라면 true 리턴
-
 	COMMANDS WhatCommands(string commands);		//commands를 enum 값을 리턴
+
+	vector<string> v;							//명령어 뒤의 오는 단어들을 저장하는 벡터. 인덱스 0에는 명령어가 저장된다.
+private:
+	void _splitStr(string str);
 };
 
