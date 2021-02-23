@@ -16,7 +16,7 @@ TcpSession::TcpSession(map<SOCKET, TcpSession*>* sessionMap, SOCKET sock, fd_set
 	_receiver = new Receiver(hClntSock);
 
 	_sender = new Sender(hClntSock);
-	_sender->SendLogin();
+	_sender->_SendLogin();
 }
 
 
@@ -71,7 +71,10 @@ void TcpSession::_ProcessingCommands(COMMANDS commands)
 	{
 	case COMMANDS::LOGIN:
 		std::cout << hClntSock << " is Login" << std::endl;
-
+		_sender->_SendLogined();
+		break;
+	case COMMANDS::CL:
+		_sender->_SendCL();
 		break;
 	case COMMANDS::ENUM_COMMANDS_MAX_COUNT:
 		break;

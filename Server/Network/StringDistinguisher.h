@@ -9,6 +9,7 @@ using namespace std;
 enum class COMMANDS : int
 {
 	LOGIN,
+	CL,
 	ENUM_COMMANDS_MAX_COUNT,					//COMMANDS의 ENUM값이 몇 개인지 쉽게 알기위한 값
 };
 

@@ -29,6 +29,8 @@ COMMANDS StringDistinguisher::WhatCommands(string commands)
 
 	if (strcmp(str.c_str(), "LOGIN") == 0)
 		return COMMANDS::LOGIN;
+	if (strcmp(str.c_str(), "CL") == 0)
+		return COMMANDS::CL;
 	else
 		return COMMANDS::ENUM_COMMANDS_MAX_COUNT;
 }
