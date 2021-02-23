@@ -1,10 +1,11 @@
 #pragma once
+#include "StringDistinguisher.h"
+
 #include <WinSock2.h>
 #include <map>
 
 using namespace std;
 
-class fd_set;
 class Accepter;
 class Receiver;
 class Sender;
@@ -25,9 +26,13 @@ private:
 	Receiver* _receiver;
 	Sender* _sender;
 
+	StringDistinguisher _stringDistinguisher;
 
 private:
 	void _Accept();
 	void _CloseClient();
+
+	void _IsCommands(string str);
+	void _ProcessingCommands(COMMANDS commands);
 };
 

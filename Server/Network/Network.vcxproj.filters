@@ -25,6 +25,9 @@
     <Filter Include="Sender">
       <UniqueIdentifier>{65c5ea2b-9024-4155-a64c-80c56537971f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Distinguisher">
+      <UniqueIdentifier>{8787d99f-459f-4211-a8b1-0dfc9e7b9620}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Timeval.h">
@@ -51,6 +54,9 @@
     <ClInclude Include="StringSpliter.h">
       <Filter>Receiver</Filter>
     </ClInclude>
+    <ClInclude Include="StringDistinguisher.h">
+      <Filter>Distinguisher</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -70,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="StringSpliter.cpp">
       <Filter>Receiver</Filter>
+    </ClCompile>
+    <ClCompile Include="StringDistinguisher.cpp">
+      <Filter>Distinguisher</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
