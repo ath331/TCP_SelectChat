@@ -9,6 +9,6 @@ public:
 	StringSpliter();
 	~StringSpliter();
 
-	string split(string& str);		//str에서 \n전 까지의 string을 추출하는 함수.
+	string split(string& str);		//str에서 \n전 까지의 string을 반환하고 str을 \n이후로 업데이트
 };
 

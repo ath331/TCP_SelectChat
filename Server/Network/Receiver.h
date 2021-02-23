@@ -17,7 +17,7 @@ public:
 
 	void Recv();
 private:
-	StringSpliter* _spliter;
+	StringSpliter* _spliter;					//_bufStr를 해석하는 객체.
 
 	char _buf[BUF_SIZE] = { NULL, };			//데이터를 받는 버퍼.Telnet은 1Byte씩 보내므로 10크기로도 충분할듯?
 	string _bufStr;								//받은 데이터가 쌓이는 버퍼 -> 개행문자("\n")가 들어오면 쌓여있는 데이터를 패킷화 하여 해석한다.
