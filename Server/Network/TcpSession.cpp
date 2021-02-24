@@ -1,4 +1,5 @@
 #include "TcpSession.h"
+#include "RoomManager.h"
 
 #include "Accepter.h"
 #include "Receiver.h"
@@ -8,7 +9,7 @@
 #include <iostream>
 
 TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads)
-	: _reads(reads), _roomManager(roomManager) ,_userMap(userMap)
+	: _reads(reads), _roomManager(roomManager), _userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
 	_Accept();
@@ -87,29 +88,39 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 	if (commands != COMMANDS::LOGIN && us.GetLoginState() == true)	//명령어가 LOGIN이 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
 	{
+		//TODO : 명령어들별로 함수화 시키기
 		switch (commands)
 		{
-		case COMMANDS::CL:
+		case COMMANDS::CL: //CommandsList
 			_sender->_SendCL();
 			break;
 
-		case COMMANDS::MR:
-			_sender->_SendMR();
+		case COMMANDS::MR: //MakeRoom
+			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
+			{
+				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), stoi(_stringDistinguisher.v[3]));
+				_sender->_SendMR();
+			}
+			else if (_stringDistinguisher.v.size() == 3) //공개방 생성
+			{
+				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]));
+				_sender->_SendMR();
+			}
 			break;
 
-		case COMMANDS::RE:
+		case COMMANDS::RE: //RoomEnter
 			_sender->_SendRE();
 			break;
 
-		case COMMANDS::RL:
+		case COMMANDS::RL: //RoomList
 			_sender->_SendRL();
 			break;
 
-		case COMMANDS::TO:
+		case COMMANDS::TO: //To
 			_sender->_SendTO();
 			break;
 
-		case COMMANDS::UL:
+		case COMMANDS::UL: //UserList
 			_sender->_SendUL();
 			break;
 
