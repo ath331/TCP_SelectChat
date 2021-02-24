@@ -61,10 +61,54 @@ void TcpSession::_IsCommands(string str)
 		_ProcessingCommands(commands, str);
 	}
 
-	else		//str이 명령어가 아니라면 (채팅이라면) 해당 클라의 방번호로 채팅 전송
+	else		//str이 명령어가 아니라면 (채팅이라면) 해당 클라의 방번호로 채팅 전송. 로비에있다면 로비로 채팅 전송
 	{
+		_ProcessingChatting(str);
 	}
 }
+
+void TcpSession::_ProcessingChatting(string str)
+{
+	if (us.GetLoginState() == false) //로그인하지 않은 상태라면 무시한다
+		return;
+
+	string message = ( "[ " + us.GetID() + " ]");
+	message += (" " + str);
+
+	if (us.GetIsEnteredRoom() == false) //로비에서 채팅을 입력했다면
+	{
+#define SESSION iter->second
+		for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
+		{
+			if (SESSION->us.GetIsEnteredRoom() == false) //로비에 있는 유저를 탐색
+			{
+				SOCKET sock = SESSION->hClntSock;
+				_sender->_Send(sock, message.c_str());
+				_sender->SendEnter(sock); //메시지를 받으면 개행처리한다
+			}
+		}
+	}
+
+	else if (us.GetIsEnteredRoom() == true) //방에서 채팅을 입력했다면
+	{
+#define USER iter->second
+		for (auto iter = _roomManager->_roomMap.begin(); iter != _roomManager->_roomMap.end(); iter++) //해당 방을 찾아서
+		{
+#define ROOM iter->second
+			if (ROOM.roomNum == us.GetRoomNum())
+			{
+				for (auto userStateIter = ROOM.userRoomMap.begin(); userStateIter != ROOM.userRoomMap.end(); userStateIter++) //방에 있는 모든 유저에게 메시지 전송
+				{
+					_sender->_Send(userStateIter->second.hClntSock, message.c_str());
+					_sender->SendEnter(userStateIter->second.hClntSock); //메시지를 받으면 개행처리한다
+
+				}
+				break;
+			}
+		}
+	}
+}
+
 
 void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
@@ -117,7 +161,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, us) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);
-				} 
+				}
 			}
 
 			_ProcessingCommands(COMMANDS::RE, enterStr);
