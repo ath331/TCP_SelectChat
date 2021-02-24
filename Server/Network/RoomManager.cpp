@@ -1,6 +1,6 @@
 #include "RoomManager.h"
 
-
+#define ROOM iter->second
 
 RoomManager::RoomManager()
 {
@@ -21,7 +21,6 @@ void RoomManager::MakeRoom(string name, int maxUserCount, string password)
 
 bool RoomManager::EnterRoom(int roomNum, UserState& user, string password)
 {
-#define ROOM iter->second
 
 	for (auto iter = _roomMap.begin(); iter != _roomMap.end(); iter++)
 	{
@@ -61,7 +60,6 @@ bool RoomManager::EnterRoom(int roomNum, UserState& user, string password)
 
 void RoomManager::OutRoom(int roomNum, UserState& user)
 {
-#define ROOM iter->second
 	for (auto iter = _roomMap.begin(); iter != _roomMap.end(); iter++)
 	{
 		if (roomNum == ROOM.roomNum)

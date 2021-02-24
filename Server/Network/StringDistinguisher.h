@@ -7,9 +7,20 @@
 
 using namespace std;
 
+const string COMMANDS_LOGIN		= "LOGIN";
+const string COMMANDS_CL		= "CL";
+const string COMMANDS_UL		= "UL";
+const string COMMANDS_MR		= "MR";
+const string COMMANDS_RL		= "RL";
+const string COMMANDS_RE		= "RE";
+const string COMMANDS_TO		= "TO";
+const string COMMANDS_QUIT		= "QUIT";
+const string COMMANDS_Q			= "Q";
+const string COMMANDS_RI		= "RI";
+
 enum class COMMANDS : int
 {
-	LOGIN,					 
+	LOGIN,
 	CL,						 //CommandsList. 명령어 목록
 	UL,						 //유저리스트
 	MR,						 //Make Room
@@ -19,7 +30,7 @@ enum class COMMANDS : int
 	QUIT,					 //프로그램 종료
 	Q,						 //방 나가기
 	RI,						 //방 정보 조회
-	ENUM_COMMANDS_MAX_COUNT, //COMMANDS의 ENUM값이 몇 개인지 쉽게 알기위한 값
+	ENUM_COMMANDS_MAX_COUNT,
 };
 
 class StringDistinguisher

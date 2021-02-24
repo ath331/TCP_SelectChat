@@ -13,6 +13,8 @@ void Server::_InitWSA()
 
 void Server::_SettingServer()
 {
+	CheckNullPtr((void*)_port);
+
 	_InitServerSock();
 
 	_Bind();
@@ -42,8 +44,6 @@ void Server::_Listen()
 
 void Server::Run()
 {
-	CheckNullPtr((void*)_port);
-
 	FD_ZERO(&_reads);
 	FD_SET(_hServSock, &_reads);
 
@@ -59,7 +59,7 @@ void Server::Run()
 		if (fdNum == 0)
 			continue;
 
-		for (int i = 0; i < _reads.fd_count; i++)
+		for (int i = 0; i < static_cast<int>(_reads.fd_count); i++)
 		{
 			SOCKET sock = _reads.fd_array[i];
 

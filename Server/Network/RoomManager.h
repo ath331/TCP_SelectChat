@@ -6,7 +6,6 @@
 #define ROOM_NUM int
 #define USER_NUM SOCKET
 
-class TcpSession;
 class RoomManager
 {
 public:

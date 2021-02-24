@@ -21,7 +21,7 @@ public:
 
 	SOCKET hClntSock = 0;
 private:
-	UserState us;
+	UserState _userState;
 
 	map<SOCKET, TcpSession*>* _userMap;
 	RoomManager* _roomManager;
