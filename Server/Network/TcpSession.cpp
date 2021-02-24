@@ -7,8 +7,8 @@
 #include <WinSock2.h>
 #include <iostream>
 
-TcpSession::TcpSession(map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads)
-	: _reads(reads), _userMap(userMap)
+TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads)
+	: _reads(reads), _roomManager(roomManager) ,_userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
 	_Accept();
@@ -72,7 +72,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		if (_stringDistinguisher.v.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
 			return;
 
-		if (_stringDistinguisher.v.size() > 1) //TODO : 함수화 하기
+		if (_stringDistinguisher.v.size() > 1)
 			us.setID(_stringDistinguisher.v[1]);
 
 		_sender->_SendLogined();
@@ -85,7 +85,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 	if (us.GetID() == "")  //유저정보가 등록되어 있지 않다면 바로 리턴.
 		return;
 
-	if (commands != COMMANDS::LOGIN && us.GetLoginState() == true)	//명령어가 LOGIN가 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
+	if (commands != COMMANDS::LOGIN && us.GetLoginState() == true)	//명령어가 LOGIN이 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
 	{
 		switch (commands)
 		{

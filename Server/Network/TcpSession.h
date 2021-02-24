@@ -7,13 +7,14 @@
 
 using namespace std;
 
+class RoomManager;
 class Accepter;
 class Receiver;
 class Sender;
 class TcpSession
 {
 public:
-	TcpSession(map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads);
+	TcpSession(RoomManager* roomManager, map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads);
 	~TcpSession();
 
 	void RecvClient();
@@ -23,6 +24,7 @@ private:
 	UserState us;
 
 	map<SOCKET, UserState>* _userMap;
+	RoomManager* _roomManager;
 	fd_set* _reads;
 
 	Accepter* _accept;
