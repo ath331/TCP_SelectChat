@@ -63,6 +63,12 @@ COMMANDS StringDistinguisher::WhatCommands(string commands)
 		return COMMANDS::TO;
 	if (strcmp(str.c_str(), "UL")	 == 0)
 		return COMMANDS::UL;
+	if (strcmp(str.c_str(), "Q")	 == 0)
+		return COMMANDS::Q;
+	if (strcmp(str.c_str(), "QUIT")  == 0)
+		return COMMANDS::QUIT;
+	if (strcmp(str.c_str(), "RI")	 == 0)
+		return COMMANDS::RI;
 	else
 		return COMMANDS::ENUM_COMMANDS_MAX_COUNT;
 }

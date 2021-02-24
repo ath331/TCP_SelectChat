@@ -96,20 +96,34 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			break;
 
 		case COMMANDS::MR: //MakeRoom
+		{
 			if (us.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 				return;
 
+			string enterStr;
 			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
 			{
 				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), stoi(_stringDistinguisher.v[3]));
 				_sender->_SendMR(hClntSock);
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, us, stoi(_stringDistinguisher.v[3])) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				{
+					_sender->_SendRE(hClntSock);
+				}
 			}
 			else if (_stringDistinguisher.v.size() == 3) //공개방 생성
 			{
 				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]));
 				_sender->_SendMR(hClntSock);
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, us) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				{
+					_sender->_SendRE(hClntSock);
+				} 
 			}
+
+			_ProcessingCommands(COMMANDS::RE, enterStr);
+
 			break;
+		}
 
 		case COMMANDS::RE: //RoomEnter
 		{
@@ -120,7 +134,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				break;
 
 			int password = 0;
-			int roomNum = stoi(_stringDistinguisher.v[1]);
+			int roomNum = stoi(_stringDistinguisher.v[1]); //TODO : string, int 구별하기
 			if (_stringDistinguisher.v.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
 				password = stoi(_stringDistinguisher.v[2]);
 
@@ -186,6 +200,19 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::UL: //UserList
 			_sender->_SendUL(hClntSock);
+			break;
+
+		case COMMANDS::Q:
+			if (us.GetIsEnteredRoom() == false)
+				return;
+
+			_roomManager->OutRoom(us.GetRoomNum(), us);
+			_sender->_SendLogined(hClntSock);
+
+			break;
+		case COMMANDS::QUIT:
+			break;
+		case COMMANDS::RI:
 			break;
 
 		default:
