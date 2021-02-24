@@ -44,6 +44,13 @@ void TcpSession::RecvClient()
 	if (_receiver->_strLen == 0)
 		_CloseClient();
 
+	else if (_receiver->_buf[_receiver->_strLen - 1] == '\b')//입력들어온 데이터의 가장 마지막 문자가 백 스페이스일 때
+	{
+		_receiver->InputBackSpace();
+		_sender->_Send(hClntSock, " ");
+		_sender->_Send(hClntSock, "\b");
+	}
+
 	else if (_receiver->_buf[_receiver->_strLen - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
 	{
 		std::string str = _receiver->split();

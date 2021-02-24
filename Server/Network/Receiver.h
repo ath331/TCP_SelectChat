@@ -25,6 +25,9 @@ private:
 
 	int _strLen		= 0;						//가장 최근에 받은 데이터의 길이
 
+private:
+	void InputBackSpace();						//백 스페이스가 입력되었을 때
+
 public:
 	friend TcpSession;
 };
