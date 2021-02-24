@@ -52,11 +52,7 @@ void Sender::_SendRE(SOCKET sock)
 {
 
 }
-void Sender::_SendTO(SOCKET sock, const char* buf)
-{
-	int strLen = strlen(buf);
-	send(sock, buf, strLen, 0);
-}
+
 void Sender::_SendUL(SOCKET sock)
 {
 

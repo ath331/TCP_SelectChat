@@ -129,10 +129,13 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			}
 			break;
 
-		case COMMANDS::TO: //To   TODO : 귓속말이 실패했다면 실패한 이유 로그 출력하기 (접속하지 않은 아이디, 내용을 입력하세요 등)
+		case COMMANDS::TO: //To
 		{
 			if (_stringDistinguisher.v.size() < 3) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
+			{
+				_sender->_Send(hClntSock, "내용을 입력하세요.\r\n");
 				break;
+			}
 
 			SOCKET senderSock = hClntSock; //보내는 사람
 			SOCKET receiverSock;		   //받는 사람
@@ -148,11 +151,13 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 						message += _stringDistinguisher.v[i];
 
 					message = ("[귓속말] " + us.GetID() + " : " + message);
-					_sender->_SendTO(receiverSock, message.c_str());
-					_sender->_SendTO(receiverSock, "\r\n");
+					_sender->_Send(receiverSock, message.c_str());
+					_sender->_Send(receiverSock, "\r\n");
+
+					return;;
 				}
 			}
-
+			_sender->_Send(hClntSock, "접속하지 않은 ID 입니다.\r\n");
 			break;
 		}
 
