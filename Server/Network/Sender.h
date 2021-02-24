@@ -9,7 +9,7 @@ public:
 	Sender(SOCKET sock);
 	~Sender();
 
-
+	void SendEnter();
 private:
 	SOCKET _sock;
 

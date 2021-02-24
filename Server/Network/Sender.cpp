@@ -19,21 +19,21 @@ void Sender::_SendLogin()
 void Sender::_SendLogined()  //TODO : 중복되는 부분 함수화 시키기
 {
 	_Send(LINE);
-	_Send(ENTER);
+	SendEnter();
 	_Send(LOGINED);
-	_Send(ENTER);
+	SendEnter();
 	_Send(LINE);
-	_Send(ENTER);
+	SendEnter();
 }
 
 void Sender::_SendCL()
 {
 	_Send(LINE);
-	_Send(ENTER);
+	SendEnter();
 	_Send(CL);
-	_Send(ENTER);
+	SendEnter();
 	_Send(LINE);
-	_Send(ENTER);
+	SendEnter();
 }
 void Sender::_SendMR()
 {
@@ -41,7 +41,12 @@ void Sender::_SendMR()
 }
 void Sender::_SendRL()
 {
-
+	_Send(LINE);
+	_Send(LINE);
+	_Send(LINE);
+	SendEnter();
+	_Send(RL);
+	SendEnter();
 }
 void Sender::_SendRE()
 {
@@ -54,6 +59,11 @@ void Sender::_SendTO()
 void Sender::_SendUL()
 {
 
+}
+
+void Sender::SendEnter()
+{
+	_Send(ENTER);
 }
 
 

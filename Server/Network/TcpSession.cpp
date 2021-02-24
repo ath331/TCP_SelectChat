@@ -114,6 +114,19 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::RL: //RoomList
 			_sender->_SendRL();
+			for (auto i : _roomManager->_roomMap)
+			{
+				auto roomInfo = i.second;
+				string roomInfoStr;
+				roomInfoStr = (to_string(roomInfo.roomNum) + "\t\t" + roomInfo.name + "\t\t" + to_string(roomInfo.userRoomMap.size()) + "/" + to_string(roomInfo.maxUserCount) + "\t\t");
+				if (roomInfo.isPrivateRoom)
+					roomInfoStr += "True";
+				else
+					roomInfoStr += "False";
+
+				_sender->_Send(roomInfoStr.c_str());
+				_sender->SendEnter();
+			}
 			break;
 
 		case COMMANDS::TO: //To
