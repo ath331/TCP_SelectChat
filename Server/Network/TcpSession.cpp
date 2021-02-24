@@ -94,18 +94,23 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			break;
 
 		case COMMANDS::MR:
+			_sender->_SendMR();
 			break;
 
 		case COMMANDS::RE:
+			_sender->_SendRE();
 			break;
 
 		case COMMANDS::RL:
+			_sender->_SendRL();
 			break;
 
 		case COMMANDS::TO:
+			_sender->_SendTO();
 			break;
 
 		case COMMANDS::UL:
+			_sender->_SendUL();
 			break;
 
 		default:

@@ -35,6 +35,26 @@ void Sender::_SendCL()
 	_Send(LINE);
 	_Send(ENTER);
 }
+void Sender::_SendMR()
+{
+
+}
+void Sender::_SendRL()
+{
+
+}
+void Sender::_SendRE()
+{
+
+}
+void Sender::_SendTO()
+{
+
+}
+void Sender::_SendUL()
+{
+
+}
 
 
 void Sender::_Send(const char* buf)
