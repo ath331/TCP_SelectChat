@@ -5,7 +5,7 @@ const char* ENTER = "\r\n";
 
 const char* LINE = "====================";
 
-const char* LOGIN = "Please Login. ( /LOGIN [ID] ) ";
+const char* LOGIN = "Please Login. ( /LOGIN [ID] )  ";
 
 const char* LOGINED = "명령어 보기 : /CL\r\n종료 : /QUIT";
 

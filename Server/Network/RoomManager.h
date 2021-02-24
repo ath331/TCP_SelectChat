@@ -3,6 +3,9 @@
 
 #include <vector>
 
+#define ROOM_NUM int
+#define USER_NUM SOCKET
+
 class TcpSession;
 class RoomManager
 {
@@ -32,11 +35,11 @@ private:
 
 		bool isPrivateRoom = false;
 		int password = -1;
-		vector<UserState> userRoomVec; //room안에 있는 유저들
+		map<USER_NUM, UserState> userRoomMap; //room안에 있는 유저들
 	};
 
 	int nextRoomNum = 1; //방이 생성될 때 배정하는 번호
-	map<int, Room> _roomMap;
+	map<ROOM_NUM, Room> _roomMap;
 
 private:
 	void DeleteRoom(int roomNum);
