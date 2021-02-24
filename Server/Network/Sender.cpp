@@ -77,8 +77,20 @@ void Sender::SendEnter(SOCKET sock)
 
 void Sender::_SendRI(SOCKET sock)
 {
+	_Send(sock, LINE);
+	_Send(sock, ENTER);
 	_Send(sock, RI);
+	_Send(sock, ENTER);
 }
+
+void Sender::_SendRUI(SOCKET sock)
+{
+	_Send(sock, LINE);
+	_Send(sock, ENTER);
+	_Send(sock, RUI);
+	_Send(sock, ENTER);
+}
+
 
 void Sender::_Send(SOCKET sock, const char* buf)
 {

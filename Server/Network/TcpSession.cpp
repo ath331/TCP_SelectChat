@@ -268,11 +268,34 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_CloseClient();
 			break;
 		case COMMANDS::RI:
+		{
 			if (us.GetIsEnteredRoom() == false) //로비에서 RoomInfo명령어를 호출하면 무시한다.
 				break;
 
 			_sender->_SendRI(hClntSock);
+
+#define ROOM _roomManager->_roomMap[us.GetRoomNum()] //user가 존재하는 room 접근
+			string message;
+			message += (to_string(ROOM.roomNum) + "\t\t" + ROOM.name + "\t" + to_string(ROOM.userRoomMap.size()) + " / " + to_string(ROOM.maxUserCount));
+			_sender->_Send(hClntSock, message.c_str());
+			_sender->SendEnter(hClntSock);
+			_sender->_SendRUI(hClntSock);
+
+#define MAX_USER_ID_COUNT 5
+			string userID;
+			int userCount = 0;
+			for (auto iter = ROOM.userRoomMap.begin(); iter != ROOM.userRoomMap.end(); iter++) //해당방에 있는 모든 유저의 아이디를 보기 위한 반복문
+			{
+				userID += iter->second.GetID() + " ";
+				userCount++;
+				if (userCount % MAX_USER_ID_COUNT == 0) //한 줄에 최대 몇명까지 표시해줄것인지 정한다
+					userID += "\r\n";
+			}
+			_sender->_Send(hClntSock, userID.c_str());
+			_sender->SendEnter(hClntSock);
+
 			break;
+		}
 
 		default:
 			return;   //올바르지 않은 명령어가 들어오면 바로 리턴.
