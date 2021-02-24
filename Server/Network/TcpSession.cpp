@@ -72,7 +72,7 @@ void TcpSession::_ProcessingChatting(string str)
 	if (us.GetLoginState() == false) //로그인하지 않은 상태라면 무시한다
 		return;
 
-	string message = ( "[ " + us.GetID() + " ]");
+	string message = ("[ " + us.GetID() + " ]");
 	message += (" " + str);
 
 	if (us.GetIsEnteredRoom() == false) //로비에서 채팅을 입력했다면
@@ -243,8 +243,18 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		}
 
 		case COMMANDS::UL: //UserList
+		{
+#define USER_STATE iter->second->us
 			_sender->_SendUL(hClntSock);
+			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
+			{
+				string userInfo = USER_STATE.GetID() + "\t\t" + to_string(USER_STATE.GetRoomNum());
+				_sender->_Send(hClntSock, userInfo.c_str());
+				_sender->SendEnter(hClntSock);
+			}
+			_sender->SendEnter(hClntSock);
 			break;
+		}
 
 		case COMMANDS::Q:
 			if (us.GetIsEnteredRoom() == false)
@@ -258,6 +268,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_CloseClient();
 			break;
 		case COMMANDS::RI:
+			if (us.GetIsEnteredRoom() == false) //로비에서 RoomInfo명령어를 호출하면 무시한다.
+				break;
+
 			_sender->_SendRI(hClntSock);
 			break;
 
