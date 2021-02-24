@@ -255,8 +255,10 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 			break;
 		case COMMANDS::QUIT:
+			_CloseClient();
 			break;
 		case COMMANDS::RI:
+			_sender->_SendRI(hClntSock);
 			break;
 
 		default:
