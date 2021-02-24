@@ -16,3 +16,9 @@ const char* RL = "RoomNum    RoomName    Person(cur/max)    Private(True/False)"
 const char* RE = "방에 입장했습니다.\r\n명령어 보기 : /CL\r\n방 나가기   : /Q";
 
 const char* RCL = "유저조회    : /UL\r\n방정보조회  : /RI\r\n귓속말      : /TO [ID] [내용]";
+
+const char* UL = "ID\t방 번호(로비 = 0)";
+
+const char* RI = "RoomNum    RoomName    Person(cur/max)";
+
+const char* RUI = "UserID";

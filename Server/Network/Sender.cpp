@@ -64,7 +64,7 @@ void Sender::_SendRE(SOCKET sock)
 
 void Sender::_SendUL(SOCKET sock)
 {
-
+	_Send(sock,UL);
 }
 
 void Sender::SendEnter(SOCKET sock)
@@ -72,6 +72,10 @@ void Sender::SendEnter(SOCKET sock)
 	_Send(sock, ENTER);
 }
 
+void Sender::_SendRI(SOCKET sock)
+{
+	_Send(sock, RI);
+}
 
 void Sender::_Send(SOCKET sock, const char* buf)
 {

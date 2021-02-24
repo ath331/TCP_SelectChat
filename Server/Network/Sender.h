@@ -20,6 +20,7 @@ private:
 	void _SendRL(SOCKET sock);					//방들의 목록을 보여주는 메시지 전송
 	void _SendRE(SOCKET sock);					//방에 들어가는 메시지 전송
 	void _SendUL(SOCKET sock);					//접속중인 유저 리스트를 보여주는 메시지 전송
+	void _SendRI(SOCKET sock);					//방의 정보를 보여주는 메시지 전송
 public:
 	friend TcpSession;
 };
