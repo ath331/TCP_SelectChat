@@ -6,23 +6,21 @@
 class Sender
 {
 public:
-	Sender(SOCKET sock);
+	Sender();
 	~Sender();
 
-	void SendEnter();
-private:
-	SOCKET _sock;
+	void SendEnter(SOCKET sock);
 
 private:
-	void _Send(const char* buf);	//_sock에게 buf를 전송
-	void _SendLogin();				//Login에 필요한 메시지를 전송
-	void _SendLogined();			//Login이 완료 되었을 때의 메시지를 전송
-	void _SendCL();					//명령어 목록을 보여주는 메시지 전송
-	void _SendMR();					//방을 만드는 메시지 전송
-	void _SendRL();					//방들의 목록을 보여주는 메시지 전송
-	void _SendRE();					//방에 들어가는 메시지 전송
-	void _SendTO();					//귓속말 메시지 전송
-	void _SendUL();					//접속중인 유저 리스트를 보여주는 메시지 전송
+	void _Send(SOCKET sock, const char* buf);	//_sock에게 buf를 전송
+	void _SendLogin(SOCKET sock);				//Login에 필요한 메시지를 전송
+	void _SendLogined(SOCKET sock);				//Login이 완료 되었을 때의 메시지를 전송
+	void _SendCL(SOCKET sock);					//명령어 목록을 보여주는 메시지 전송
+	void _SendMR(SOCKET sock);					//방을 만드는 메시지 전송
+	void _SendRL(SOCKET sock);					//방들의 목록을 보여주는 메시지 전송
+	void _SendRE(SOCKET sock);					//방에 들어가는 메시지 전송
+	void _SendUL(SOCKET sock);					//접속중인 유저 리스트를 보여주는 메시지 전송
+	void _SendTO(SOCKET sock, const char* buf);	//귓속말 메시지 전송
 public:
 	friend TcpSession;
 };
