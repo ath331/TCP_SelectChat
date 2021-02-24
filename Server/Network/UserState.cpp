@@ -34,3 +34,13 @@ void UserState::SetLoginState(bool b)
 {
 	_isLogined = b;
 }
+
+bool UserState::GetIsEnteredRoom()
+{
+	return _isEnteredRoom;
+}
+
+void UserState::SetIsEnteredRoom(bool b)
+{
+	_isEnteredRoom = b;
+}

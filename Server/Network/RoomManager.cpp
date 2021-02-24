@@ -33,6 +33,7 @@ bool RoomManager::EnterRoom(int roomNum, UserState& user, int password)
 				{
 					room.userRoomMap.insert(make_pair(user.hClntSock, user));
 					user.SetRoomNum(roomNum);
+					user.SetIsEnteredRoom(true);
 
 					return true;
 				}
@@ -42,11 +43,12 @@ bool RoomManager::EnterRoom(int roomNum, UserState& user, int password)
 					{
 						room.userRoomMap.insert(make_pair(user.hClntSock, user));
 						user.SetRoomNum(roomNum);
+						user.SetIsEnteredRoom(true);
 
 						return true;
 					}
 					else
-						return false;
+						return false; //방이 비공개 방인데 비밀번호가 다르면
 				}
 			}
 

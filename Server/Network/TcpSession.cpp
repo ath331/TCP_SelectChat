@@ -96,6 +96,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			break;
 
 		case COMMANDS::MR: //MakeRoom
+			if (us.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
+				return;
+
 			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
 			{
 				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), stoi(_stringDistinguisher.v[3]));
@@ -110,6 +113,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::RE: //RoomEnter
 		{
+			if (us.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
+				return;
+
 			if (_stringDistinguisher.v.size() < 2) //접속하려는 방의 정보를 입력하지 않으면 break
 				break;
 
