@@ -16,8 +16,8 @@ TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, UserState>* userMap
 
 	_receiver = new Receiver(hClntSock);
 
-	_sender = new Sender(hClntSock);
-	_sender->_SendLogin();
+	_sender = new Sender();
+	_sender->_SendLogin(hClntSock);
 }
 
 
@@ -76,7 +76,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		if (_stringDistinguisher.v.size() > 1)
 			us.setID(_stringDistinguisher.v[1]);
 
-		_sender->_SendLogined();
+		_sender->_SendLogined(hClntSock);
 		us.SetLoginState(true);
 
 		std::cout << "[ " << us.GetID() << " ] " << str << endl;
@@ -92,28 +92,28 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		switch (commands)
 		{
 		case COMMANDS::CL: //CommandsList
-			_sender->_SendCL();
+			_sender->_SendCL(hClntSock);
 			break;
 
 		case COMMANDS::MR: //MakeRoom
 			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
 			{
 				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), stoi(_stringDistinguisher.v[3]));
-				_sender->_SendMR();
+				_sender->_SendMR(hClntSock);
 			}
 			else if (_stringDistinguisher.v.size() == 3) //공개방 생성
 			{
 				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]));
-				_sender->_SendMR();
+				_sender->_SendMR(hClntSock);
 			}
 			break;
 
 		case COMMANDS::RE: //RoomEnter
-			_sender->_SendRE();
+			_sender->_SendRE(hClntSock);
 			break;
 
 		case COMMANDS::RL: //RoomList
-			_sender->_SendRL();
+			_sender->_SendRL(hClntSock);
 			for (auto i : _roomManager->_roomMap)
 			{
 				auto roomInfo = i.second;
@@ -124,17 +124,40 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				else
 					roomInfoStr += "False";
 
-				_sender->_Send(roomInfoStr.c_str());
-				_sender->SendEnter();
+				_sender->_Send(hClntSock,roomInfoStr.c_str());
+				_sender->SendEnter(hClntSock);
 			}
 			break;
 
-		case COMMANDS::TO: //To
-			_sender->_SendTO();
+		case COMMANDS::TO: //To   TODO : 귓속말이 실패했다면 실패한 이유 로그 출력하기 (접속하지 않은 아이디, 내용을 입력하세요 등)
+		{
+			if (_stringDistinguisher.v.size() < 3) //귓솔말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
+				break;
+
+			SOCKET senderSock = hClntSock; //보내는 사람
+			SOCKET receiverSock;		   //받는 사람
+			string senderID;
+			string receiverID = _stringDistinguisher.v[1];
+			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
+			{
+				if (iter->second.tcpSession->us.GetID() == receiverID)
+				{
+					receiverSock = iter->second.tcpSession->hClntSock;
+					string message;
+					for (int i = 2; i < _stringDistinguisher.v.size(); i++)
+						message += _stringDistinguisher.v[i];
+
+					message = ("[귓속말] " + us.GetID() + " : " + message);
+					_sender->_SendTO(receiverSock, message.c_str());
+					_sender->_SendTO(receiverSock, "\r\n");
+				}
+			}
+
 			break;
+		}
 
 		case COMMANDS::UL: //UserList
-			_sender->_SendUL();
+			_sender->_SendUL(hClntSock);
 			break;
 
 		default:
