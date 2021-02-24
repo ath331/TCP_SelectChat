@@ -14,7 +14,7 @@ class Sender;
 class TcpSession
 {
 public:
-	TcpSession(RoomManager* roomManager, map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads);
+	TcpSession(RoomManager* roomManager, map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads);
 	~TcpSession();
 
 	void RecvClient();
@@ -23,7 +23,7 @@ public:
 private:
 	UserState us;
 
-	map<SOCKET, UserState>* _userMap;
+	map<SOCKET, TcpSession*>* _userMap;
 	RoomManager* _roomManager;
 	fd_set* _reads;
 

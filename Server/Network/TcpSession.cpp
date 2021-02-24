@@ -8,7 +8,7 @@
 #include <WinSock2.h>
 #include <iostream>
 
-TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads)
+TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads)
 	: _reads(reads), _roomManager(roomManager), _userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
@@ -33,8 +33,8 @@ void TcpSession::_Accept()
 	_accept->AcceptClient();
 	hClntSock = _accept->_GetClntSock();
 
-	UserState userState(this);
-	_userMap->insert(make_pair(hClntSock, userState));
+	us.hClntSock = hClntSock;
+	_userMap->insert(make_pair(hClntSock, this));
 }
 
 void TcpSession::RecvClient()
@@ -160,9 +160,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			string receiverID = _stringDistinguisher.v[1];
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
-				if (iter->second.tcpSession->us.GetID() == receiverID)
+				if (iter->second->us.GetID() == receiverID)
 				{
-					receiverSock = iter->second.tcpSession->hClntSock;
+					receiverSock = iter->second->us.hClntSock;
 					string message;
 					for (int i = 2; i < _stringDistinguisher.v.size(); i++)
 						message += _stringDistinguisher.v[i];

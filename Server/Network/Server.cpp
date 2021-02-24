@@ -68,8 +68,8 @@ void Server::Run()
 				if (sock == _hServSock)				//해당 소켓이 서버소켓이라면
 					_session = new TcpSession(&_roomManager, &_userMap, _hServSock, &_reads); //TODO : delete는 어디서?
 
-				else								//해당 소켓이 클라이언트 소켓이라면
-					_userMap[sock].tcpSession->RecvClient();
+				else				//해당 소켓이 클라이언트 소켓이라면
+					_userMap[sock]->RecvClient();
 			}
 		}
 	}

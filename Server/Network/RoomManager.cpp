@@ -31,15 +31,19 @@ bool RoomManager::EnterRoom(int roomNum, UserState& user, int password)
 			{
 				if (room.isPrivateRoom == false) //방이 공개방이라면
 				{
-					room.userRoomMap.insert(make_pair(user.tcpSession->hClntSock, user));
+					room.userRoomMap.insert(make_pair(user.hClntSock, user));
 					user.SetRoomNum(roomNum);
+
+					return true;
 				}
 				else //방이 비공개 방이라면
 				{
 					if (room.password != password)
 					{
-						room.userRoomMap.insert(make_pair(user.tcpSession->hClntSock, user));
+						room.userRoomMap.insert(make_pair(user.hClntSock, user));
 						user.SetRoomNum(roomNum);
+
+						return true;
 					}
 					else
 						return false;
@@ -58,7 +62,7 @@ void RoomManager::OutRoom(int roomNum, UserState& user)
 	Room room = _roomMap[roomNum];
 	user.SetRoomNum(0); //로비의 번호인 0으로 세팅
 
-	room.userRoomMap.erase(user.tcpSession->hClntSock);
+	room.userRoomMap.erase(user.hClntSock);
 }
 
 void RoomManager::DeleteRoom(int roomNum)
