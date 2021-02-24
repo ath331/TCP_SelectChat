@@ -39,7 +39,7 @@ bool RoomManager::EnterRoom(int roomNum, UserState& user, int password)
 				}
 				else //방이 비공개 방이라면
 				{
-					if (ROOM.password != password)
+					if (ROOM.password == password) //입력한 비밀번호가 맞다면
 					{
 						ROOM.userRoomMap.insert(make_pair(user.hClntSock, user));
 						user.SetRoomNum(roomNum);

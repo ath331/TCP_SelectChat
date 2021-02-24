@@ -151,7 +151,6 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			if (us.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 				return;
 
-			string enterStr;
 			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
 			{
 				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), stoi(_stringDistinguisher.v[3]));
@@ -171,8 +170,6 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				}
 			}
 
-			_ProcessingCommands(COMMANDS::RE, enterStr);
-
 			break;
 		}
 
@@ -185,7 +182,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				break;
 
 			int password = 0;
-			int roomNum = stoi(_stringDistinguisher.v[1]); //TODO : string, int 구별하기
+			int roomNum = stoi(_stringDistinguisher.v[1]);
 			if (_stringDistinguisher.v.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
 				password = stoi(_stringDistinguisher.v[2]);
 
