@@ -131,7 +131,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::TO: //To   TODO : 귓속말이 실패했다면 실패한 이유 로그 출력하기 (접속하지 않은 아이디, 내용을 입력하세요 등)
 		{
-			if (_stringDistinguisher.v.size() < 3) //귓솔말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
+			if (_stringDistinguisher.v.size() < 3) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
 				break;
 
 			SOCKET senderSock = hClntSock; //보내는 사람
