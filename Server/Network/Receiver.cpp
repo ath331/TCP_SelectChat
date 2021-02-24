@@ -17,6 +17,14 @@ string Receiver::split()
 	return _spliter->split(_bufStr);
 }
 
+void Receiver::InputBackSpace()
+{
+	if (_bufStr == "\b") //빈칸일때 백 스페이스 입력시는 무시
+		return;
+
+	_bufStr.erase(_bufStr.length() - 1);
+	_bufStr.erase(_bufStr.length() - 1);
+}
 
 void Receiver::Recv()
 {

@@ -7,13 +7,14 @@
 
 using namespace std;
 
+class RoomManager;
 class Accepter;
 class Receiver;
 class Sender;
 class TcpSession
 {
 public:
-	TcpSession(map<SOCKET, UserState>* userMap, SOCKET sock, fd_set* reads);
+	TcpSession(RoomManager* roomManager, map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads);
 	~TcpSession();
 
 	void RecvClient();
@@ -22,7 +23,8 @@ public:
 private:
 	UserState us;
 
-	map<SOCKET, UserState>* _userMap;
+	map<SOCKET, TcpSession*>* _userMap;
+	RoomManager* _roomManager;
 	fd_set* _reads;
 
 	Accepter* _accept;
@@ -37,5 +39,6 @@ private:
 
 	void _IsCommands(string str);
 	void _ProcessingCommands(COMMANDS commands, string str);
+	void _ProcessingChatting(string str);
 };
 

@@ -1,8 +1,7 @@
 #include "Sender.h"
 #include "Message.h"
 
-Sender::Sender(SOCKET sock)
-	:_sock(sock)
+Sender::Sender()
 {
 }
 
@@ -11,34 +10,90 @@ Sender::~Sender()
 {
 }
 
-void Sender::_SendLogin()
+void Sender::_SendLogin(SOCKET sock)
 {
-	_Send(LOGIN);
+	_Send(sock, LOGIN);
 }
 
-void Sender::_SendLogined()  //TODO : 중복되는 부분 함수화 시키기
+void Sender::_SendLogined(SOCKET sock)  //TODO : 중복되는 부분 함수화 시키기
 {
-	_Send(LINE);
-	_Send(ENTER);
-	_Send(LOGINED);
-	_Send(ENTER);
-	_Send(LINE);
-	_Send(ENTER);
+	_Send(sock, LINE);
+	SendEnter(sock);
+	_Send(sock, LOGINED);
+	SendEnter(sock);
+	_Send(sock, LINE);
+	SendEnter(sock);
 }
 
-void Sender::_SendCL()
+void Sender::_SendCL(SOCKET sock)
 {
-	_Send(LINE);
-	_Send(ENTER);
-	_Send(CL);
-	_Send(ENTER);
-	_Send(LINE);
-	_Send(ENTER);
+	_Send(sock, LINE);
+	SendEnter(sock);
+	_Send(sock, CL);
+	SendEnter(sock);
+	_Send(sock, LINE);
+	SendEnter(sock);
+}
+void Sender::_SendMR(SOCKET sock)
+{
+
+}
+void Sender::_SendRL(SOCKET sock)
+{
+	_Send(sock, LINE);
+	_Send(sock, LINE);
+	_Send(sock, LINE);
+	SendEnter(sock);
+	_Send(sock, RL);
+	SendEnter(sock);
+	SendEnter(sock);
+}
+void Sender::_SendRE(SOCKET sock)
+{
+	_Send(sock, LINE);
+	_Send(sock, LINE);
+	SendEnter(sock);
+	_Send(sock, RE);
+	SendEnter(sock);
+	_Send(sock, RCL);
+	SendEnter(sock);
+	_Send(sock, LINE);
+	_Send(sock, LINE);
+	SendEnter(sock);
+}
+
+void Sender::_SendUL(SOCKET sock)
+{
+	_Send(sock, LINE);
+	SendEnter(sock);
+	_Send(sock,UL);
+	SendEnter(sock);
+}
+
+void Sender::SendEnter(SOCKET sock)
+{
+	_Send(sock, ENTER);
+}
+
+void Sender::_SendRI(SOCKET sock)
+{
+	_Send(sock, LINE);
+	_Send(sock, ENTER);
+	_Send(sock, RI);
+	_Send(sock, ENTER);
+}
+
+void Sender::_SendRUI(SOCKET sock)
+{
+	_Send(sock, LINE);
+	_Send(sock, ENTER);
+	_Send(sock, RUI);
+	_Send(sock, ENTER);
 }
 
 
-void Sender::_Send(const char* buf)
+void Sender::_Send(SOCKET sock, const char* buf)
 {
 	int strLen = strlen(buf);
-	send(_sock, buf, strLen, 0);
+	send(sock, buf, strLen, 0);
 }

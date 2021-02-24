@@ -16,6 +16,9 @@ enum class COMMANDS : int
 	RL,						 //Room List
 	RE,						 //Room Enter
 	TO,						 //귓속말
+	QUIT,					 //프로그램 종료
+	Q,						 //방 나가기
+	RI,						 //방 정보 조회
 	ENUM_COMMANDS_MAX_COUNT, //COMMANDS의 ENUM값이 몇 개인지 쉽게 알기위한 값
 };
 
