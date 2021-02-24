@@ -50,7 +50,12 @@ void Sender::_SendRL(SOCKET sock)
 }
 void Sender::_SendRE(SOCKET sock)
 {
-
+	_Send(sock, LINE);
+	_Send(sock, LINE);
+	SendEnter(sock);
+	_Send(sock, RE);
+	SendEnter(sock);
+	_Send(sock, RCL);
 }
 
 void Sender::_SendUL(SOCKET sock)

@@ -109,8 +109,25 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			break;
 
 		case COMMANDS::RE: //RoomEnter
-			_sender->_SendRE(hClntSock);
+		{
+			if (_stringDistinguisher.v.size() < 2) //접속하려는 방의 정보를 입력하지 않으면 break
+				break;
+
+			int password = 0;
+			int roomNum = stoi(_stringDistinguisher.v[1]);
+			if (_stringDistinguisher.v.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
+				password = stoi(_stringDistinguisher.v[2]);
+
+			if (_roomManager->EnterRoom(roomNum, us, password) == true) //방 입장 성공
+			{
+				_sender->_SendRE(hClntSock);
+			}
+
+			else
+				_sender->_Send(hClntSock, "입장 실패.");
+
 			break;
+		}
 
 		case COMMANDS::RL: //RoomList
 			_sender->_SendRL(hClntSock);
@@ -124,7 +141,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				else
 					roomInfoStr += "False";
 
-				_sender->_Send(hClntSock,roomInfoStr.c_str());
+				_sender->_Send(hClntSock, roomInfoStr.c_str());
 				_sender->SendEnter(hClntSock);
 			}
 			break;
