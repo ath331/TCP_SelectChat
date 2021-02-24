@@ -13,18 +13,18 @@ public:
 	RoomManager();
 	~RoomManager();
 
-	void MakeRoom(string name, int maxUserCount, int password = -1);	//방 생성 성공시 true 리턴
-	bool EnterRoom(int roomNum, UserState& user, int password = -1);		//방 참여 성공시 true 리턴
+	void MakeRoom(string name, int maxUserCount, string password = "-1");	//방 생성 성공시 true 리턴
+	bool EnterRoom(int roomNum, UserState& user, string password = "-1");		//방 참여 성공시 true 리턴
 	void OutRoom(int roomNum, UserState& user);							//방 나가기 성공시 true 리턴
 
 private:
 	struct Room
 	{
 		Room() {}
-		Room(string name, int maxUserCount, int password = -1)
+		Room(string name, int maxUserCount, string password = "-1")
 			:name(name), maxUserCount(maxUserCount), password(password)
 		{
-			if (password != -1)
+			if (password != "-1")
 				isPrivateRoom = true;
 		}
 
@@ -34,7 +34,7 @@ private:
 		int maxUserCount = 0;
 
 		bool isPrivateRoom = false;
-		int password = -1;
+		string password = "-1";
 		map<USER_NUM, UserState> userRoomMap; //room안에 있는 유저들
 	};
 

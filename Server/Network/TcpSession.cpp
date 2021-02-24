@@ -153,9 +153,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
 			{
-				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), stoi(_stringDistinguisher.v[3]));
+				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), _stringDistinguisher.v[3]);
 				_sender->_SendMR(hClntSock);
-				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, us, stoi(_stringDistinguisher.v[3])) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, us, _stringDistinguisher.v[3]) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);
 				}
@@ -181,10 +181,10 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			if (_stringDistinguisher.v.size() < 2) //접속하려는 방의 정보를 입력하지 않으면 break
 				break;
 
-			int password = 0;
+			string password;
 			int roomNum = stoi(_stringDistinguisher.v[1]);
 			if (_stringDistinguisher.v.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
-				password = stoi(_stringDistinguisher.v[2]);
+				password = _stringDistinguisher.v[2];
 
 			if (_roomManager->EnterRoom(roomNum, us, password) == true) //방 입장 성공
 			{

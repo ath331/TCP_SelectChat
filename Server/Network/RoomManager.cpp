@@ -11,7 +11,7 @@ RoomManager::~RoomManager()
 {
 }
 
-void RoomManager::MakeRoom(string name, int maxUserCount, int password)
+void RoomManager::MakeRoom(string name, int maxUserCount, string password)
 {
 	Room room(name, maxUserCount, password);
 	room.roomNum = nextRoomNum++;
@@ -19,7 +19,7 @@ void RoomManager::MakeRoom(string name, int maxUserCount, int password)
 	_roomMap.insert(make_pair(room.roomNum, room));
 }
 
-bool RoomManager::EnterRoom(int roomNum, UserState& user, int password)
+bool RoomManager::EnterRoom(int roomNum, UserState& user, string password)
 {
 #define ROOM iter->second
 
