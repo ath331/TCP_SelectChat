@@ -253,10 +253,10 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_sender->_SendRL(hClntSock);
 			for (auto i : _roomManager->_roomMap)
 			{
-				auto roomInfo = i.second;
+				auto roomInfo = &i.second;
 				string roomInfoStr;
-				roomInfoStr = (to_string(roomInfo.roomNum) + "\t\t" + roomInfo.name + "\t\t" + to_string(roomInfo.userRoomMap.size()) + "/" + to_string(roomInfo.maxUserCount) + "\t\t");
-				if (roomInfo.isPrivateRoom)
+				roomInfoStr = (to_string(roomInfo->roomNum) + "\t\t" + roomInfo->name + "\t\t" + to_string(roomInfo->userRoomMap.size()) + "/" + to_string(roomInfo->maxUserCount) + "\t\t");
+				if (roomInfo->isPrivateRoom)
 					roomInfoStr += "True";
 				else
 					roomInfoStr += "False";
@@ -312,9 +312,12 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_sender->_SendUL(hClntSock);
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
-				string userInfo = USER_STATE.GetID() + "\t\t" + to_string(USER_STATE.GetRoomNum());
-				_sender->_Send(hClntSock, userInfo.c_str());
-				_sender->SendEnter(hClntSock);
+				if (iter->second->_userState.GetLoginState() == true)
+				{
+					string userInfo = USER_STATE.GetID() + "\t\t" + to_string(USER_STATE.GetRoomNum());
+					_sender->_Send(hClntSock, userInfo.c_str());
+					_sender->SendEnter(hClntSock);
+				}
 			}
 			_sender->SendEnter(hClntSock);
 			break;
