@@ -13,6 +13,9 @@ RoomManager::~RoomManager()
 
 void RoomManager::MakeRoom(string name, int maxUserCount, string password)
 {
+	if (maxUserCount < 1)
+		maxUserCount = 1;
+
 	Room room(name, maxUserCount, password);
 	room.roomNum = nextRoomNum++;
 
