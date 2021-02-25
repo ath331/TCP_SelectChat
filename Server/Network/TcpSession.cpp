@@ -8,7 +8,7 @@
 #include <WinSock2.h>
 #include <iostream>
 
-TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads)
+TcpSession::TcpSession(RoomManager* roomManager, unordered_map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads)
 	: _reads(reads), _roomManager(roomManager), _userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
@@ -121,6 +121,16 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 	{
 		if (COMMANDS_PARAMETERS_VECTOR.size() <= NONE_LOGIN_PARAMETERS) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
 			return;
+
+		for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
+		{
+			if (iter->second->_userState.GetID() == LOGIN_ID)
+			{
+				_sender->_Send(hClntSock,"접속중인 ID 입니다.");
+				_sender->SendEnter(hClntSock);
+				return;
+			}
+		}
 
 		if (COMMANDS_PARAMETERS_VECTOR.size() > NONE_LOGIN_PARAMETERS)
 			_userState.setID(LOGIN_ID);

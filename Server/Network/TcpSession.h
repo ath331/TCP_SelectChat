@@ -3,7 +3,7 @@
 #include "UserState.h"
 
 #include <WinSock2.h>
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -14,7 +14,7 @@ class Sender;
 class TcpSession
 {
 public:
-	TcpSession(RoomManager* roomManager, map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads);
+	TcpSession(RoomManager* roomManager, unordered_map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads);
 	~TcpSession();
 
 	void RecvClient();
@@ -23,7 +23,7 @@ public:
 private:
 	UserState _userState;
 
-	map<SOCKET, TcpSession*>* _userMap;
+	unordered_map<SOCKET, TcpSession*>* _userMap;
 	RoomManager* _roomManager;
 	fd_set* _reads;
 
