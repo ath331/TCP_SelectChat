@@ -79,7 +79,16 @@ void TcpSession::_ProcessingChatting(string str)
 	if (_userState.GetLoginState() == false) //로그인하지 않은 상태라면 무시한다
 		return;
 
-	string message = ("[ " + _userState.GetID() + " ]");
+	string message;
+	if (_userState.GetIsEnteredRoom() == false) //로비에서의 채팅이라면
+	{
+		message = ("[ 로비 ] ");
+	}
+	else if (_userState.GetIsEnteredRoom() == true) //방에서의 채팅이라면
+	{
+		message = ("[ 방 채팅 ] ");
+	}
+	message += "[ " + _userState.GetID() + " ]";
 	message += (" " + str);
 
 	if (_userState.GetIsEnteredRoom() == false) //로비에서 채팅을 입력했다면
@@ -87,7 +96,7 @@ void TcpSession::_ProcessingChatting(string str)
 #define SESSION iter->second
 		for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 		{
-			if (SESSION->_userState.GetIsEnteredRoom() == false) //로비에 있는 유저를 탐색
+			if (SESSION->_userState.GetIsEnteredRoom() == false && SESSION->_userState.GetLoginState() == true) //로비에 있는 유저를 탐색
 			{
 				SOCKET sock = SESSION->hClntSock;
 				_sender->_Send(sock, message.c_str());
@@ -131,7 +140,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		{
 			if (iter->second->_userState.GetID() == LOGIN_ID)
 			{
-				_sender->_Send(hClntSock,"접속중인 ID 입니다.");
+				_sender->_Send(hClntSock, "접속중인 ID 입니다.");
 				_sender->SendEnter(hClntSock);
 				return;
 			}
@@ -149,7 +158,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 	if (_userState.GetID() == "")  //유저정보가 등록되어 있지 않다면 바로 리턴.
 	{
-		_sender->_Send(hClntSock,"/LOGIN부터 해주세요! 로그인 명령어 : /LOGIN [ID]");
+		_sender->_Send(hClntSock, "/LOGIN부터 해주세요! 로그인 명령어 : /LOGIN [ID]");
 		_sender->SendEnter(hClntSock);
 		return;
 	}
@@ -166,7 +175,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		{
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 			{
-				_sender->_Send(hClntSock,"이미 방에 입장중입니다.");
+				_sender->_Send(hClntSock, "이미 방에 입장중입니다.");
 				_sender->SendEnter(hClntSock);
 				return;
 			}
@@ -274,9 +283,10 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 					receiverSock = USER_STATE.hClntSock;
 					string message;
 					for (int i = MESSAGE_INDEX; i < COMMANDS_PARAMETERS_VECTOR.size(); i++)
-						message += ( COMMANDS_PARAMETERS_VECTOR[i] + " ");
+						message += (COMMANDS_PARAMETERS_VECTOR[i] + " ");
 
-					message = ("[귓속말] " + senderID + " : " + message);
+					string to = "[ 귓속말 ] ";
+					message = to + "[ " + senderID + " ]" + " : " + message;
 					_sender->_Send(receiverSock, message.c_str());
 					_sender->_Send(receiverSock, "\r\n");
 
@@ -340,7 +350,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			{
 				userID += iter->second.GetID() + " ";
 				userCount++;
-				if (userCount % MAX_PRINT_USER_ID_COUNT == 0) 
+				if (userCount % MAX_PRINT_USER_ID_COUNT == 0)
 					userID += "\r\n";
 			}
 			_sender->_Send(hClntSock, userID.c_str());
@@ -350,7 +360,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		}
 
 		default:
-			_sender->_Send(hClntSock,"올바르지 않은 명령어 입니다. 명령어 보기 : /CL");
+			_sender->_Send(hClntSock, "올바르지 않은 명령어 입니다. 명령어 보기 : /CL");
 			_sender->SendEnter(hClntSock);
 			return;   //올바르지 않은 명령어가 들어오면 바로 리턴.
 		}
@@ -362,6 +372,14 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 void TcpSession::_CloseClient()
 {
+	UserState userState;  //유저가 종료할 때 입장중이던 방에서 아웃처리하도록 구현
+	for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
+	{
+		if (iter->second->hClntSock == hClntSock)
+			userState = iter->second->_userState;
+	}
+
+	_roomManager->OutRoom(userState.GetRoomNum(), userState);
 	_userMap->erase(hClntSock);
 
 	FD_CLR(hClntSock, _reads);
