@@ -91,7 +91,7 @@ void TcpSession::_ProcessingChatting(string str)
 			{
 				SOCKET sock = SESSION->hClntSock;
 				_sender->_Send(sock, message.c_str());
-				_sender->SendEnter(sock); //메시지를 받으면 개행처리한다
+				_sender->SendEnter(sock); //메시지와 개행문자를 전송한다
 			}
 		}
 	}
@@ -137,7 +137,6 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 	if (commands != COMMANDS::LOGIN && _userState.GetLoginState() == true)	//명령어가 LOGIN이 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
 	{
-		//TODO : 명령어들별로 함수화 시키기
 		switch (commands)
 		{
 		case COMMANDS::CL: //CommandsList
