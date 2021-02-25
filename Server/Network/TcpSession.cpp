@@ -58,7 +58,7 @@ void TcpSession::RecvClient()
 	}
 }
 
-void TcpSession::_IsCommands(string str)
+void TcpSession::_IsCommands(string& str)
 {
 	bool b = _stringDistinguisher.IsCommands(str);
 
@@ -120,11 +120,11 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
 	if (commands == COMMANDS::LOGIN && _userState.GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
 	{
-		if (_stringDistinguisher.v.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
+		if (_stringDistinguisher.commandsParametersListVec.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
 			return;
 
-		if (_stringDistinguisher.v.size() > 1)
-			_userState.setID(_stringDistinguisher.v[1]);
+		if (_stringDistinguisher.commandsParametersListVec.size() > 1)
+			_userState.setID(_stringDistinguisher.commandsParametersListVec[1]);
 
 		_sender->_SendLogined(hClntSock);
 		_userState.SetLoginState(true);
@@ -150,18 +150,18 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 				return;
 
-			if (_stringDistinguisher.v.size() > 3) //비공개방 생성
+			if (_stringDistinguisher.commandsParametersListVec.size() > MAKE_ROOM_PARAMETERS_COUNTS) //비공개방 생성
 			{
-				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]), _stringDistinguisher.v[3]);
+				_roomManager->MakeRoom(_stringDistinguisher.commandsParametersListVec[1], stoi(_stringDistinguisher.commandsParametersListVec[2]), _stringDistinguisher.commandsParametersListVec[3]);
 				_sender->_SendMR(hClntSock);
-				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, _stringDistinguisher.v[3]) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, _stringDistinguisher.commandsParametersListVec[3]) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);
 				}
 			}
-			else if (_stringDistinguisher.v.size() == 3) //공개방 생성
+			else if (_stringDistinguisher.commandsParametersListVec.size() == 3) //공개방 생성
 			{
-				_roomManager->MakeRoom(_stringDistinguisher.v[1], stoi(_stringDistinguisher.v[2]));
+				_roomManager->MakeRoom(_stringDistinguisher.commandsParametersListVec[1], stoi(_stringDistinguisher.commandsParametersListVec[2]));
 				_sender->_SendMR(hClntSock);
 				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
@@ -177,13 +177,13 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 				return;
 
-			if (_stringDistinguisher.v.size() < 2) //접속하려는 방의 정보를 입력하지 않으면 break
+			if (_stringDistinguisher.commandsParametersListVec.size() < 2) //접속하려는 방의 정보를 입력하지 않으면 break
 				break;
 
 			string password;
-			int roomNum = stoi(_stringDistinguisher.v[1]);
-			if (_stringDistinguisher.v.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
-				password = _stringDistinguisher.v[2];
+			int roomNum = stoi(_stringDistinguisher.commandsParametersListVec[1]);
+			if (_stringDistinguisher.commandsParametersListVec.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
+				password = _stringDistinguisher.commandsParametersListVec[2];
 
 			if (_roomManager->EnterRoom(roomNum, _userState, password) == true) //방 입장 성공
 			{
@@ -215,7 +215,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::TO: //To
 		{
-			if (_stringDistinguisher.v.size() < 3) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
+			if (_stringDistinguisher.commandsParametersListVec.size() < 3) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
 			{
 				_sender->_Send(hClntSock, "내용을 입력하세요.\r\n");
 				break;
@@ -224,15 +224,15 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			SOCKET senderSock = hClntSock; //보내는 사람
 			SOCKET receiverSock;		   //받는 사람
 			string senderID;
-			string receiverID = _stringDistinguisher.v[1];
+			string receiverID = _stringDistinguisher.commandsParametersListVec[1];
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
 				if (iter->second->_userState.GetID() == receiverID)
 				{
 					receiverSock = iter->second->_userState.hClntSock;
 					string message;
-					for (int i = 2; i < _stringDistinguisher.v.size(); i++)
-						message += _stringDistinguisher.v[i];
+					for (int i = 2; i < _stringDistinguisher.commandsParametersListVec.size(); i++)
+						message += _stringDistinguisher.commandsParametersListVec[i];
 
 					message = ("[귓속말] " + _userState.GetID() + " : " + message);
 					_sender->_Send(receiverSock, message.c_str());

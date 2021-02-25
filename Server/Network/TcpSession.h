@@ -37,7 +37,7 @@ private:
 	void _Accept();
 	void _CloseClient();
 
-	void _IsCommands(string str);
+	void _IsCommands(string& str);
 	void _ProcessingCommands(COMMANDS commands, string str);
 	void _ProcessingChatting(string str);
 };

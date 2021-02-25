@@ -1,7 +1,9 @@
 //문자열이 명령어인지 채팅인지 판별하는 클래스
-//명령어라면 무슨 명령어인지 리턴한다.
+//명령어라면 무슨 명령어인지 리턴하고 commandsParametersListVec에 해당 명령어와 같이 들어온 매개변수들을 저장한다.
 
 #pragma once
+#include "ParametersDefine.h"
+
 #include <string>
 #include <vector>
 
@@ -39,11 +41,13 @@ public:
 	StringDistinguisher();
 	~StringDistinguisher();
 
-	bool IsCommands(string str);				//str이 명령어라면 true 리턴
+	bool IsCommands(string& str);				//str이 명령어라면 true 리턴
 	COMMANDS WhatCommands(string commands);		//commands를 enum 값을 리턴
 
-	vector<string> v;							//명령어 뒤의 오는 단어들을 저장하는 벡터. 인덱스 0에는 명령어가 저장된다.
+	vector<string> commandsParametersListVec;	//명령어 뒤의 오는 단어들을 저장하는 벡터. 인덱스 0에는 명령어가 저장된다.
 private:
-	void _splitStr(string str);
+	void _TrimSpace(string& str);				//붙어서온 " "문자를 하나의 " "으로 압축하는 함수.
+	void _splitStr(string str);					//str을 공백기준으로 명령어, 명령어와 함께 들어온 매개변수들을 분리하여 commandsParametersListVec에 푸시한다.
+	bool _IsFirstCharSlash(string str);			//str에서 가장 먼저 나타나는 공백이 아닌문자가 '/' 인지 판단하는 함수
 };
 
