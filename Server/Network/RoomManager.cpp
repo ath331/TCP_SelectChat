@@ -25,7 +25,7 @@ void RoomManager::MakeRoom(string name, string maxUserCount, string password)
 	}
 
 	if (roomMaxUserCount < 1)
-		maxUserCount = DEFAULT_MAX_ROOM_USER_COUNTS; //인원이 음수이면 디폴트 값으로 보정
+		roomMaxUserCount = DEFAULT_MAX_ROOM_USER_COUNTS; //인원이 음수이면 디폴트 값으로 보정
 
 	Room room(name, roomMaxUserCount, password);
 	room.roomNum = nextRoomNum++;
