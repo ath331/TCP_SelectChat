@@ -312,9 +312,12 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_sender->_SendUL(hClntSock);
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
-				string userInfo = USER_STATE.GetID() + "\t\t" + to_string(USER_STATE.GetRoomNum());
-				_sender->_Send(hClntSock, userInfo.c_str());
-				_sender->SendEnter(hClntSock);
+				if (iter->second->_userState.GetLoginState() == true)
+				{
+					string userInfo = USER_STATE.GetID() + "\t\t" + to_string(USER_STATE.GetRoomNum());
+					_sender->_Send(hClntSock, userInfo.c_str());
+					_sender->SendEnter(hClntSock);
+				}
 			}
 			_sender->SendEnter(hClntSock);
 			break;
