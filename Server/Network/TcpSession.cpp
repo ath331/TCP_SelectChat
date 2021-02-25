@@ -150,7 +150,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 			if (COMMANDS_PARAMETERS_VECTOR.size() > MAKE_ROOM_PARAMETERS_COUNTS) //비공개방 생성
 			{
-				_roomManager->MakeRoom(ROOM_NAME, stoi(_stringDistinguisher.commandsParametersListVec[2]), MAKE_ROOM_PASSWORD);
+				_roomManager->MakeRoom(ROOM_NAME, ROOM_MAX_USER_COUNTS, MAKE_ROOM_PASSWORD);
 				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, MAKE_ROOM_PASSWORD) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);
@@ -158,7 +158,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			}
 			else if (COMMANDS_PARAMETERS_VECTOR.size() == MAKE_ROOM_PARAMETERS_COUNTS) //공개방 생성
 			{
-				_roomManager->MakeRoom(ROOM_NAME, stoi(_stringDistinguisher.commandsParametersListVec[2]));
+				_roomManager->MakeRoom(ROOM_NAME, ROOM_MAX_USER_COUNTS);
 				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);

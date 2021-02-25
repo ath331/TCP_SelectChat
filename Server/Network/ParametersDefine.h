@@ -12,7 +12,7 @@
 #define RECEIVER_ID _stringDistinguisher.commandsParametersListVec[1]
 #define MAKE_ROOM_PASSWORD _stringDistinguisher.commandsParametersListVec[3]
 #define ENTER_ROOM_PASSWORD _stringDistinguisher.commandsParametersListVec[2]
-#define ROOM_MAX_USER_COUNTS = _stringDistinguisher.commandsParametersListVec[2]
+#define ROOM_MAX_USER_COUNTS _stringDistinguisher.commandsParametersListVec[2]
 
 
 

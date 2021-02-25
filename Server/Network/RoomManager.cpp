@@ -6,17 +6,28 @@ RoomManager::RoomManager()
 {
 }
 
-
 RoomManager::~RoomManager()
 {
 }
 
-void RoomManager::MakeRoom(string name, int maxUserCount, string password)
-{
-	if (maxUserCount < 1)
-		maxUserCount = 1;
+const int DEFAULT_MAX_ROOM_USER_COUNTS = 10;
 
-	Room room(name, maxUserCount, password);
+void RoomManager::MakeRoom(string name, string maxUserCount, string password)
+{
+	int roomMaxUserCount = 0;
+	try
+	{
+		roomMaxUserCount = stoi(maxUserCount);
+	}
+	catch (const std::exception&)
+	{
+		roomMaxUserCount = DEFAULT_MAX_ROOM_USER_COUNTS; //문자열로 들어오는 maxUserCount를 int타입으로 변환할 떄 오류가 생기면(인원을 문자로 입력할 때) 디폴트 값으로 보정.
+	}
+
+	if (roomMaxUserCount < 1)
+		maxUserCount = DEFAULT_MAX_ROOM_USER_COUNTS; //인원이 음수이면 디폴트 값으로 보정
+
+	Room room(name, roomMaxUserCount, password);
 	room.roomNum = nextRoomNum++;
 
 	_roomMap.insert(make_pair(room.roomNum, room));
