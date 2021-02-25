@@ -115,16 +115,15 @@ void TcpSession::_ProcessingChatting(string str)
 	}
 }
 
-
 void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
 	if (commands == COMMANDS::LOGIN && _userState.GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
 	{
-		if (_stringDistinguisher.commandsParametersListVec.size() <= 1) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
+		if (COMMANDS_PARAMETERS_VECTOR.size() <= NONE_LOGIN_PARAMETERS) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
 			return;
 
-		if (_stringDistinguisher.commandsParametersListVec.size() > 1)
-			_userState.setID(_stringDistinguisher.commandsParametersListVec[1]);
+		if (COMMANDS_PARAMETERS_VECTOR.size() > NONE_LOGIN_PARAMETERS)
+			_userState.setID(LOGIN_ID);
 
 		_sender->_SendLogined(hClntSock);
 		_userState.SetLoginState(true);
@@ -150,19 +149,17 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 				return;
 
-			if (_stringDistinguisher.commandsParametersListVec.size() > MAKE_ROOM_PARAMETERS_COUNTS) //비공개방 생성
+			if (COMMANDS_PARAMETERS_VECTOR.size() > MAKE_ROOM_PARAMETERS_COUNTS) //비공개방 생성
 			{
-				_roomManager->MakeRoom(_stringDistinguisher.commandsParametersListVec[1], stoi(_stringDistinguisher.commandsParametersListVec[2]), _stringDistinguisher.commandsParametersListVec[3]);
-				_sender->_SendMR(hClntSock);
-				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, _stringDistinguisher.commandsParametersListVec[3]) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				_roomManager->MakeRoom(ROOM_NAME, stoi(_stringDistinguisher.commandsParametersListVec[2]), MAKE_ROOM_PASSWORD);
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, MAKE_ROOM_PASSWORD) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);
 				}
 			}
-			else if (_stringDistinguisher.commandsParametersListVec.size() == 3) //공개방 생성
+			else if (COMMANDS_PARAMETERS_VECTOR.size() == MAKE_ROOM_PARAMETERS_COUNTS) //공개방 생성
 			{
-				_roomManager->MakeRoom(_stringDistinguisher.commandsParametersListVec[1], stoi(_stringDistinguisher.commandsParametersListVec[2]));
-				_sender->_SendMR(hClntSock);
+				_roomManager->MakeRoom(ROOM_NAME, stoi(_stringDistinguisher.commandsParametersListVec[2]));
 				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
 				{
 					_sender->_SendRE(hClntSock);
@@ -177,13 +174,13 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
 				return;
 
-			if (_stringDistinguisher.commandsParametersListVec.size() < 2) //접속하려는 방의 정보를 입력하지 않으면 break
+			if (COMMANDS_PARAMETERS_VECTOR.size() < NONE_ENTER_ROOM_PARAMETERS) //접속하려는 방의 정보를 입력하지 않으면 break
 				break;
 
 			string password;
 			int roomNum = stoi(_stringDistinguisher.commandsParametersListVec[1]);
-			if (_stringDistinguisher.commandsParametersListVec.size() > 2) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
-				password = _stringDistinguisher.commandsParametersListVec[2];
+			if (COMMANDS_PARAMETERS_VECTOR.size() > NONE_ENTER_ROOM_PARAMETERS) //비밀번호까지 같이 입력했다면 true (공개방 입장인데 비밀번호를 입력했어도 입장가능)
+				password = ENTER_ROOM_PASSWORD;
 
 			if (_roomManager->EnterRoom(roomNum, _userState, password) == true) //방 입장 성공
 			{
@@ -215,7 +212,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::TO: //To
 		{
-			if (_stringDistinguisher.commandsParametersListVec.size() < 3) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
+			if (COMMANDS_PARAMETERS_VECTOR.size() < TO_PARAMETERS_COUNTS) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
 			{
 				_sender->_Send(hClntSock, "내용을 입력하세요.\r\n");
 				break;
@@ -224,15 +221,15 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			SOCKET senderSock = hClntSock; //보내는 사람
 			SOCKET receiverSock;		   //받는 사람
 			string senderID;
-			string receiverID = _stringDistinguisher.commandsParametersListVec[1];
+			string receiverID = RECEIVER_ID;
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
 				if (iter->second->_userState.GetID() == receiverID)
 				{
 					receiverSock = iter->second->_userState.hClntSock;
 					string message;
-					for (int i = 2; i < _stringDistinguisher.commandsParametersListVec.size(); i++)
-						message += _stringDistinguisher.commandsParametersListVec[i];
+					for (int i = 2; i < COMMANDS_PARAMETERS_VECTOR.size(); i++)
+						message += COMMANDS_PARAMETERS_VECTOR[i];
 
 					message = ("[귓속말] " + _userState.GetID() + " : " + message);
 					_sender->_Send(receiverSock, message.c_str());
@@ -284,14 +281,14 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_sender->SendEnter(hClntSock);
 			_sender->_SendRUI(hClntSock);
 
-#define MAX_USER_ID_COUNT 5
+#define MAX_PRINT_USER_ID_COUNT 5 //한 줄에 최대 몇명까지 표시해줄것인지 정한다
 			string userID;
 			int userCount = 0;
 			for (auto iter = ROOM.userRoomMap.begin(); iter != ROOM.userRoomMap.end(); iter++) //해당방에 있는 모든 유저의 아이디를 보기 위한 반복문
 			{
 				userID += iter->second.GetID() + " ";
 				userCount++;
-				if (userCount % MAX_USER_ID_COUNT == 0) //한 줄에 최대 몇명까지 표시해줄것인지 정한다
+				if (userCount % MAX_PRINT_USER_ID_COUNT == 0) 
 					userID += "\r\n";
 			}
 			_sender->_Send(hClntSock, userID.c_str());

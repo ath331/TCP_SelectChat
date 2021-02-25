@@ -34,10 +34,7 @@ void Sender::_SendCL(SOCKET sock)
 	_Send(sock, LINE);
 	SendEnter(sock);
 }
-void Sender::_SendMR(SOCKET sock)
-{
 
-}
 void Sender::_SendRL(SOCKET sock)
 {
 	_Send(sock, LINE);
