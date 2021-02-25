@@ -220,22 +220,24 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 			SOCKET senderSock = hClntSock; //보내는 사람
 			SOCKET receiverSock;		   //받는 사람
-			string senderID;
+			string senderID = _userState.GetID();
 			string receiverID = RECEIVER_ID;
+
+#define USER_STATE iter->second->_userState
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
-				if (iter->second->_userState.GetID() == receiverID)
+				if (USER_STATE.GetID() == receiverID)
 				{
-					receiverSock = iter->second->_userState.hClntSock;
+					receiverSock = USER_STATE.hClntSock;
 					string message;
-					for (int i = 2; i < COMMANDS_PARAMETERS_VECTOR.size(); i++)
-						message += COMMANDS_PARAMETERS_VECTOR[i];
+					for (int i = MESSAGE_INDEX; i < COMMANDS_PARAMETERS_VECTOR.size(); i++)
+						message += ( COMMANDS_PARAMETERS_VECTOR[i] + " ");
 
-					message = ("[귓속말] " + _userState.GetID() + " : " + message);
+					message = ("[귓속말] " + senderID + " : " + message);
 					_sender->_Send(receiverSock, message.c_str());
 					_sender->_Send(receiverSock, "\r\n");
 
-					return;;
+					return;
 				}
 			}
 			_sender->_Send(hClntSock, "접속하지 않은 ID 입니다.\r\n");

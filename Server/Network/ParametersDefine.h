@@ -17,3 +17,5 @@ const int NONE_ENTER_ROOM_PARAMETERS = 2;
 const int MAKE_ROOM_PARAMETERS_COUNTS = 3;
 
 const int TO_PARAMETERS_COUNTS = 3;
+
+const int MESSAGE_INDEX = 2;
