@@ -145,20 +145,29 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				return;
 			}
 		}
-
+#define MAX_ID_LENGTH 5
 		if (COMMANDS_PARAMETERS_VECTOR.size() > NONE_LOGIN_PARAMETERS)
+		{
+			if (LOGIN_ID.length() > MAX_ID_LENGTH)
+			{
+				_sender->_Send(hClntSock, "ID 길이가 5를 넘습니다.");
+				_sender->SendEnter(hClntSock);
+				return;
+			}
+
 			_userState.setID(LOGIN_ID);
 
-		_sender->_SendLogined(hClntSock);
-		_userState.SetLoginState(true);
+			_sender->_SendLogined(hClntSock);
+			_userState.SetLoginState(true);
 
-		std::cout << "[ " << _userState.GetID() << " ] " << str << endl;
+			std::cout << "[ " << _userState.GetID() << " ] " << str << endl;
+		}
 
 	}
 
 	if (_userState.GetID() == "")  //유저정보가 등록되어 있지 않다면 바로 리턴.
 	{
-		_sender->_Send(hClntSock, "/LOGIN부터 해주세요! 로그인 명령어 : /LOGIN [ID]");
+		_sender->_SendLogin(hClntSock);
 		_sender->SendEnter(hClntSock);
 		return;
 	}
