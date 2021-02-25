@@ -6,7 +6,7 @@ port = 9999
 
 전체 구조
 
-![서버구조](https://user-images.githubusercontent.com/39950003/108808724-91921880-75ea-11eb-8b5e-bb55cc3ddee6.PNG)
+![image](https://user-images.githubusercontent.com/39950003/109120193-fbe0bf80-7788-11eb-9389-a9725e17ef53.png)
 
 
 
