@@ -95,8 +95,10 @@ void StringDistinguisher::_splitStr(string str)
 		commandsParametersListVec.push_back(temp);
 
 		str = str.substr(enterCharIndex + 1, str.length());
-
 	}
+
+	//commandsParametersListVec[0] 은 명령어가 파싱되어 있다.
+	transform(commandsParametersListVec[0].begin(), commandsParametersListVec[0].end(), commandsParametersListVec[0].begin(), ::toupper);
 }
 
 

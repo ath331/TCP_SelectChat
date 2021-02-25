@@ -64,7 +64,7 @@ void TcpSession::_IsCommands(string& str)
 
 	if (b)		//str이 명령어라면 적절한 처리
 	{
-		COMMANDS commands = _stringDistinguisher.WhatCommands(str);
+		COMMANDS commands = _stringDistinguisher.WhatCommands(COMMANDS_PARAMETERS_VECTOR[0] + " ");
 		_ProcessingCommands(commands, str);
 	}
 
