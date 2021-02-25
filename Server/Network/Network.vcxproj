@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="Accepter.h" />
     <ClInclude Include="Message.h" />
+    <ClInclude Include="ParametersDefine.h" />
     <ClInclude Include="Receiver.h" />
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Sender.h" />
@@ -154,6 +155,7 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\Basic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

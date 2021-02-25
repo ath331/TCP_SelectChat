@@ -6,14 +6,13 @@
 #define ROOM_NUM int
 #define USER_NUM SOCKET
 
-class TcpSession;
 class RoomManager
 {
 public:
 	RoomManager();
 	~RoomManager();
 
-	void MakeRoom(string name, int maxUserCount, string password = "-1");	//规 积己 己傍矫 true 府畔
+	void MakeRoom(string name, string maxUserCount, string password = "-1");	//规 积己 己傍矫 true 府畔
 	bool EnterRoom(int roomNum, UserState& user, string password = "-1");		//规 曼咯 己傍矫 true 府畔
 	void OutRoom(int roomNum, UserState& user);							//规 唱啊扁 己傍矫 true 府畔
 

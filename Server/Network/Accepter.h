@@ -2,7 +2,6 @@
 #include <WinSock2.h>
 #include "TcpSession.h"
 
-class fd_set;
 class Accepter
 {
 public:

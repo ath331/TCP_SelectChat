@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-	Server s(argv[1]);
+	Server s(argc > 2 ? argv[1] : "9999");
 	s.Run();
 
 	return 0;
