@@ -3,7 +3,9 @@
 #include "Error.h"
 
 #include "TcpSession.h"
+#include <iostream>
 
+char* defaultPort = "9999";
 
 void Server::_InitWSA()
 {
@@ -19,6 +21,8 @@ void Server::_SettingServer()
 
 	_Bind();
 	_Listen();
+
+	std::cout << "Server Port : "<< defaultPort << std::endl;
 }
 
 void Server::_InitServerSock()
@@ -27,7 +31,7 @@ void Server::_InitServerSock()
 	memset(&_servAdr, 0, sizeof(_servAdr));
 	_servAdr.sin_family = AF_INET;
 	_servAdr.sin_addr.s_addr = htonl(INADDR_ANY);
-	_servAdr.sin_port = htons(atoi(_port));
+	_servAdr.sin_port = htons(static_cast<u_short>(stoi(_port)));
 }
 
 void Server::_Bind()
@@ -46,6 +50,8 @@ void Server::Run()
 {
 	FD_ZERO(&_reads);
 	FD_SET(_hServSock, &_reads);
+
+	std::cout << "Server Run" << std::endl;
 
 	while (true)
 	{

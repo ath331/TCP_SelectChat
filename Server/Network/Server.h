@@ -6,6 +6,7 @@
 
 using namespace std;
 
+
 class TcpSession;
 class Server
 {
@@ -33,7 +34,7 @@ private:
 
 	TcpSession* _session;
 	unordered_map<SOCKET, TcpSession*> _userMap; //client 상태를 관리하기위한 map
-	RoomManager _roomManager;		 //Room들을 관리하는 객체  -> TODO : 클래스 정리할 때 손봐야할듯
+	RoomManager _roomManager;					 //Room들을 관리하는 객체
 
 	char* _port = nullptr;
 
