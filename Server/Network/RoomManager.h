@@ -12,18 +12,18 @@ public:
 	RoomManager();
 	~RoomManager();
 
-	void MakeRoom(string name, string maxUserCount, string password = "-1");	//방 생성 성공시 true 리턴
-	bool EnterRoom(int roomNum, UserState& user, string password = "-1");		//방 참여 성공시 true 리턴
+	void MakeRoom(string name, string maxUserCount, string password = "@!2209ASd");	//방 생성 성공시 true 리턴
+	bool EnterRoom(int roomNum, UserState& user, string password = "@!2209ASd");		//방 참여 성공시 true 리턴
 	void OutRoom(int roomNum, UserState& user);							//방 나가기 성공시 true 리턴
 
 private:
 	struct Room
 	{
 		Room() {}
-		Room(string name, int maxUserCount, string password = "-1")
+		Room(string name, int maxUserCount, string password = "@!2209ASd")
 			:name(name), maxUserCount(maxUserCount), password(password)
 		{
-			if (password != "-1")
+			if (password != "@!2209ASd")
 				isPrivateRoom = true;
 		}
 

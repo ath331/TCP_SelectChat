@@ -64,7 +64,7 @@ void TcpSession::_IsCommands(string& str)
 
 	if (b)		//str이 명령어라면 적절한 처리
 	{
-		COMMANDS commands = _stringDistinguisher.WhatCommands(str);
+		COMMANDS commands = _stringDistinguisher.WhatCommands(COMMANDS_PARAMETERS_VECTOR[0] + " ");
 		_ProcessingCommands(commands, str);
 	}
 
@@ -79,7 +79,16 @@ void TcpSession::_ProcessingChatting(string str)
 	if (_userState.GetLoginState() == false) //로그인하지 않은 상태라면 무시한다
 		return;
 
-	string message = ("[ " + _userState.GetID() + " ]");
+	string message;
+	if (_userState.GetIsEnteredRoom() == false) //로비에서의 채팅이라면
+	{
+		message = ("[ 로비 ] ");
+	}
+	else if (_userState.GetIsEnteredRoom() == true) //방에서의 채팅이라면
+	{
+		message = ("[ 방 채팅 ] ");
+	}
+	message += "[ " + _userState.GetID() + " ]";
 	message += (" " + str);
 
 	if (_userState.GetIsEnteredRoom() == false) //로비에서 채팅을 입력했다면
@@ -87,7 +96,7 @@ void TcpSession::_ProcessingChatting(string str)
 #define SESSION iter->second
 		for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 		{
-			if (SESSION->_userState.GetIsEnteredRoom() == false) //로비에 있는 유저를 탐색
+			if (SESSION->_userState.GetIsEnteredRoom() == false && SESSION->_userState.GetLoginState() == true) //로비에 있는 유저를 탐색
 			{
 				SOCKET sock = SESSION->hClntSock;
 				_sender->_Send(sock, message.c_str());
@@ -117,33 +126,51 @@ void TcpSession::_ProcessingChatting(string str)
 
 void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 {
+
 	if (commands == COMMANDS::LOGIN && _userState.GetLoginState() == false)  //명령어가 LOGIN이면서 로그인한 상태가 아니라면
 	{
 		if (COMMANDS_PARAMETERS_VECTOR.size() <= NONE_LOGIN_PARAMETERS) //LOGIN명령어인데 매개변수 없이 입력한 경우는 리턴.
+		{
+			_sender->_Send(hClntSock, "ID를 입력하세요 /LOGIN [ ID ]");
+			_sender->SendEnter(hClntSock);
 			return;
+		}
 
 		for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 		{
 			if (iter->second->_userState.GetID() == LOGIN_ID)
 			{
-				_sender->_Send(hClntSock,"접속중인 ID 입니다.");
+				_sender->_Send(hClntSock, "접속중인 ID 입니다.");
 				_sender->SendEnter(hClntSock);
 				return;
 			}
 		}
-
+#define MAX_ID_LENGTH 5
 		if (COMMANDS_PARAMETERS_VECTOR.size() > NONE_LOGIN_PARAMETERS)
+		{
+			if (LOGIN_ID.length() > MAX_ID_LENGTH)
+			{
+				_sender->_Send(hClntSock, "ID 길이가 5를 넘습니다.");
+				_sender->SendEnter(hClntSock);
+				return;
+			}
+
 			_userState.setID(LOGIN_ID);
 
-		_sender->_SendLogined(hClntSock);
-		_userState.SetLoginState(true);
+			_sender->_SendLogined(hClntSock);
+			_userState.SetLoginState(true);
 
-		std::cout << "[ " << _userState.GetID() << " ] " << str << endl;
+			std::cout << "[ " << _userState.GetID() << " ] " << str << endl;
+		}
 
 	}
 
 	if (_userState.GetID() == "")  //유저정보가 등록되어 있지 않다면 바로 리턴.
+	{
+		_sender->_SendLogin(hClntSock);
+		_sender->SendEnter(hClntSock);
 		return;
+	}
 
 	if (commands != COMMANDS::LOGIN && _userState.GetLoginState() == true)	//명령어가 LOGIN이 아니고 로그인한 상태라면 다른 명령어를 분기처리한다.
 	{
@@ -156,12 +183,24 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		case COMMANDS::MR: //MakeRoom
 		{
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
+			{
+				_sender->_Send(hClntSock, "이미 방에 입장중입니다.");
+				_sender->SendEnter(hClntSock);
 				return;
+			}
+
+			if (COMMANDS_PARAMETERS_VECTOR.size() < MAKE_ROOM_PARAMETERS_COUNTS)
+			{
+				_sender->_Send(hClntSock, "방의 정보를 입력하세요. /MR [ 방 이름 ] [ 최대 인원 ] [ 비밀번호 (안적으면 공개방 생성) ]");
+				_sender->SendEnter(hClntSock);
+				break;
+			}
+
 
 			if (COMMANDS_PARAMETERS_VECTOR.size() > MAKE_ROOM_PARAMETERS_COUNTS) //비공개방 생성
 			{
 				_roomManager->MakeRoom(ROOM_NAME, ROOM_MAX_USER_COUNTS, MAKE_ROOM_PASSWORD);
-				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, MAKE_ROOM_PASSWORD) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState, MAKE_ROOM_PASSWORD) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속.
 				{
 					_sender->_SendRE(hClntSock);
 				}
@@ -169,7 +208,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			else if (COMMANDS_PARAMETERS_VECTOR.size() == MAKE_ROOM_PARAMETERS_COUNTS) //공개방 생성
 			{
 				_roomManager->MakeRoom(ROOM_NAME, ROOM_MAX_USER_COUNTS);
-				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속. _roomManager->nextRoomNum-1
+				if (_roomManager->EnterRoom(_roomManager->nextRoomNum - 1, _userState) == true) //방금 만든 방에 접속하기 위해 -1로 보정후 접속.
 				{
 					_sender->_SendRE(hClntSock);
 				}
@@ -181,10 +220,18 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		case COMMANDS::RE: //RoomEnter
 		{
 			if (_userState.GetIsEnteredRoom() == true) //이미 방에 접속중이라면 명령어 무시
+			{
+				_sender->_Send(hClntSock, "이미 방에 입장중입니다.");
+				_sender->SendEnter(hClntSock);
 				return;
+			}
 
 			if (COMMANDS_PARAMETERS_VECTOR.size() < NONE_ENTER_ROOM_PARAMETERS) //접속하려는 방의 정보를 입력하지 않으면 break
+			{
+				_sender->_Send(hClntSock, "접속하시려는 방의 정보를 입력하세요. /RE [ 방 번호 ] [ 비밀번호 ]");
+				_sender->SendEnter(hClntSock);
 				break;
+			}
 
 			string password;
 			int roomNum = stoi(_stringDistinguisher.commandsParametersListVec[1]);
@@ -197,7 +244,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			}
 
 			else
-				_sender->_Send(hClntSock, "입장 실패.");
+				_sender->_Send(hClntSock, "입장 실패.\r\n");
 
 			break;
 		}
@@ -221,6 +268,12 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::TO: //To
 		{
+			if (COMMANDS_PARAMETERS_VECTOR.size() < TO_PARAMETERS_COUNTS - 1) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
+			{
+				_sender->_Send(hClntSock, "받는 사람의 아이디를 입력하세요.\r\n");
+				break;
+			}
+
 			if (COMMANDS_PARAMETERS_VECTOR.size() < TO_PARAMETERS_COUNTS) //귓속말을 받는 사람의 아이디, 귓속말의 내용까지 모두 명령어로 입력하지 않았으면 break
 			{
 				_sender->_Send(hClntSock, "내용을 입력하세요.\r\n");
@@ -239,9 +292,10 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 					receiverSock = USER_STATE.hClntSock;
 					string message;
 					for (int i = MESSAGE_INDEX; i < COMMANDS_PARAMETERS_VECTOR.size(); i++)
-						message += ( COMMANDS_PARAMETERS_VECTOR[i] + " ");
+						message += (COMMANDS_PARAMETERS_VECTOR[i] + " ");
 
-					message = ("[귓속말] " + senderID + " : " + message);
+					string to = "[ 귓속말 ] ";
+					message = to + "[ " + senderID + " ]" + " : " + message;
 					_sender->_Send(receiverSock, message.c_str());
 					_sender->_Send(receiverSock, "\r\n");
 
@@ -283,7 +337,11 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		case COMMANDS::RI:
 		{
 			if (_userState.GetIsEnteredRoom() == false) //로비에서 RoomInfo명령어를 호출하면 무시한다.
+			{
+				_sender->_Send(hClntSock, "방에 입장해서 사용할 수 있는 명령어 입니다.");
+				_sender->SendEnter(hClntSock);
 				break;
+			}
 
 			_sender->_SendRI(hClntSock);
 
@@ -301,7 +359,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			{
 				userID += iter->second.GetID() + " ";
 				userCount++;
-				if (userCount % MAX_PRINT_USER_ID_COUNT == 0) 
+				if (userCount % MAX_PRINT_USER_ID_COUNT == 0)
 					userID += "\r\n";
 			}
 			_sender->_Send(hClntSock, userID.c_str());
@@ -311,6 +369,8 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		}
 
 		default:
+			_sender->_Send(hClntSock, "올바르지 않은 명령어 입니다. 명령어 보기 : /CL");
+			_sender->SendEnter(hClntSock);
 			return;   //올바르지 않은 명령어가 들어오면 바로 리턴.
 		}
 
@@ -321,6 +381,14 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 void TcpSession::_CloseClient()
 {
+	UserState userState;  //유저가 종료할 때 입장중이던 방에서 아웃처리하도록 구현
+	for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
+	{
+		if (iter->second->hClntSock == hClntSock)
+			userState = iter->second->_userState;
+	}
+
+	_roomManager->OutRoom(userState.GetRoomNum(), userState);
 	_userMap->erase(hClntSock);
 
 	FD_CLR(hClntSock, _reads);
