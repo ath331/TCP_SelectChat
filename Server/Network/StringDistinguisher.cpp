@@ -25,6 +25,8 @@ bool StringDistinguisher::_IsFirstCharSlash(string str)
 				return false;
 		}
 	}
+
+	return false;
 }
 
 
@@ -62,10 +64,10 @@ void StringDistinguisher::_TrimSpace(string& str)
 			break;
 	}
 
-	int spaceCharIndex = str.find(' ');  //공백이 없다면 반복문에 들어가지 않는다
-	for (int i = spaceCharIndex; i < str.length();)
+	size_t spaceCharIndex = str.find(' ');  //공백이 없다면 반복문에 들어가지 않는다
+	for (size_t i = spaceCharIndex; i < str.length();)
 	{
-		int nextSpaceCharIndex = str.find(' ', spaceCharIndex + 1);
+		size_t nextSpaceCharIndex = str.find(' ', spaceCharIndex + 1);
 		if (nextSpaceCharIndex - spaceCharIndex == 1)
 			str.erase(spaceCharIndex,1);
 		else
@@ -83,12 +85,12 @@ void StringDistinguisher::_splitStr(string str)
 {
 	commandsParametersListVec.clear();
 
-	int enterCount = count(str.begin(), str.end(), ' '); //빈칸을 기준으로 명렁어와 명령어들의 매개변수를 구별하여 추출한다
+	__int64 enterCount = count(str.begin(), str.end(), ' '); //빈칸을 기준으로 명렁어와 명령어들의 매개변수를 구별하여 추출한다
 
 	for (int i = 0; i < enterCount + 1; i++)
 	{
 		string temp;
-		int enterCharIndex = str.find(" ");
+		size_t enterCharIndex = str.find(" ");
 		temp = str.substr(0, enterCharIndex);
 		commandsParametersListVec.push_back(temp);
 
@@ -100,7 +102,7 @@ void StringDistinguisher::_splitStr(string str)
 
 COMMANDS StringDistinguisher::WhatCommands(string commands)
 {
-	int index = commands.find(" ");
+	size_t index = commands.find(" ");
 	string str = commands.substr(1, index - 1); // 명렁어는 / 부터 시작하므 / 다음 인덱스 부터 추출하기 위해 1을 인자로 넘김
 
 	if (COMMANDS_LOGIN == str)
