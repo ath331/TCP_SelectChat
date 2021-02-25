@@ -34,11 +34,11 @@ private:
 
 		bool isPrivateRoom = false;
 		string password = "-1";
-		map<USER_NUM, UserState> userRoomMap; //room안에 있는 유저들
+		unordered_map<USER_NUM, UserState> userRoomMap; //room안에 있는 유저들
 	};
 
 	int nextRoomNum = 1; //방이 생성될 때 배정하는 번호
-	map<ROOM_NUM, Room> _roomMap;
+	unordered_map<ROOM_NUM, Room> _roomMap;
 
 private:
 	void DeleteRoom(int roomNum);

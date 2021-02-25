@@ -8,7 +8,7 @@
 #include <WinSock2.h>
 #include <iostream>
 
-TcpSession::TcpSession(RoomManager* roomManager, map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads)
+TcpSession::TcpSession(RoomManager* roomManager, unordered_map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads)
 	: _reads(reads), _roomManager(roomManager), _userMap(userMap)
 {
 	_accept = new Accepter(sock, reads);
