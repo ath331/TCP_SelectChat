@@ -265,6 +265,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 			break;
 		case COMMANDS::QUIT:
+			if (_userState.GetIsEnteredRoom() == true)
+				return;
+
 			_CloseClient();
 			break;
 		case COMMANDS::RI:
