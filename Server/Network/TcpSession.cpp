@@ -217,7 +217,6 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				break;
 			}
 
-			SOCKET senderSock = hClntSock; //보내는 사람
 			SOCKET receiverSock;		   //받는 사람
 			string senderID = _userState.GetID();
 			string receiverID = RECEIVER_ID;
@@ -275,9 +274,9 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 			_sender->_SendRI(hClntSock);
 
-#define ROOM _roomManager->_roomMap[_userState.GetRoomNum()] //user가 존재하는 room 접근
+#define USER_ROOM _roomManager->_roomMap[_userState.GetRoomNum()] //user가 존재하는 room 접근
 			string message;
-			message += (to_string(ROOM.roomNum) + "\t\t" + ROOM.name + "\t" + to_string(ROOM.userRoomMap.size()) + " / " + to_string(ROOM.maxUserCount));
+			message += (to_string(USER_ROOM.roomNum) + "\t\t" + USER_ROOM.name + "\t" + to_string(USER_ROOM.userRoomMap.size()) + " / " + to_string(USER_ROOM.maxUserCount));
 			_sender->_Send(hClntSock, message.c_str());
 			_sender->SendEnter(hClntSock);
 			_sender->_SendRUI(hClntSock);
@@ -285,7 +284,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 #define MAX_PRINT_USER_ID_COUNT 5 //한 줄에 최대 몇명까지 표시해줄것인지 정한다
 			string userID;
 			int userCount = 0;
-			for (auto iter = ROOM.userRoomMap.begin(); iter != ROOM.userRoomMap.end(); iter++) //해당방에 있는 모든 유저의 아이디를 보기 위한 반복문
+			for (auto iter = USER_ROOM.userRoomMap.begin(); iter != USER_ROOM.userRoomMap.end(); iter++) //해당방에 있는 모든 유저의 아이디를 보기 위한 반복문
 			{
 				userID += iter->second.GetID() + " ";
 				userCount++;

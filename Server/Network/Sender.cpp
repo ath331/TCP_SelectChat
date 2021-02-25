@@ -91,6 +91,6 @@ void Sender::_SendRUI(SOCKET sock)
 
 void Sender::_Send(SOCKET sock, const char* buf)
 {
-	int strLen = strlen(buf);
+	size_t strLen = strlen(buf);
 	send(sock, buf, strLen, 0);
 }
