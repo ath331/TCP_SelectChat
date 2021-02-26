@@ -18,9 +18,21 @@
     <ClInclude Include="Error.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Ptr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Basic.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintMessage.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Error.cpp">
+      <Filter>헤더 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Ptr.cpp">
       <Filter>헤더 파일</Filter>
     </ClCompile>
   </ItemGroup>

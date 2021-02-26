@@ -1,9 +1,8 @@
 #include "Server.h"
 #include "Timeval.h"
-#include "Error.h"
+#include "Basic.h"
 
 #include "TcpSession.h"
-#include <iostream>
 
 char* defaultPort = "9999";
 
@@ -15,7 +14,10 @@ void Server::_InitWSA()
 
 void Server::_SettingServer()
 {
-	CheckNullPtr((void*)_port);
+	if (IsCheckNullPtr(_port))
+	{
+		_port = defaultPort;
+	}
 
 	_InitServerSock();
 
