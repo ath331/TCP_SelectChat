@@ -251,12 +251,12 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::RL: //RoomList
 			_sender->_SendRL(hClntSock);
-			for (auto i : _roomManager->_roomMap)
+			for (auto& i : _roomManager->_roomMap)
 			{
-				auto roomInfo = &i.second;
+				const auto& roomInfo = i.second;
 				string roomInfoStr;
-				roomInfoStr = (to_string(roomInfo->roomNum) + "\t\t" + roomInfo->name + "\t\t" + to_string(roomInfo->userRoomMap.size()) + "/" + to_string(roomInfo->maxUserCount) + "\t\t");
-				if (roomInfo->isPrivateRoom)
+				roomInfoStr = (to_string(roomInfo.roomNum) + "\t\t" + roomInfo.name + "\t\t" + to_string(roomInfo.userRoomMap.size()) + "/" + to_string(roomInfo.maxUserCount) + "\t\t");
+				if (roomInfo.isPrivateRoom)
 					roomInfoStr += "True";
 				else
 					roomInfoStr += "False";
