@@ -251,7 +251,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::RL: //RoomList
 			_sender->_SendRL(hClntSock);
-			for (auto& i : _roomManager->_roomMap)
+			for (const auto& i : _roomManager->_roomMap)
 			{
 				const auto& roomInfo = i.second;
 				string roomInfoStr;

@@ -19,10 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Basic.h" />
     <ClInclude Include="Error.h" />
+    <ClInclude Include="PrintMessage.h" />
+    <ClInclude Include="Ptr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Error.cpp" />
+    <ClCompile Include="Ptr.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E11D7588-E2C2-4C84-9577-760433B9ADE7}</ProjectGuid>
