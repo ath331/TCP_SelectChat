@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"C:\\TCP_SelectChat\\Client\\Chat\\Source\\Chat\\Chat.Build.cs",
-		"C:\\TCP_SelectChat\\Client\\Chat\\Source\\Chat.Target.cs",
-		"C:\\TCP_SelectChat\\Client\\Chat\\Source\\ChatEditor.Target.cs"
-	],
-	"EngineVersion": "4.25.4"
-}

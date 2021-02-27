@@ -11,11 +11,15 @@ AClientSocket::AClientSocket()
 
 }
 
-void AClientSocket::ConnectServer(std::string ipStr)
+void AClientSocket::ConnecteToServer(FString ipStr)
 {
-	FString fStr(ipStr.c_str());
+
+	Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
+
 	FIPv4Address ip;
-	FIPv4Address::Parse(fStr, ip);
+	FString address = ipStr;
+	int32 port = 9999;
+	FIPv4Address::Parse(address, ip);
 
 	TSharedRef<FInternetAddr> addr = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
 	addr->SetIp(ip.Value);
@@ -23,31 +27,25 @@ void AClientSocket::ConnectServer(std::string ipStr)
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Trying to connect.")));
 
-	connected = socket->Connect(*addr);
+	bool connected = Socket->Connect(*addr);
 	if (connected)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connected.")));
-
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connected")));
 	else
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connected Fail.")));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connect fail")));
 }
-
 
 // Called when the game starts or when spawned
 void AClientSocket::BeginPlay()
 {
-	//UE_LOG(LogTemp, Log, TEXT("ClientSocketBeginPlay()"));
-
 	Super::BeginPlay();
+	ConnecteToServer();
 
-	socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
 }
 
 // Called every frame
 void AClientSocket::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//UE_LOG(LogTemp, Log, TEXT("ClientSocketTick()"));
 
 }
 

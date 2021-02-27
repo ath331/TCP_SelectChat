@@ -1,9 +1,0 @@
-C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Definitions.Chat.h
-C:\Unreal\UE_4.25\Engine\Source\Runtime\CoreUObject\Public\UObject/GeneratedCppIncludes.h
-C:\Unreal\UE_4.25\Engine\Source\Runtime\CoreUObject\Public\UObject/MetaData.h
-C:\TCP_SelectChat\Client\Chat\Source\Chat/ChatGameModeBase.h
-C:\Unreal\UE_4.25\Engine\Source\Runtime\Engine\Classes\GameFramework/GameModeBase.h
-C:\Unreal\UE_4.25\Engine\Source\Runtime\Engine\Classes\Engine/ServerStatReplicator.h
-C:\Unreal\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\ServerStatReplicator.generated.h
-C:\Unreal\UE_4.25\Engine\Intermediate\Build\Win64\UE4Editor\Inc\Engine\GameModeBase.generated.h
-C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Inc\Chat\ChatGameModeBase.generated.h

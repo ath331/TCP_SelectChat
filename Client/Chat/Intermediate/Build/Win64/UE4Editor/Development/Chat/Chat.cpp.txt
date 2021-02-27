@@ -1,2 +1,0 @@
-C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Definitions.Chat.h
-C:\TCP_SelectChat\Client\Chat\Source\Chat\Chat.h
