@@ -14,7 +14,7 @@ AClientSocket::AClientSocket()
 // Called when the game starts or when spawned
 void AClientSocket::BeginPlay()
 {
-	UE_LOG(LogTemp, Log, TEXT("ClientSocketBeginPlay()"));
+	//UE_LOG(LogTemp, Log, TEXT("ClientSocketBeginPlay()"));
 
 	Super::BeginPlay();
 
