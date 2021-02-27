@@ -1,6 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-<<<<<<< HEAD
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -9,12 +8,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Network", "Network\Network.vcxproj", "{B145CF08-6EE7-459D-B149-01EBF7D9209C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Basic", "Basic\Basic.vcxproj", "{E11D7588-E2C2-4C84-9577-760433B9ADE7}"
-=======
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29209.62
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Main", "Main\Main.vcxproj", "{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}"
->>>>>>> parent of 4de941a (Client브랜치에서 서버 프로젝트 삭제)
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,7 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-<<<<<<< HEAD
 		{2F66FD82-BA9A-4D5D-B6FF-FB60EA14D796}.Debug|x64.ActiveCfg = Debug|x64
 		{2F66FD82-BA9A-4D5D-B6FF-FB60EA14D796}.Debug|x64.Build.0 = Debug|x64
 		{2F66FD82-BA9A-4D5D-B6FF-FB60EA14D796}.Debug|x86.ActiveCfg = Debug|Win32
@@ -49,24 +41,8 @@ Global
 		{E11D7588-E2C2-4C84-9577-760433B9ADE7}.Release|x64.Build.0 = Release|x64
 		{E11D7588-E2C2-4C84-9577-760433B9ADE7}.Release|x86.ActiveCfg = Release|Win32
 		{E11D7588-E2C2-4C84-9577-760433B9ADE7}.Release|x86.Build.0 = Release|Win32
-=======
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Debug|x64.ActiveCfg = Debug|x64
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Debug|x64.Build.0 = Debug|x64
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Debug|x86.ActiveCfg = Debug|Win32
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Debug|x86.Build.0 = Debug|Win32
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Release|x64.ActiveCfg = Release|x64
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Release|x64.Build.0 = Release|x64
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Release|x86.ActiveCfg = Release|Win32
-		{DBB2B5B8-C4C1-4272-97F6-EC589519C7D8}.Release|x86.Build.0 = Release|Win32
->>>>>>> parent of 4de941a (Client브랜치에서 서버 프로젝트 삭제)
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-<<<<<<< HEAD
-=======
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A416FA8F-227D-45C3-8BBF-ABB838EE78C5}
-	EndGlobalSection
->>>>>>> parent of 4de941a (Client브랜치에서 서버 프로젝트 삭제)
 EndGlobal
