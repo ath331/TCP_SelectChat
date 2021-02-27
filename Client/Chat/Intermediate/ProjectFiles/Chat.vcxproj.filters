@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Chat.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{EB70D945-2899-4D6B-AE45-6CD974678CD9}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Chat.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\ChatEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{EB77C594-C3DB-49E9-8970-533D9E2B48C6}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\Chat">
+      <UniqueIdentifier>{58ABF262-67F4-419F-9C01-6D950362535E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Chat\Chat.Build.cs">
+      <Filter>Source\Chat</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Chat\Chat.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\Chat.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ChatGameModeBase.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ChatGameModeBase.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ClientSocket.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ClientSocket.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>
