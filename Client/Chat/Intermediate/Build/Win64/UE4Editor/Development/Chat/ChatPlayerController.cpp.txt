@@ -1,3 +1,0 @@
-C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Definitions.Chat.h
-C:\TCP_SelectChat\Client\Chat\Source\Chat\ChatPlayerController.h
-C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Inc\Chat\ChatPlayerController.generated.h
