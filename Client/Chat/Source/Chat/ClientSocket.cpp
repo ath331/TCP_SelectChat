@@ -11,16 +11,11 @@ AClientSocket::AClientSocket()
 
 }
 
-// Called when the game starts or when spawned
-void AClientSocket::BeginPlay()
+void AClientSocket::ConnectServer(std::string ipStr)
 {
-	//UE_LOG(LogTemp, Log, TEXT("ClientSocketBeginPlay()"));
-
-	Super::BeginPlay();
-
-	FIPv4Address::Parse(address, ip);
-
-	socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
+	FString fStr(ipStr.c_str());
+	FIPv4Address ip;
+	FIPv4Address::Parse(fStr, ip);
 
 	TSharedRef<FInternetAddr> addr = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateInternetAddr();
 	addr->SetIp(ip.Value);
@@ -34,8 +29,17 @@ void AClientSocket::BeginPlay()
 
 	else
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Connected Fail.")));
+}
 
-	
+
+// Called when the game starts or when spawned
+void AClientSocket::BeginPlay()
+{
+	//UE_LOG(LogTemp, Log, TEXT("ClientSocketBeginPlay()"));
+
+	Super::BeginPlay();
+
+	socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
 }
 
 // Called every frame
