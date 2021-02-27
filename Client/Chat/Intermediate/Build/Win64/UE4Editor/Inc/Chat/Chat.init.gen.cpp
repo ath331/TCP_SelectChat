@@ -21,8 +21,8 @@ void EmptyLinkFunctionForGeneratedCodeChat_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xDBC68AFB,
-				0x4630A06E,
+				0xE2BC3DA7,
+				0x9F030B21,
 				METADATA_PARAMS(nullptr, 0)
 			};
 			UE4CodeGen_Private::ConstructUPackage(ReturnPackage, PackageParams);

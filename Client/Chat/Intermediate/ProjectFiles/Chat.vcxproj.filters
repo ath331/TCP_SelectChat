@@ -3,7 +3,7 @@
   <ItemGroup>
     <None Include="..\..\Chat.uproject" />
     <Filter Include="Source">
-      <UniqueIdentifier>{171C6704-8587-4FB1-9A77-198740AFA4B1}</UniqueIdentifier>
+      <UniqueIdentifier>{EB70D945-2899-4D6B-AE45-6CD974678CD9}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\Chat.Target.cs">
       <Filter>Source</Filter>
@@ -12,7 +12,7 @@
       <Filter>Source</Filter>
     </None>
     <Filter Include="Config">
-      <UniqueIdentifier>{BD5D348F-935B-4E1E-8404-D35ED6AA2551}</UniqueIdentifier>
+      <UniqueIdentifier>{EB77C594-C3DB-49E9-8970-533D9E2B48C6}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Config\DefaultEditor.ini">
       <Filter>Config</Filter>
@@ -24,7 +24,7 @@
       <Filter>Config</Filter>
     </None>
     <Filter Include="Source\Chat">
-      <UniqueIdentifier>{872E6EF7-53D6-4817-9740-18E00E0D523E}</UniqueIdentifier>
+      <UniqueIdentifier>{58ABF262-67F4-419F-9C01-6D950362535E}</UniqueIdentifier>
     </Filter>
     <None Include="..\..\Source\Chat\Chat.Build.cs">
       <Filter>Source\Chat</Filter>
@@ -39,6 +39,24 @@
       <Filter>Source\Chat</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Chat\ChatGameModeBase.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ClientSocket.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ClientSocket.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\MyActor.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\MyActor.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\Socket.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\Socket.h">
       <Filter>Source\Chat</Filter>
     </ClInclude>
   </ItemGroup>

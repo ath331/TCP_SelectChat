@@ -9,8 +9,13 @@
 "C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\ChatEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
 "C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Chat.cpp.obj"
 "C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\ChatGameModeBase.cpp.obj"
+"C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\ClientSocket.cpp.obj"
+"C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\MyActor.cpp.obj"
+"C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Socket.cpp.obj"
 "C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Chat.init.gen.cpp.obj"
 "C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\ChatGameModeBase.gen.cpp.obj"
+"C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\ClientSocket.gen.cpp.obj"
+"C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\MyActor.gen.cpp.obj"
 "C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Default.rc2.res"
 /OUT:"C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\UE4Editor-Chat.lib"
 /INCLUDE:IMPLEMENT_MODULE_Chat
