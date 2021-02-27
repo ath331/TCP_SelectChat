@@ -7,11 +7,7 @@
     </Filter>
     <Filter Include="헤더 파일">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-<<<<<<< HEAD
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-=======
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
->>>>>>> parent of 4de941a (Client브랜치에서 서버 프로젝트 삭제)
     </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>

@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Accepter">
+      <UniqueIdentifier>{517e35d2-7bfe-4f27-85b0-ae4555b03bb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Session">
+      <UniqueIdentifier>{59439071-5028-4198-abcf-07b32919c3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Receiver">
+      <UniqueIdentifier>{8bcef1a4-40c7-4f36-a453-749b05b11fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sender">
+      <UniqueIdentifier>{65c5ea2b-9024-4155-a64c-80c56537971f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Distinguisher">
+      <UniqueIdentifier>{8787d99f-459f-4211-a8b1-0dfc9e7b9620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User">
+      <UniqueIdentifier>{810b5127-25ed-440a-b63d-8817dc4b9833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Room">
+      <UniqueIdentifier>{f1ff74cb-c018-489a-aa2c-79ba7134efa0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Timeval.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Accepter.h">
+      <Filter>Accepter</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpSession.h">
+      <Filter>Session</Filter>
+    </ClInclude>
+    <ClInclude Include="Receiver.h">
+      <Filter>Receiver</Filter>
+    </ClInclude>
+    <ClInclude Include="Sender.h">
+      <Filter>Sender</Filter>
+    </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>Sender</Filter>
+    </ClInclude>
+    <ClInclude Include="StringSpliter.h">
+      <Filter>Receiver</Filter>
+    </ClInclude>
+    <ClInclude Include="StringDistinguisher.h">
+      <Filter>Distinguisher</Filter>
+    </ClInclude>
+    <ClInclude Include="UserState.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomManager.h">
+      <Filter>Room</Filter>
+    </ClInclude>
+    <ClInclude Include="ParametersDefine.h">
+      <Filter>Distinguisher</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Server.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Accepter.cpp">
+      <Filter>Accepter</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpSession.cpp">
+      <Filter>Session</Filter>
+    </ClCompile>
+    <ClCompile Include="Receiver.cpp">
+      <Filter>Receiver</Filter>
+    </ClCompile>
+    <ClCompile Include="Sender.cpp">
+      <Filter>Sender</Filter>
+    </ClCompile>
+    <ClCompile Include="StringSpliter.cpp">
+      <Filter>Receiver</Filter>
+    </ClCompile>
+    <ClCompile Include="StringDistinguisher.cpp">
+      <Filter>Distinguisher</Filter>
+    </ClCompile>
+    <ClCompile Include="UserState.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomManager.cpp">
+      <Filter>Room</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
