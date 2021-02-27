@@ -1,0 +1,5 @@
+C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Development\Chat\Definitions.Chat.h
+C:\TCP_SelectChat\Client\Chat\Source\Chat\ChatBlock.h
+C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Inc\Chat\ChatBlock.generated.h
+C:\TCP_SelectChat\Client\Chat\Source\Chat\ChatBlockGrid.h
+C:\TCP_SelectChat\Client\Chat\Intermediate\Build\Win64\UE4Editor\Inc\Chat\ChatBlockGrid.generated.h

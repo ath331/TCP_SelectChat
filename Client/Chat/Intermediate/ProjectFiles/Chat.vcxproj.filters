@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\Chat.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{129213EE-9C1D-4950-8BFA-D8FDA3A284DF}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Chat.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\ChatEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{C270CF18-733B-4E0D-A8C1-848C452F10A5}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\Chat">
+      <UniqueIdentifier>{7FF88E68-B134-4CCE-8932-8B5B788D9FDB}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\Chat\Chat.Build.cs">
+      <Filter>Source\Chat</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\Chat\Chat.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\Chat.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ChatBlock.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ChatBlock.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ChatBlockGrid.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ChatBlockGrid.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ChatGameMode.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ChatGameMode.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ChatPawn.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ChatPawn.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Chat\ChatPlayerController.cpp">
+      <Filter>Source\Chat</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Chat\ChatPlayerController.h">
+      <Filter>Source\Chat</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

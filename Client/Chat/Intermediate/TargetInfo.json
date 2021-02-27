@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "Chat",
+			"Path": "C:\\Users\\ath33\\OneDrive\\바탕 화면\\a\\C++\\TCP_SelectChat\\Client\\Chat\\Source\\Chat.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "ChatEditor",
+			"Path": "C:\\Users\\ath33\\OneDrive\\바탕 화면\\a\\C++\\TCP_SelectChat\\Client\\Chat\\Source\\ChatEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
