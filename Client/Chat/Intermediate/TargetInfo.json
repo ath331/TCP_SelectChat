@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "Chat",
+			"Path": "C:\\TCP_SelectChat\\Client\\Chat\\Source\\Chat.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "ChatEditor",
+			"Path": "C:\\TCP_SelectChat\\Client\\Chat\\Source\\ChatEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
