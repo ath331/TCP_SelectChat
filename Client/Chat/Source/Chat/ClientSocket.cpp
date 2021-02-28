@@ -1,7 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ClientSocket.h"
+#include "Containers/UnrealString.h"
 
 // Sets default values
 AClientSocket::AClientSocket()
@@ -13,7 +14,6 @@ AClientSocket::AClientSocket()
 
 bool AClientSocket::ConnecteToServer(FString ipStr)
 {
-
 	Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
 
 	FIPv4Address ip;
@@ -31,6 +31,12 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	if (connected)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connected")));
+
+		FString loginSend = "/login aa";
+
+		StringToBytes(loginSend,bufSend,10);
+		Socket->Send(bufSend,10,bytesSend);
+
 		return true;
 	}
 	else
@@ -48,13 +54,11 @@ bool AClientSocket::EnterToLobby(FString ip, FString id)
 	bool recv = Socket->Recv(buf, bufSize, bytesRead);
 	if (recv == true && bytesRead != 0)
 	{
-		FString Fixed;
+		char ansiiData[bufSize];
+		memcpy(ansiiData, buf, bytesRead);
+		ansiiData[bytesRead] = 0;
 
-		for (int i = 0; i < bytesRead; i++)
-		{
-			const TCHAR c = buf[i] - 1;
-			Fixed.AppendChar(c);
-		}
+		FString Fixed = ANSI_TO_TCHAR(ansiiData);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
 	}
 	return true;

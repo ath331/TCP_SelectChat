@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 const int32 bufSize = 1024;
@@ -24,10 +24,10 @@ public:
 	}
 	FSocket* Socket;
 
-	UPROPERTY()
 	uint8 buf[bufSize];
-	UPROPERTY()
-		int32 bytesRead;
+	uint8 bufSend[bufSize];
+	int32 bytesRead;
+	int32 bytesSend;
 
 	bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
 
