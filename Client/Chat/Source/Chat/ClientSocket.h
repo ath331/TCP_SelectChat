@@ -1,6 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+const int32 bufSize = 1024;
 #include "Engine.h"
 #include "Networking.h"
 #include "Sockets.h"
@@ -19,12 +20,33 @@ public:
 	AClientSocket();
 	~AClientSocket()
 	{
-		Socket->Close();
+		if (Socket != nullptr)
+			Socket->Close();
 	}
 	FSocket* Socket;
 
+	uint8 buf[bufSize];
+	uint8 bufSend[bufSize];
+	int32 bytesRead;
+	int32 bytesSend;
+
+	FString bufStr;
+
+	bool isConnected = false;
+
 	UFUNCTION(BlueprintCallable)
-		void ConnecteToServer(FString ip = TEXT("127.0.0.1"));
+		bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
+
+	UFUNCTION(BlueprintCallable)
+		bool EnterToLobby(FString id = TEXT("defaultID"));
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void OffLoginUI();
+
+		void Recv();
+	void Send(FString commands, FString str);
+
+	void PashingStr();
 
 protected:
 	// Called when the game starts or when spawned
