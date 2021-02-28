@@ -60,6 +60,7 @@ void TcpSession::RecvClient()
 
 void TcpSession::_IsCommands(string& str)
 {
+	std::cout << str << std::endl;
 	bool b = _stringDistinguisher.IsCommands(str);
 
 	if (b)		//str이 명령어라면 적절한 처리
