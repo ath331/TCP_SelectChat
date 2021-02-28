@@ -6,12 +6,12 @@
 // Sets default values
 AClientSocket::AClientSocket()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-void AClientSocket::ConnecteToServer(FString ipStr)
+bool AClientSocket::ConnecteToServer(FString ipStr)
 {
 
 	Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
@@ -29,17 +29,42 @@ void AClientSocket::ConnecteToServer(FString ipStr)
 
 	bool connected = Socket->Connect(*addr);
 	if (connected)
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connected")));
+		return true;
+	}
 	else
+	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connect fail")));
+		return false;
+	}
 }
+
+bool AClientSocket::EnterToLobby(FString ip, FString id)
+{
+	if (ConnecteToServer(ip) == false)
+		return false;
+
+	bool recv = Socket->Recv(buf, bufSize, bytesRead);
+	if (recv == true && bytesRead != 0)
+	{
+		FString Fixed;
+
+		for (int i = 0; i < bytesRead; i++)
+		{
+			const TCHAR c = buf[i] - 1;
+			Fixed.AppendChar(c);
+		}
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
+	}
+	return true;
+}
+
 
 // Called when the game starts or when spawned
 void AClientSocket::BeginPlay()
 {
 	Super::BeginPlay();
-	ConnecteToServer();
-
 }
 
 // Called every frame

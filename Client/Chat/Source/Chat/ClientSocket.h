@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
+const int32 bufSize = 1024;
 #include "Engine.h"
 #include "Networking.h"
 #include "Sockets.h"
@@ -23,8 +24,16 @@ public:
 	}
 	FSocket* Socket;
 
+	UPROPERTY()
+	uint8 buf[bufSize];
+	UPROPERTY()
+		int32 bytesRead;
+
+	bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
+
 	UFUNCTION(BlueprintCallable)
-		void ConnecteToServer(FString ip = TEXT("127.0.0.1"));
+		bool EnterToLobby(FString ip = TEXT("127.0.0.1"), FString id = TEXT("defaultID"));
+
 
 protected:
 	// Called when the game starts or when spawned
