@@ -14,6 +14,9 @@ AClientSocket::AClientSocket()
 
 bool AClientSocket::ConnecteToServer(FString ipStr)
 {
+	if (isConnected == true)
+		return false;
+
 	Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
 
 	FIPv4Address ip;
@@ -28,14 +31,12 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Trying to connect.")));
 
 	bool connected = Socket->Connect(*addr);
+	isConnected = true;
 	if (connected)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connected")));
 
-		FString loginSend = "/login aa\n";
-
-		StringToBytes(loginSend,bufSend,10);
-		Socket->Send(bufSend,10,bytesSend);
+		Recv();
 
 		return true;
 	}
@@ -46,22 +47,41 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	}
 }
 
-bool AClientSocket::EnterToLobby(FString ip, FString id)
+bool AClientSocket::EnterToLobby(FString id)
 {
-	if (ConnecteToServer(ip) == false)
-		return false;
+	Recv();
 
+	return true;
+}
+
+void AClientSocket::Send(FString str)
+{
+	FString loginSend = "/login aa";
+
+	uint8 temp[BUFSIZ] = { NULL, };
+	for (int i = 0; i < loginSend.Len(); i++)
+	{
+		temp[i] = loginSend[i];
+	}
+	loginSend[loginSend.Len()] = '\n';
+
+	Socket->Send(temp, 10, bytesSend);
+}
+
+
+void AClientSocket::Recv()
+{
 	bool recv = Socket->Recv(buf, bufSize, bytesRead);
+
 	if (recv == true && bytesRead != 0)
 	{
 		char ansiiData[bufSize];
 		memcpy(ansiiData, buf, bytesRead);
 		ansiiData[bytesRead] = 0;
 
-		FString Fixed = ANSI_TO_TCHAR(ansiiData);
+		FString Fixed = TCHAR_TO_UTF8(ansiiData);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
 	}
-	return true;
 }
 
 

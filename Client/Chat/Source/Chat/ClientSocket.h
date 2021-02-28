@@ -20,7 +20,8 @@ public:
 	AClientSocket();
 	~AClientSocket()
 	{
-		Socket->Close();
+		if (Socket != nullptr)
+			Socket->Close();
 	}
 	FSocket* Socket;
 
@@ -29,10 +30,16 @@ public:
 	int32 bytesRead;
 	int32 bytesSend;
 
-	bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
+	bool isConnected = false;
 
 	UFUNCTION(BlueprintCallable)
-		bool EnterToLobby(FString ip = TEXT("127.0.0.1"), FString id = TEXT("defaultID"));
+		bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
+
+	UFUNCTION(BlueprintCallable)
+		bool EnterToLobby(FString id = TEXT("defaultID"));
+
+	void Recv();
+	void Send(FString str);
 
 
 protected:
