@@ -30,6 +30,8 @@ public:
 	int32 bytesRead;
 	int32 bytesSend;
 
+	FString bufStr;
+
 	bool isConnected = false;
 
 	UFUNCTION(BlueprintCallable)
@@ -38,9 +40,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 		bool EnterToLobby(FString id = TEXT("defaultID"));
 
-	void Recv();
-	void Send(FString str);
+	UFUNCTION(BlueprintImplementableEvent)
+		void OffLoginUI();
 
+		void Recv();
+	void Send(FString commands, FString str);
+
+	void PashingStr();
 
 protected:
 	// Called when the game starts or when spawned

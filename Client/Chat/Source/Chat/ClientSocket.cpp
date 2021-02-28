@@ -1,6 +1,6 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include <stdlib.h>
 #include "ClientSocket.h"
 #include "Containers/UnrealString.h"
 
@@ -18,6 +18,7 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 		return false;
 
 	Socket = ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->CreateSocket(NAME_Stream, TEXT("default"), false);
+	Socket->SetNonBlocking(true);
 
 	FIPv4Address ip;
 	FString address = ipStr;
@@ -31,12 +32,11 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Trying to connect.")));
 
 	bool connected = Socket->Connect(*addr);
-	isConnected = true;
 	if (connected)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connected")));
-
 		Recv();
+		isConnected = true;
 
 		return true;
 	}
@@ -49,29 +49,50 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 
 bool AClientSocket::EnterToLobby(FString id)
 {
-	Recv();
+	if (isConnected == false)
+		return false;
+
+	Send("/login ", id);
+	//Recv();
 
 	return true;
 }
 
-void AClientSocket::Send(FString str)
+void AClientSocket::Send(FString commands, FString str)
 {
-	FString loginSend = "/login aa";
+	FString loginSend = commands;
+	loginSend += *str;
+	loginSend += "\n";
+	const TCHAR* b = *loginSend;
 
-	uint8 temp[BUFSIZ] = { NULL, };
-	for (int i = 0; i < loginSend.Len(); i++)
+	char sendBuf[1024]{};
+	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
+	//size_t size = wcstombs_s<1024>()();
+
+	for (int i = 0; i < sizeof(sendBuf); i++)
 	{
-		temp[i] = loginSend[i];
+		Socket->Send((const uint8*)& sendBuf[i], 1, bytesSend);
 	}
-	loginSend[loginSend.Len()] = '\n';
+}
 
-	Socket->Send(temp, 10, bytesSend);
+
+void AClientSocket::PashingStr()
+{
+	if (bufStr == "IsLoginedTrue")
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, bufStr);
+	}
+
+	bufStr.Empty();
 }
 
 
 void AClientSocket::Recv()
 {
-	bool recv = Socket->Recv(buf, bufSize, bytesRead);
+	if (Socket == nullptr)
+		return;
+
+	bool recv = Socket->Recv(buf, 1, bytesRead);
 
 	if (recv == true && bytesRead != 0)
 	{
@@ -79,8 +100,16 @@ void AClientSocket::Recv()
 		memcpy(ansiiData, buf, bytesRead);
 		ansiiData[bytesRead] = 0;
 
-		FString Fixed = TCHAR_TO_UTF8(ansiiData);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
+		FString Fixed = ANSI_TO_TCHAR(ansiiData);
+
+		UE_LOG(LogTemp, Warning, TEXT("%s"),*Fixed);
+
+		if (Fixed != "\n")
+			bufStr += Fixed;
+		else
+			PashingStr();
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
 	}
 }
 
@@ -89,12 +118,13 @@ void AClientSocket::Recv()
 void AClientSocket::BeginPlay()
 {
 	Super::BeginPlay();
+	OffLoginUI();
 }
 
 // Called every frame
 void AClientSocket::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	Recv();
 }
 
