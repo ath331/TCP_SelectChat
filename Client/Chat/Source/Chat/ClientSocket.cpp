@@ -32,7 +32,7 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("connected")));
 
-		FString loginSend = "/login aa";
+		FString loginSend = "/login aa\n";
 
 		StringToBytes(loginSend,bufSend,10);
 		Socket->Send(bufSend,10,bytesSend);
