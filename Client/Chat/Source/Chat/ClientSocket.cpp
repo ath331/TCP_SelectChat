@@ -73,6 +73,23 @@ void AClientSocket::ShowRoomList()
 	Send("/rl", " ");
 }
 
+void AClientSocket::SendMakeRoom(UPARAM(ref) const FString& name, UPARAM(ref) const FString& maxPersocCount, UPARAM(ref) const FString& password)
+{
+	FString str = name + " " + maxPersocCount + " " + password;
+	Send("/mr", str);
+}
+
+void AClientSocket::SendEnterRoom(UPARAM(ref) const FString& num, UPARAM(ref) const FString& password)
+{
+	FString str = num + " " + password;
+	Send("/re", str);
+}
+
+void AClientSocket::SendOutRoom()
+{
+	Send("/q", " ");
+}
+
 bool AClientSocket::EnterToLobby(FString id)
 {
 	if (isConnected == false)

@@ -54,6 +54,12 @@ public:
 		bool EnterToLobby(FString id = TEXT("defaultID"));
 	UFUNCTION(BlueprintCallable)
 		void SendMessage(UPARAM(ref) const FString& chat);
+	UFUNCTION(BlueprintCallable)
+		void SendMakeRoom(UPARAM(ref) const FString& name, UPARAM(ref) const FString& maxPersocCount, UPARAM(ref) const FString& password);
+	UFUNCTION(BlueprintCallable)
+		void SendEnterRoom(UPARAM(ref) const FString& num, UPARAM(ref) const FString& password);
+	UFUNCTION(BlueprintCallable)
+		void SendOutRoom();
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
@@ -64,9 +70,11 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void UploadChat(const FString& chat);
 	UFUNCTION(BlueprintImplementableEvent)
-		void MakeRoom(FString& roomName, FString& MaxPerson, const FString& password = TEXT("@!2209ASd"));
+		void MakeRoom(const FString& roomName, const FString& MaxPerson, const FString& password = TEXT("@!2209ASd"));
 	UFUNCTION(BlueprintImplementableEvent)
-		void EnterRoom(FString& roomNum, const FString& password = TEXT("@!2209ASd"));
+		void EnterRoom(const FString& roomNum, const FString& password = TEXT("@!2209ASd"));
+	UFUNCTION(BlueprintImplementableEvent)
+		void OutRoom();
 
 
 	void Recv();
