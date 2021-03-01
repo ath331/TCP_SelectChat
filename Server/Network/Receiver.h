@@ -4,7 +4,7 @@
 
 #include <WinSock2.h>
 
-#define BUF_SIZE 10
+#define BUF_SIZE 1
 
 class StringSpliter;
 class Receiver
