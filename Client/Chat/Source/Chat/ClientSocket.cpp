@@ -65,12 +65,12 @@ void AClientSocket::SendMessage(UPARAM(ref) const FString& chat)
 
 void AClientSocket::ShowUserList()
 {
-	Send("/ul"," ");
+	Send("/ul", " ");
 }
 
 void AClientSocket::ShowRoomList()
 {
-	Send("/rl"," ");
+	Send("/rl", " ");
 }
 
 bool AClientSocket::EnterToLobby(FString id)
@@ -109,10 +109,44 @@ void AClientSocket::PashingStr()
 	{
 		OffLoginUI();
 	}
-
 	else
 	{
-		UploadChat(bufStr);
+		if (bufStr[0] == '(' && bufStr[1] == '#')
+		{
+			listCount = (int32)bufStr[2] - 48;
+			isUserList = true;
+			bufStr.Empty();
+			return;
+		}
+
+		else if (bufStr[0] == '(' && bufStr[1] == '$')
+		{
+			listCount = (int32)bufStr[2] - 48;
+			isRoomList = true;
+			bufStr.Empty();
+			return;
+		}
+
+		if (isUserList == true && listCount > 0)
+		{
+			UploadUserList(bufStr);
+			--listCount;
+			if (listCount == 0)
+				isUserList = false;
+			bufStr.Empty();
+		}
+
+		else if (isRoomList == true && listCount > 0)
+		{
+			UploadRoomList(bufStr);
+			--listCount;
+			if (listCount == 0)
+				isRoomList = false;
+			bufStr.Empty();
+		}
+
+		else
+			UploadChat(bufStr);
 	}
 
 	bufStr.Empty();

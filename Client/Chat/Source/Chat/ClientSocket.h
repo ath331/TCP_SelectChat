@@ -33,9 +33,13 @@ public:
 	int32 bytesRead;
 	int32 bytesSend;
 
+	int32 listCount = 0;
+
 	FString bufStr;
 
 	bool isConnected = false;
+	bool isUserList = false;
+	bool isRoomList = false;
 
 	UPROPERTY();
 	bool isLogined = false;
@@ -54,11 +58,15 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
 	UFUNCTION(BlueprintImplementableEvent)
+		void UploadUserList(const FString& chat);
+	UFUNCTION(BlueprintImplementableEvent)
+		void UploadRoomList(const FString& chat);
+	UFUNCTION(BlueprintImplementableEvent)
 		void UploadChat(const FString& chat);
 	UFUNCTION(BlueprintImplementableEvent)
-		void MakeRoom( const FString& roomName, const FString& MaxPerson, const FString& password = TEXT("@!2209ASd"));
+		void MakeRoom(FString& roomName, FString& MaxPerson, const FString& password = TEXT("@!2209ASd"));
 	UFUNCTION(BlueprintImplementableEvent)
-		void EnterRoom( const FString& roomNum, const FString& password = TEXT("@!2209ASd"));
+		void EnterRoom(FString& roomNum, const FString& password = TEXT("@!2209ASd"));
 
 
 	void Recv();
