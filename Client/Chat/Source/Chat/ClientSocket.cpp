@@ -47,6 +47,23 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	}
 }
 
+void AClientSocket::SendMessage(UPARAM(ref) const FString& chat)
+{
+	FString loginSend;
+	loginSend += *chat;
+	loginSend += "\n";
+	const TCHAR* b = *loginSend;
+
+	char sendBuf[1024]{};
+	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
+
+	for (int i = 0; i < sizeof(sendBuf); i++)
+	{
+		Socket->Send((const uint8*)& sendBuf[i], 1, bytesSend);
+	}
+}
+
+
 bool AClientSocket::EnterToLobby(FString id)
 {
 	if (isConnected == false)
@@ -67,7 +84,6 @@ void AClientSocket::Send(FString commands, FString str)
 
 	char sendBuf[1024]{};
 	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
-	//size_t size = wcstombs(sendBuf, b, 1024);
 
 	for (int i = 0; i < sizeof(sendBuf); i++)
 	{

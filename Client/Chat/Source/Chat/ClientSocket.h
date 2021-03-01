@@ -42,9 +42,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 		bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
-
 	UFUNCTION(BlueprintCallable)
 		bool EnterToLobby(FString id = TEXT("defaultID"));
+	UFUNCTION(BlueprintCallable)
+		void SendMessage(UPARAM(ref) const FString& chat);
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
