@@ -2,6 +2,8 @@
 
 #pragma once
 const int32 bufSize = 1024;
+#include <clocale>
+
 #include "Engine.h"
 #include "Networking.h"
 #include "Sockets.h"
@@ -20,6 +22,7 @@ public:
 	AClientSocket();
 	~AClientSocket()
 	{
+		setlocale(LC_ALL, "Korean");
 		if (Socket != nullptr)
 			Socket->Close();
 	}
@@ -45,6 +48,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
+	UFUNCTION(BlueprintImplementableEvent)
+		void UploadChat(const FString& chat);
 
 	void Recv();
 	void Send(FString commands, FString str);

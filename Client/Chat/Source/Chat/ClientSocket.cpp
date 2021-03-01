@@ -67,7 +67,7 @@ void AClientSocket::Send(FString commands, FString str)
 
 	char sendBuf[1024]{};
 	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
-	//size_t size = wcstombs_s<1024>()();
+	//size_t size = wcstombs(sendBuf, b, 1024);
 
 	for (int i = 0; i < sizeof(sendBuf); i++)
 	{
@@ -78,9 +78,16 @@ void AClientSocket::Send(FString commands, FString str)
 
 void AClientSocket::PashingStr()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, bufStr);
+
 	if (bufStr == "IsLoginedTrue")
 	{
 		OffLoginUI();
+	}
+
+	else
+	{
+		UploadChat(bufStr);
 	}
 
 	bufStr.Empty();
@@ -102,14 +109,10 @@ void AClientSocket::Recv()
 
 		FString Fixed = ANSI_TO_TCHAR(ansiiData);
 
-		UE_LOG(LogTemp, Warning, TEXT("%s"),*Fixed);
-
 		if (Fixed != "\n")
-			bufStr += Fixed;
+			bufStr.Append(Fixed);
 		else
 			PashingStr();
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
 	}
 }
 
