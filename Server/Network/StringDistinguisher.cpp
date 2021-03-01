@@ -95,6 +95,8 @@ void StringDistinguisher::_splitStr(string str)
 		commandsParametersListVec.push_back(temp);
 
 		str = str.substr(enterCharIndex + 1, str.length());
+		if (str != "" && str[str.length() - 1] == '\n')
+			str.erase(str.length() - 1,1);
 	}
 
 	//commandsParametersListVec[0] 은 명령어가 파싱되어 있다.

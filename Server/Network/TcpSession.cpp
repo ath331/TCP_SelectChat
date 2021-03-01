@@ -44,14 +44,16 @@ void TcpSession::RecvClient()
 	if (_receiver->_strLen == 0)
 		_CloseClient();
 
+	else if (_receiver->_bufStr == "")
+		return;
+
 	else if (_receiver->_buf[_receiver->_strLen - 1] == '\b')//입력들어온 데이터의 가장 마지막 문자가 백 스페이스일 때
 	{
 		_receiver->InputBackSpace();
 		_sender->_Send(hClntSock, " ");
 		_sender->_Send(hClntSock, "\b");
 	}
-
-	else if (_receiver->_buf[_receiver->_strLen - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
+	else if (_receiver->_bufStr[_receiver->_bufStr.length() - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
 	{
 		std::string str = _receiver->split();
 		_IsCommands(str);
@@ -82,11 +84,11 @@ void TcpSession::_ProcessingChatting(string str)
 	string message;
 	if (_userState.GetIsEnteredRoom() == false) //로비에서의 채팅이라면
 	{
-		message = ("[ 로비 ] ");
+		message = ("[ Lobby ] ");
 	}
 	else if (_userState.GetIsEnteredRoom() == true) //방에서의 채팅이라면
 	{
-		message = ("[ 방 채팅 ] ");
+		message = ("[ Room ] ");
 	}
 	message += "[ " + _userState.GetID() + " ]";
 	message += (" " + str);
@@ -160,7 +162,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			_sender->_SendLogined(hClntSock);
 			_userState.SetLoginState(true);
 
-			std::cout << "[ " << _userState.GetID() << " ] " << str << endl;
+			std::cout << "[ " << _userState.GetID() << " ] " << str;
 		}
 
 	}
@@ -250,6 +252,12 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		}
 
 		case COMMANDS::RL: //RoomList
+		{
+			size_t listCount = _roomManager->_roomMap.size()+1;
+			string listCountStr = "($" + to_string(listCount);
+			_sender->_Send(hClntSock, listCountStr.c_str());
+			_sender->SendEnter(hClntSock);
+
 			_sender->_SendRL(hClntSock);
 			for (const auto& i : _roomManager->_roomMap)
 			{
@@ -265,6 +273,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 				_sender->SendEnter(hClntSock);
 			}
 			break;
+		}
 
 		case COMMANDS::TO: //To
 		{
@@ -294,7 +303,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 					for (int i = MESSAGE_INDEX; i < COMMANDS_PARAMETERS_VECTOR.size(); i++)
 						message += (COMMANDS_PARAMETERS_VECTOR[i] + " ");
 
-					string to = "[ 귓속말 ] ";
+					string to = "[ Whisper ] ";
 					message = to + "[ " + senderID + " ]" + " : " + message;
 					_sender->_Send(receiverSock, message.c_str());
 					_sender->_Send(receiverSock, "\r\n");
@@ -309,17 +318,23 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 		case COMMANDS::UL: //UserList
 		{
 #define USER_STATE iter->second->_userState
+			size_t listCount = _userMap->size() + 1;
+			string listCountStr = "(#" + to_string(listCount);
+			_sender->_Send(hClntSock, listCountStr.c_str());
+			_sender->SendEnter(hClntSock);
+
 			_sender->_SendUL(hClntSock);
 			for (auto iter = _userMap->begin(); iter != _userMap->end(); iter++)
 			{
 				if (iter->second->_userState.GetLoginState() == true)
 				{
+
 					string userInfo = USER_STATE.GetID() + "\t\t" + to_string(USER_STATE.GetRoomNum());
 					_sender->_Send(hClntSock, userInfo.c_str());
 					_sender->SendEnter(hClntSock);
 				}
 			}
-			_sender->SendEnter(hClntSock);
+			//_sender->SendEnter(hClntSock);
 			break;
 		}
 
