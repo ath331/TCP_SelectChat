@@ -63,6 +63,15 @@ void AClientSocket::SendMessage(UPARAM(ref) const FString& chat)
 	}
 }
 
+void AClientSocket::ShowUserList()
+{
+	Send("/ul"," ");
+}
+
+void AClientSocket::ShowRoomList()
+{
+	Send("/rl"," ");
+}
 
 bool AClientSocket::EnterToLobby(FString id)
 {
