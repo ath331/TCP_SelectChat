@@ -34,6 +34,9 @@ public:
 
 	bool isConnected = false;
 
+	UPROPERTY();
+	bool isLogined = false;
+
 	UFUNCTION(BlueprintCallable)
 		bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
 
@@ -43,7 +46,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
 
-		void Recv();
+	void Recv();
 	void Send(FString commands, FString str);
 
 	void PashingStr();

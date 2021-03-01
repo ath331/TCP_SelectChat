@@ -80,7 +80,7 @@ void AClientSocket::PashingStr()
 {
 	if (bufStr == "IsLoginedTrue")
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, bufStr);
+		OffLoginUI();
 	}
 
 	bufStr.Empty();
@@ -118,7 +118,7 @@ void AClientSocket::Recv()
 void AClientSocket::BeginPlay()
 {
 	Super::BeginPlay();
-	OffLoginUI();
+	//OffLoginUI();
 }
 
 // Called every frame
