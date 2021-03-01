@@ -47,6 +47,32 @@ bool AClientSocket::ConnecteToServer(FString ipStr)
 	}
 }
 
+void AClientSocket::SendMessage(UPARAM(ref) const FString& chat)
+{
+	FString loginSend;
+	loginSend += *chat;
+	loginSend += "\n";
+	const TCHAR* b = *loginSend;
+
+	char sendBuf[1024]{};
+	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
+
+	for (int i = 0; i < sizeof(sendBuf); i++)
+	{
+		Socket->Send((const uint8*)& sendBuf[i], 1, bytesSend);
+	}
+}
+
+void AClientSocket::ShowUserList()
+{
+	Send("/ul", " ");
+}
+
+void AClientSocket::ShowRoomList()
+{
+	Send("/rl", " ");
+}
+
 bool AClientSocket::EnterToLobby(FString id)
 {
 	if (isConnected == false)
@@ -67,7 +93,6 @@ void AClientSocket::Send(FString commands, FString str)
 
 	char sendBuf[1024]{};
 	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
-	//size_t size = wcstombs_s<1024>()();
 
 	for (int i = 0; i < sizeof(sendBuf); i++)
 	{
@@ -78,9 +103,50 @@ void AClientSocket::Send(FString commands, FString str)
 
 void AClientSocket::PashingStr()
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, bufStr);
+
 	if (bufStr == "IsLoginedTrue")
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, bufStr);
+		OffLoginUI();
+	}
+	else
+	{
+		if (bufStr[0] == '(' && bufStr[1] == '#')
+		{
+			listCount = (int32)bufStr[2] - 48;
+			isUserList = true;
+			bufStr.Empty();
+			return;
+		}
+
+		else if (bufStr[0] == '(' && bufStr[1] == '$')
+		{
+			listCount = (int32)bufStr[2] - 48;
+			isRoomList = true;
+			bufStr.Empty();
+			return;
+		}
+
+		if (isUserList == true && listCount > 0)
+		{
+			UploadUserList(bufStr);
+			--listCount;
+			if (listCount == 0)
+				isUserList = false;
+			bufStr.Empty();
+		}
+
+		else if (isRoomList == true && listCount > 0)
+		{
+			UploadRoomList(bufStr);
+			--listCount;
+			if (listCount == 0)
+				isRoomList = false;
+			bufStr.Empty();
+		}
+
+		else
+			UploadChat(bufStr);
 	}
 
 	bufStr.Empty();
@@ -102,14 +168,10 @@ void AClientSocket::Recv()
 
 		FString Fixed = ANSI_TO_TCHAR(ansiiData);
 
-		UE_LOG(LogTemp, Warning, TEXT("%s"),*Fixed);
-
 		if (Fixed != "\n")
-			bufStr += Fixed;
+			bufStr.Append(Fixed);
 		else
 			PashingStr();
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Fixed);
 	}
 }
 
@@ -118,7 +180,7 @@ void AClientSocket::Recv()
 void AClientSocket::BeginPlay()
 {
 	Super::BeginPlay();
-	OffLoginUI();
+	//OffLoginUI();
 }
 
 // Called every frame

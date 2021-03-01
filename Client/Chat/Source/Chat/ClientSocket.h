@@ -2,6 +2,8 @@
 
 #pragma once
 const int32 bufSize = 1024;
+#include <clocale>
+
 #include "Engine.h"
 #include "Networking.h"
 #include "Sockets.h"
@@ -20,6 +22,7 @@ public:
 	AClientSocket();
 	~AClientSocket()
 	{
+		setlocale(LC_ALL, "Korean");
 		if (Socket != nullptr)
 			Socket->Close();
 	}
@@ -30,20 +33,43 @@ public:
 	int32 bytesRead;
 	int32 bytesSend;
 
+	int32 listCount = 0;
+
 	FString bufStr;
 
 	bool isConnected = false;
+	bool isUserList = false;
+	bool isRoomList = false;
 
+	UPROPERTY();
+	bool isLogined = false;
+
+	UFUNCTION(BlueprintCallable)
+		void ShowUserList();
+	UFUNCTION(BlueprintCallable)
+		void ShowRoomList();
 	UFUNCTION(BlueprintCallable)
 		bool ConnecteToServer(FString ip = TEXT("127.0.0.1"));
-
 	UFUNCTION(BlueprintCallable)
 		bool EnterToLobby(FString id = TEXT("defaultID"));
+	UFUNCTION(BlueprintCallable)
+		void SendMessage(UPARAM(ref) const FString& chat);
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
+	UFUNCTION(BlueprintImplementableEvent)
+		void UploadUserList(const FString& chat);
+	UFUNCTION(BlueprintImplementableEvent)
+		void UploadRoomList(const FString& chat);
+	UFUNCTION(BlueprintImplementableEvent)
+		void UploadChat(const FString& chat);
+	UFUNCTION(BlueprintImplementableEvent)
+		void MakeRoom(FString& roomName, FString& MaxPerson, const FString& password = TEXT("@!2209ASd"));
+	UFUNCTION(BlueprintImplementableEvent)
+		void EnterRoom(FString& roomNum, const FString& password = TEXT("@!2209ASd"));
 
-		void Recv();
+
+	void Recv();
 	void Send(FString commands, FString str);
 
 	void PashingStr();
