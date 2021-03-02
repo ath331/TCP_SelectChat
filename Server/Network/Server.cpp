@@ -24,12 +24,16 @@ void Server::_SettingServer()
 	_Bind();
 	_Listen();
 
-	std::cout << "Server Port : "<< defaultPort << std::endl;
+	std::cout << "Server Port : " << defaultPort << std::endl;
 }
 
 void Server::_InitServerSock()
 {
 	_hServSock = socket(PF_INET, SOCK_STREAM, 0);
+
+	ULONG isNonBlocking = 1;
+	ioctlsocket(_hServSock,  FIONBIO,  &isNonBlocking); //non-blocking 소켓으로 변경
+
 	memset(&_servAdr, 0, sizeof(_servAdr));
 	_servAdr.sin_family = AF_INET;
 	_servAdr.sin_addr.s_addr = htonl(INADDR_ANY);

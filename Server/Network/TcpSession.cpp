@@ -5,7 +5,6 @@
 #include "Receiver.h"
 #include "Sender.h"
 
-#include <WinSock2.h>
 #include <iostream>
 
 TcpSession::TcpSession(RoomManager* roomManager, unordered_map<SOCKET, TcpSession*>* userMap, SOCKET sock, fd_set* reads)
@@ -39,25 +38,61 @@ void TcpSession::_Accept()
 
 void TcpSession::RecvClient()
 {
+	if (!_receiver)
+	{
+		//로그 추가
+		return;
+	}
+
 	_receiver->Recv();
 
-	if (_receiver->_strLen == 0)
+	if (_receiver->recvLen == 0)
+	{
 		_CloseClient();
+		return;
+	}
 
-	else if (_receiver->_bufStr == "")
+	if (_receiver->_bufLen >= _receiver->_bufSIze) //버퍼가 꽉차면 사이즈를 늘린다.
+	{
+		_receiver->_bufSIze *= 2;
+		char* tempBuf = new char[_receiver->_bufSIze];
+		memcpy(&tempBuf, _receiver->_bufStr, _receiver->_bufLen);
+		delete[] _receiver->_bufStr;
+
+		_receiver->_bufStr = tempBuf;
+
+		std::cout << "Change Recv Buf Size." << std::endl;
+
+		_receiver->Recv();
+		return;
+	}
+
+	//버퍼에서 '\n'의 인덱스를 저장하는 변수
+	int enterCharIndex = _receiver->_FIndEnterCharIndex();
+	if (enterCharIndex == -1) //버퍼에 '\n'이 없다면
+	{
+		_receiver->Recv();
+		return;
+	}
+
+	std::string str = _receiver->split(enterCharIndex); //enterCharIndex까의 데이터를 추출하고 bufOffset을 조정한다
+	if (str == "")
 		return;
 
-	else if (_receiver->_buf[_receiver->_strLen - 1] == '\b')//입력들어온 데이터의 가장 마지막 문자가 백 스페이스일 때
-	{
-		_receiver->InputBackSpace();
-		_sender->_Send(hClntSock, " ");
-		_sender->_Send(hClntSock, "\b");
-	}
-	else if (_receiver->_bufStr[_receiver->_bufStr.length() - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
-	{
-		std::string str = _receiver->split();
-		_IsCommands(str);
-	}
+	_IsCommands(str);
+
+	//else if (_receiver->_buf[_receiver->_strLen - 1] == '\b')//입력들어온 데이터의 가장 마지막 문자가 백 스페이스일 때
+	//{
+	//	_receiver->_InputBackSpace();
+	//	_sender->_Send(hClntSock, " ");
+	//	_sender->_Send(hClntSock, "\b");
+	//}
+
+	//else if (_receiver->_bufStr[_receiver->_bufStr.length() - 1] == '\n')  //입력들어온 데이터의 가장 마지막 문자가 개행문자일 때
+	//{
+	//	std::string str = _receiver->split();
+	//	_IsCommands(str);
+	//}
 }
 
 void TcpSession::_IsCommands(string& str)
@@ -253,7 +288,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 
 		case COMMANDS::RL: //RoomList
 		{
-			size_t listCount = _roomManager->_roomMap.size()+1;
+			size_t listCount = _roomManager->_roomMap.size() + 1;
 			string listCountStr = "($" + to_string(listCount);
 			_sender->_Send(hClntSock, listCountStr.c_str());
 			_sender->SendEnter(hClntSock);
@@ -358,6 +393,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			{
 				_sender->_Send(hClntSock, "방에 입장해서 사용할 수 있는 명령어 입니다.");
 				_sender->SendEnter(hClntSock);
+
 				break;
 			}
 
