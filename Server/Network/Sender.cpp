@@ -51,7 +51,7 @@ void Sender::_SendRL(SOCKET sock)
 }
 void Sender::_SendRE(SOCKET sock)
 {
-	_Send(sock, LINE);
+	/*_Send(sock, LINE);
 	_Send(sock, LINE);
 	SendEnter(sock);
 	_Send(sock, RE);
@@ -60,7 +60,8 @@ void Sender::_SendRE(SOCKET sock)
 	SendEnter(sock);
 	_Send(sock, LINE);
 	_Send(sock, LINE);
-	SendEnter(sock);
+	SendEnter(sock);*/
+	_Send(sock, "IsEnterRoomTrue\n");
 }
 
 void Sender::_SendUL(SOCKET sock)
@@ -78,10 +79,10 @@ void Sender::SendEnter(SOCKET sock)
 
 void Sender::_SendRI(SOCKET sock)
 {
-	_Send(sock, LINE);
+	/*_Send(sock, LINE);
 	_Send(sock, ENTER);
 	_Send(sock, RI);
-	_Send(sock, ENTER);
+	_Send(sock, ENTER);*/
 }
 
 void Sender::_SendRUI(SOCKET sock)

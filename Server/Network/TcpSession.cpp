@@ -358,6 +358,7 @@ void TcpSession::_ProcessingCommands(COMMANDS commands, string str)
 			{
 				_sender->_Send(hClntSock, "방에 입장해서 사용할 수 있는 명령어 입니다.");
 				_sender->SendEnter(hClntSock);
+
 				break;
 			}
 
