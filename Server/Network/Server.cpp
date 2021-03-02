@@ -30,6 +30,7 @@ void Server::_SettingServer()
 void Server::_InitServerSock()
 {
 	_hServSock = socket(PF_INET, SOCK_STREAM, 0);
+
 	memset(&_servAdr, 0, sizeof(_servAdr));
 	_servAdr.sin_family = AF_INET;
 	_servAdr.sin_addr.s_addr = htonl(INADDR_ANY);

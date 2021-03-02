@@ -1,42 +1,55 @@
 #include "Receiver.h"
+
 #include <iostream>
-Receiver::Receiver(SOCKET sock)
-	:clntSock(sock)
+
+//Receiver::~Receiver()
+//{
+//	//delete _spliter;
+//}
+
+string Receiver::split(int pos)
 {
-	_spliter = new StringSpliter;
+	std::string str;
+
+	int strLength = _bufLen - pos;
+	for (int i = 0; i < strLength; i++)
+	{
+		str += _bufStr[i];
+	}
+
+	memmove(_bufStr, _bufStr + strLength, _offSet); //버퍼 내부의 데이터 위치 조절. 사용한 앞의 부분만큼 데이터를 앞으로 땡긴다.
+
+	_bufLen -= strLength;
+	_offSet -= strLength;
+
+	return str;
 }
 
-
-Receiver::~Receiver()
+void Receiver::_InputBackSpace()
 {
-	delete _spliter;
-}
-
-string Receiver::split()
-{
-	return _spliter->split(_bufStr);
-}
-
-void Receiver::InputBackSpace()
-{
-	if (_bufStr == "\b") //빈칸일때 백 스페이스 입력시는 무시
+	/*if (_bufStr == "\b") //빈칸일때 백 스페이스 입력시는 무시
 		return;
 
 	_bufStr.erase(_bufStr.length() - 1);
-	_bufStr.erase(_bufStr.length() - 1);
+	_bufStr.erase(_bufStr.length() - 1);*/
 }
 
 void Receiver::Recv()
 {
-	_strLen = recv(clntSock, _buf, BUF_SIZE, 0);
-	string temp = _buf;
+	recvLen = recv(clntSock, &_bufStr[_offSet], BUF_SIZE, 0);
 
-	if (_strLen == 1 && temp.length() > 1)	//recv받은 문자는 하나인데 string으로 저장하려고 보니 널문자가 붙어서 길이가 2가 되었을 때 보정처리.
+	_bufLen += recvLen;
+	_offSet += recvLen;
+}
+
+int Receiver::_FIndEnterCharIndex()
+{
+	for (int i = 0; i < _bufLen; i++)
 	{
-		temp = temp[0];
+		if (_bufStr[i] == '\n')
+			return i;
 	}
 
-	_bufStr += temp;
-
-
+	return -1;
 }
+
