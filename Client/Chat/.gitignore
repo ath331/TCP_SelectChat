@@ -6,6 +6,8 @@
 # Visual Studio 2015 user specific files
 .vs/
 
+Server/
+
 # Compiled Object files
 *.slo
 *.lo
