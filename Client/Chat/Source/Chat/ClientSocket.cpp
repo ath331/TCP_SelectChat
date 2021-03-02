@@ -65,28 +65,38 @@ void AClientSocket::SendMessage(UPARAM(ref) const FString& chat)
 
 void AClientSocket::ShowUserList()
 {
+	if (isConnected == false)
+		return;
 	Send("/ul", " ");
 }
 
 void AClientSocket::ShowRoomList()
 {
+	if (isConnected == false)
+		return;
 	Send("/rl", " ");
 }
 
 void AClientSocket::SendMakeRoom(UPARAM(ref) const FString& name, UPARAM(ref) const FString& maxPersocCount, UPARAM(ref) const FString& password)
 {
+	if (isConnected == false)
+		return; 
 	FString str = name + " " + maxPersocCount + " " + password;
-	Send("/mr", str);
+	Send("/mr ", str);
 }
 
 void AClientSocket::SendEnterRoom(UPARAM(ref) const FString& num, UPARAM(ref) const FString& password)
 {
+	if (isConnected == false)
+		return;
 	FString str = num + " " + password;
-	Send("/re", str);
+	Send("/re ", str);
 }
 
 void AClientSocket::SendOutRoom()
 {
+	if (isConnected == false)
+		return;
 	Send("/q", " ");
 }
 
@@ -100,6 +110,14 @@ bool AClientSocket::EnterToLobby(FString id)
 
 	return true;
 }
+
+void AClientSocket::SendRoomInfo()
+{
+	if (isConnected == false)
+		return;
+	Send("/ri ","");
+}
+
 
 void AClientSocket::Send(FString commands, FString str)
 {
@@ -117,6 +135,11 @@ void AClientSocket::Send(FString commands, FString str)
 	}
 }
 
+void AClientSocket::SendQuitProgram()
+{
+	Send("/quit ", "");
+}
+
 
 void AClientSocket::PashingStr()
 {
@@ -126,6 +149,12 @@ void AClientSocket::PashingStr()
 	{
 		OffLoginUI();
 	}
+
+	else if (bufStr == "IsEnterRoomTrue")
+	{
+		EnterRoom();
+	}
+
 	else
 	{
 		if (bufStr[0] == '(' && bufStr[1] == '#')
