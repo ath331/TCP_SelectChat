@@ -17,15 +17,18 @@ string Receiver::split(int pos)
 		str += _bufStr[i];
 	}
 
+	if (str == "")
+		return  "";
+
 	if (str[str.length() - 1] == '\r') //terlnet 상에서는 엔터키를 입력하면 "\r\n"이 전송되므로 '\r'제거
 	{
 		str.erase(str.length() - 1);
 	}
 
-	memmove(_bufStr, _bufStr + strLength, strLength); //버퍼 내부의 데이터 위치 조절. 사용한 앞의 부분만큼 데이터를 앞으로 땡긴다.
+	memmove(_bufStr, _bufStr + strLength, recvLen); //버퍼 내부의 데이터 위치 조절. 사용한 앞의 부분만큼 데이터를 앞으로 땡긴다.
 
-	_bufLen -= strLength + 1;
-	_offSet -= strLength + 1;
+	_bufLen -= recvLen;
+	_offSet -= recvLen;
 
 	return str;
 }

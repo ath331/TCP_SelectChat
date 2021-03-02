@@ -38,6 +38,12 @@ void TcpSession::_Accept()
 
 void TcpSession::RecvClient()
 {
+	if (!_receiver)
+	{
+		//로그 추가
+		return;
+	}
+
 	_receiver->Recv();
 
 	if (_receiver->recvLen == 0)
@@ -70,6 +76,9 @@ void TcpSession::RecvClient()
 	}
 
 	std::string str = _receiver->split(enterCharIndex); //enterCharIndex까의 데이터를 추출하고 bufOffset을 조정한다
+	if (str == "")
+		return;
+
 	_IsCommands(str);
 
 	//else if (_receiver->_buf[_receiver->_strLen - 1] == '\b')//입력들어온 데이터의 가장 마지막 문자가 백 스페이스일 때
