@@ -76,13 +76,13 @@ void AClientSocket::ShowRoomList()
 void AClientSocket::SendMakeRoom(UPARAM(ref) const FString& name, UPARAM(ref) const FString& maxPersocCount, UPARAM(ref) const FString& password)
 {
 	FString str = name + " " + maxPersocCount + " " + password;
-	Send("/mr", str);
+	Send("/mr ", str);
 }
 
 void AClientSocket::SendEnterRoom(UPARAM(ref) const FString& num, UPARAM(ref) const FString& password)
 {
 	FString str = num + " " + password;
-	Send("/re", str);
+	Send("/re ", str);
 }
 
 void AClientSocket::SendOutRoom()
