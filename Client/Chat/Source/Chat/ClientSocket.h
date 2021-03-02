@@ -22,7 +22,6 @@ public:
 	AClientSocket();
 	~AClientSocket()
 	{
-		setlocale(LC_ALL, "Korean");
 		if (Socket != nullptr)
 			Socket->Close();
 	}
