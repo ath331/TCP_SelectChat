@@ -59,7 +59,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 		void SendEnterRoom(UPARAM(ref) const FString& num, UPARAM(ref) const FString& password);
 	UFUNCTION(BlueprintCallable)
+		void SendRoomInfo();
+	UFUNCTION(BlueprintCallable)
 		void SendOutRoom();
+	UFUNCTION(BlueprintCallable)
+		void SendQuitProgram();
 
 	UFUNCTION(BlueprintImplementableEvent)
 		void OffLoginUI();
@@ -70,11 +74,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void UploadChat(const FString& chat);
 	UFUNCTION(BlueprintImplementableEvent)
-		void MakeRoom(const FString& roomName, const FString& MaxPerson, const FString& password = TEXT("@!2209ASd"));
-	UFUNCTION(BlueprintImplementableEvent)
-		void EnterRoom(const FString& roomNum, const FString& password = TEXT("@!2209ASd"));
-	UFUNCTION(BlueprintImplementableEvent)
-		void OutRoom();
+		void EnterRoom();
 
 
 	void Recv();
