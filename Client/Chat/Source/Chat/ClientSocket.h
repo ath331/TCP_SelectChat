@@ -3,7 +3,6 @@
 #pragma once
 const int32 bufSize = 1024;
 #include <clocale>
-
 #include "Engine.h"
 #include "Networking.h"
 #include "Sockets.h"

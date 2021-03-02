@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include <stdlib.h>
+#include <string>
 #include "ClientSocket.h"
 #include "Containers/UnrealString.h"
 
@@ -57,10 +58,7 @@ void AClientSocket::SendMessage(UPARAM(ref) const FString& chat)
 	char sendBuf[1024]{};
 	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
 
-	for (int i = 0; i < sizeof(sendBuf); i++)
-	{
-		Socket->Send((const uint8*)&sendBuf[i], 1, bytesSend);
-	}
+	Socket->Send((const uint8*)&sendBuf, sizeof(b) * 2, bytesSend);
 }
 
 void AClientSocket::ShowUserList()
@@ -129,7 +127,7 @@ void AClientSocket::Send(FString commands, FString str)
 	char sendBuf[1024]{};
 	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
 
-	Socket->Send((const uint8*)&sendBuf, loginSend.Len(), bytesSend);
+	Socket->Send((const uint8*)&sendBuf, sizeof(b) * 2, bytesSend);
 }
 
 void AClientSocket::SendQuitProgram()
@@ -196,12 +194,12 @@ void AClientSocket::PashingStr()
 }
 
 
-void AClientSocket::Recv()
+void AClientSocket::Recv() //TIck에서 계속 호출되고 있다
 {
 	if (Socket == nullptr)
 		return;
 
-	bool recv = Socket->Recv(buf, 1, bytesRead);
+	bool recv = Socket->Recv(buf, bufSize, bytesRead);
 
 	if (recv == true && bytesRead != 0)
 	{
@@ -209,12 +207,24 @@ void AClientSocket::Recv()
 		memcpy(ansiiData, buf, bytesRead);
 		ansiiData[bytesRead] = 0;
 
-		FString Fixed = ANSI_TO_TCHAR(ansiiData);
+		TCHAR wstr[1024]{};
+		size_t size = mbstowcs(wstr, ansiiData, sizeof(ansiiData) * 2);
 
-		if (Fixed != "\n")
-			bufStr.Append(Fixed);
-		else
-			PashingStr();
+		FString Fixed(wstr);
+		FString subStr;
+		for (int i = 0; i < Fixed.Len(); i++)
+		{
+			if (Fixed[i] == '\n')
+			{
+				subStr = Fixed.Mid(0, i);
+				bufStr = subStr;
+			}
+		}
+
+		if (subStr == "")
+			return;
+
+		PashingStr();
 	}
 }
 
