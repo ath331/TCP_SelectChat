@@ -50,7 +50,7 @@ void TcpSession::RecvClient()
 	{
 		_receiver->_bufSIze *= 2;
 		char* tempBuf = new char[_receiver->_bufSIze];
-		memcpy(&tempBuf, _receiver->_bufStr, _receiver->_offSet);
+		memcpy(&tempBuf, _receiver->_bufStr, _receiver->_bufLen);
 		delete[] _receiver->_bufStr;
 
 		_receiver->_bufStr = tempBuf;
