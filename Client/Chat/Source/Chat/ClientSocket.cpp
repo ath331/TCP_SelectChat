@@ -127,7 +127,8 @@ void AClientSocket::Send(FString commands, FString str)
 	char sendBuf[1024]{};
 	size_t size = wcstombs(sendBuf, b, sizeof(b) * 2);
 
-	Socket->Send((const uint8*)&sendBuf, sizeof(b) * 2, bytesSend);
+	if (Socket != nullptr)
+		Socket->Send((const uint8*)&sendBuf, sizeof(b) * 2, bytesSend);
 }
 
 void AClientSocket::SendQuitProgram()
