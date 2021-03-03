@@ -151,32 +151,26 @@ void AClientSocket::PashingStr()
 		EnterRoom();
 	}
 
+	else if (bufStr[0] == '(' && bufStr[1] == '#')
+	{
+		listCount = (int32)bufStr[2] - 48;
+		isUserList = true;
+	}
+
+	else if (bufStr[0] == '(' && bufStr[1] == '$')
+	{
+		listCount = (int32)bufStr[2] - 48;
+		isRoomList = true;
+	}
 
 	else
 	{
-		if (bufStr[0] == '(' && bufStr[1] == '#')
-		{
-			listCount = (int32)bufStr[2] - 48;
-			isUserList = true;
-			bufStr.Empty();
-			return;
-		}
-
-		else if (bufStr[0] == '(' && bufStr[1] == '$')
-		{
-			listCount = (int32)bufStr[2] - 48;
-			isRoomList = true;
-			bufStr.Empty();
-			return;
-		}
-
 		if (isUserList == true && listCount > 0)
 		{
 			UploadUserList(bufStr);
 			--listCount;
 			if (listCount == 0)
 				isUserList = false;
-			bufStr.Empty();
 		}
 
 		else if (isRoomList == true && listCount > 0)
@@ -185,18 +179,14 @@ void AClientSocket::PashingStr()
 			--listCount;
 			if (listCount == 0)
 				isRoomList = false;
-			bufStr.Empty();
-		}
-
-		else if (bufStr == "MyChat")
-		{
-			UploadMyChat(bufStr);
 		}
 
 		else
 			UploadChat(bufStr);
 	}
 
+	offset -= bufStr.Len() + 1;
+	memmove(buf, buf + bufStr.Len() + 1, sizeof(buf));
 	bufStr.Empty();
 }
 
@@ -206,25 +196,29 @@ void AClientSocket::Recv() //TIck에서 계속 호출되고 있다
 	if (Socket == nullptr)
 		return;
 
-	bool recv = Socket->Recv(buf, bufSize, bytesRead);
+	bool recv = Socket->Recv(&buf[offset], bufSize, bytesRead);
 
 	if (recv == true && bytesRead != 0)
 	{
+		offset += bytesRead;
+
 		char ansiiData[bufSize];
-		memcpy(ansiiData, buf, bytesRead);
-		ansiiData[bytesRead] = 0;
+		memcpy(ansiiData, buf, sizeof(buf));
+		ansiiData[offset] = 0;
 
 		TCHAR wstr[1024]{};
 		size_t size = mbstowcs(wstr, ansiiData, sizeof(ansiiData) * 2);
 
 		FString Fixed(wstr);
 		FString subStr;
+		bool temp = true;
 		for (int i = 0; i < Fixed.Len(); i++)
 		{
 			if (Fixed[i] == '\n')
 			{
 				subStr = Fixed.Mid(0, i);
 				bufStr = subStr;
+				break;
 			}
 		}
 

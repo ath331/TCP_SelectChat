@@ -31,6 +31,7 @@ public:
 	int32 bytesRead;
 	int32 bytesSend;
 
+	int32 offset = 0;
 	int32 listCount = 0;
 
 	FString bufStr;
