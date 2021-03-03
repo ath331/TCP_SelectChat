@@ -135,9 +135,12 @@ void TcpSession::_ProcessingChatting(string str)
 		{
 			if (SESSION->_userState.GetIsEnteredRoom() == false && SESSION->_userState.GetLoginState() == true) //로비에 있는 유저를 탐색
 			{
-				SOCKET sock = SESSION->hClntSock;
-				_sender->_Send(sock, message.c_str());
-				_sender->SendEnter(sock); //메시지와 개행문자를 전송한다
+				if (hClntSock != SESSION->hClntSock) //유저의 자신의 메시지는 클라에서 띄우므로 보내지 않는다
+				{
+					SOCKET sock = SESSION->hClntSock;
+					_sender->_Send(sock, message.c_str());
+					_sender->SendEnter(sock); //메시지와 개행문자를 전송한다
+				}
 			}
 		}
 	}
@@ -151,9 +154,11 @@ void TcpSession::_ProcessingChatting(string str)
 			{
 				for (auto userStateIter = ROOM.userRoomMap.begin(); userStateIter != ROOM.userRoomMap.end(); userStateIter++) //방에 있는 모든 유저에게 메시지 전송
 				{
-					_sender->_Send(userStateIter->second.hClntSock, message.c_str());
-					_sender->SendEnter(userStateIter->second.hClntSock); //메시지를 받으면 개행처리한다
-
+					if (hClntSock != userStateIter->second.hClntSock) //유저의 자신의 메시지는 클라에서 띄우므로 보내지 않는다
+					{
+						_sender->_Send(userStateIter->second.hClntSock, message.c_str());
+						_sender->SendEnter(userStateIter->second.hClntSock); //메시지를 받으면 개행처리한다
+					}
 				}
 				break;
 			}
