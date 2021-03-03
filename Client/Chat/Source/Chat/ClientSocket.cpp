@@ -151,6 +151,7 @@ void AClientSocket::PashingStr()
 		EnterRoom();
 	}
 
+
 	else
 	{
 		if (bufStr[0] == '(' && bufStr[1] == '#')
@@ -185,6 +186,11 @@ void AClientSocket::PashingStr()
 			if (listCount == 0)
 				isRoomList = false;
 			bufStr.Empty();
+		}
+
+		else if (bufStr == "MyChat")
+		{
+			UploadMyChat(bufStr);
 		}
 
 		else

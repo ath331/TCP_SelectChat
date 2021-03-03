@@ -70,6 +70,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		void UploadRoomList(const FString& chat);
 	UFUNCTION(BlueprintImplementableEvent)
+		void UploadMyChat(const FString& chat);
+	UFUNCTION(BlueprintImplementableEvent)
 		void UploadChat(const FString& chat);
 	UFUNCTION(BlueprintImplementableEvent)
 		void EnterRoom();
