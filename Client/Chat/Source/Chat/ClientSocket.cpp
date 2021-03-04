@@ -1,8 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
+#include "ClientSocket.h"
 #include <stdlib.h>
 #include <string>
-#include "ClientSocket.h"
 #include "Containers/UnrealString.h"
 
 // Sets default values
