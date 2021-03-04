@@ -140,6 +140,8 @@ void AClientSocket::SendQuitProgram()
 void AClientSocket::PashingStr()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, bufStr);
+	if (bufStr == "")
+		return;
 
 	if (bufStr == "IsLoginedTrue")
 	{
@@ -185,8 +187,8 @@ void AClientSocket::PashingStr()
 			UploadChat(bufStr);
 	}
 
-	offset -= bufStr.Len() + 1;
-	memmove(buf, buf + bufStr.Len() + 1, sizeof(buf));
+
+	totalStr = totalStr.Mid(bufStr.Len()+1, totalStr.Len());
 	bufStr.Empty();
 }
 
@@ -196,36 +198,48 @@ void AClientSocket::Recv() //TIck에서 계속 호출되고 있다
 	if (Socket == nullptr)
 		return;
 
-	bool recv = Socket->Recv(&buf[offset], bufSize, bytesRead);
+	if (totalStr.Len() > 0)
+	{
+		for (int i = 0; i < totalStr.Len(); i++)
+		{
+			if (totalStr[i] == '\n')
+			{
+				bufStr = totalStr.Mid(0, i);
+				PashingStr();
+				break;
+			}
+		}
 
+		if (bufStr == "")
+			return;
+	}
+
+	bool recv = Socket->Recv(buf, bufSize, bytesRead);
 	if (recv == true && bytesRead != 0)
 	{
-		offset += bytesRead;
-
 		char ansiiData[bufSize];
 		memcpy(ansiiData, buf, sizeof(buf));
-		ansiiData[offset] = 0;
+		ansiiData[bytesRead] = 0;
 
 		TCHAR wstr[1024]{};
 		size_t size = mbstowcs(wstr, ansiiData, sizeof(ansiiData) * 2);
 
 		FString Fixed(wstr);
-		FString subStr;
-		bool temp = true;
-		for (int i = 0; i < Fixed.Len(); i++)
+		totalStr += Fixed;
+
+		for (int i = 0; i < totalStr.Len(); i++)
 		{
-			if (Fixed[i] == '\n')
+			if (totalStr[i] == '\n')
 			{
-				subStr = Fixed.Mid(0, i);
-				bufStr = subStr;
+				bufStr = totalStr.Mid(0, i);
+				PashingStr();
 				break;
 			}
 		}
 
-		if (subStr == "")
+		if (bufStr == "")
 			return;
 
-		PashingStr();
 	}
 }
 

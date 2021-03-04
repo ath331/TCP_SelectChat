@@ -31,10 +31,10 @@ public:
 	int32 bytesRead;
 	int32 bytesSend;
 
-	int32 offset = 0;
 	int32 listCount = 0;
 
-	FString bufStr;
+	FString totalStr; //데이터를 받아서 이어 붙이는 str
+	FString bufStr;  //파싱해서 사용하는 str
 
 	bool isConnected = false;
 	bool isUserList = false;
